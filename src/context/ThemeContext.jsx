@@ -1,40 +1,35 @@
-import { createTheme, ThemeProvider, useMediaQuery } from '@mui/material';
-import { createContext, useContext, useMemo, useState, ReactNode } from 'react';
+"use client"
+import React, { createContext, useState, useMemo } from 'react';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
 
-interface ThemeContextType {
-    toggleTheme: () => void;
-    darkMode: boolean;
-}
+export const ThemeContext = createContext();
 
-const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+const ThemeContextProvider = ({ children }) => {
+    const [darkMode, setDarkMode] = useState(false);
 
-export const useThemeContext = () => {
-    const context = useContext(ThemeContext);
-    if (!context) {
-        throw new Error('useThemeContext must be used within a ThemeProvider');
-    }
-    return context;
-};
-
-export const CustomThemeProvider = ({ children }: { children: ReactNode }) => {
-    const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-    const [darkMode, setDarkMode] = useState(prefersDarkMode);
-
-    const theme = useMemo(() => {
-        return createTheme({
-            palette: {
-                mode: darkMode ? 'dark' : 'light',
-            },
-        });
-    }, [darkMode]);
+    const theme = useMemo(
+        () =>
+            createTheme({
+                palette: {
+                    mode: darkMode ? 'dark' : 'light',
+                },
+            }),
+        [darkMode]
+    );
 
     const toggleTheme = () => {
         setDarkMode(!darkMode);
     };
 
     return (
-        <ThemeContext.Provider value={{ toggleTheme, darkMode }}>
-            <ThemeProvider theme={theme}>{children}</ThemeProvider>
+        <ThemeContext.Provider value={{ darkMode, toggleTheme }}>
+            <ThemeProvider theme={theme}>
+                <CssBaseline />
+                {children}
+            </ThemeProvider>
         </ThemeContext.Provider>
     );
 };
+
+export default ThemeContextProvider;
