@@ -45,15 +45,16 @@ export default function Navbar() {
     return (
         <>
             <AppBar
-                position="static"
+                position="sticky"  // Changed from "static" to "sticky"
                 sx={{
                     background: 'linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(242,242,242,1) 50%, rgba(255,255,255,1) 100%)',
-                    // boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.1)',
                     borderRadius: '20px',
                     width: 'auto',
                     maxWidth: "90%",
                     margin: '0rem auto',
-                    boxShadow: "none"
+                    boxShadow: "none",
+                    top: 0,  // Ensure it sticks at the top
+                    zIndex: 1100,  // Ensure it stays above other content
                 }}
             >
                 <Container
@@ -79,13 +80,13 @@ export default function Navbar() {
                                     </Typography>
                                 </Button>
                             </Link>
-                            <Link href="/displayUserMap" passHref>
+                            <Link href="/user/displayUserMap" passHref>
                                 <Button sx={{ display: 'flex', alignItems: 'center', color: '#000', textDecoration: 'none' }}>
                                     <PinDropIcon sx={{ marginRight: '0.5rem', color: '#000' }} />
                                     Your Maps
                                 </Button>
                             </Link>
-                            <Link href="/createUserMaps" passHref>
+                            <Link href="/user/createUserMaps">
                                 <Button sx={{ display: 'flex', alignItems: 'center', color: '#000', textDecoration: 'none' }}>
                                     <MapIcon sx={{ marginRight: '0.5rem', color: '#000' }} />
                                     Create

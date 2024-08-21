@@ -4,8 +4,8 @@ import { useSession } from "next-auth/react";
 import AlertSnackbar from "@/components/AlertSnackbar";
 import { Container, Grid, Typography, Box, Button } from '@mui/material';
 import MapDetailsModal from './MapDetailsModal';
-import UserMapsCard from './UserMapsCard';
-import Link from 'next/link'; // Import Link for navigation
+import UserMapsCard, {CreateMapCard} from './UserMapsCard';
+import Link from 'next/link';
 
 const DisplayUserMaps = () => {
     const { data: session, status } = useSession();
@@ -52,15 +52,36 @@ const DisplayUserMaps = () => {
         fetchUserMaps();
     }, [status]);
 
+    const handleDeleteMap = async (mapId) => {
+        try {
+            const response = await fetch(`/api/deleteUserMap?id=${mapId}`, {
+                method: 'DELETE',
+            });
+
+            if (response.ok) {
+                setMaps(maps.filter(map => map.id !== mapId));
+                handleOpenAlert('success', 'Map deleted successfully.');
+            } else {
+                handleOpenAlert('error', 'Failed to delete the map.');
+            }
+        } catch (error) {
+            console.error('Error deleting map:', error);
+            handleOpenAlert('error', 'An error occurred while deleting the map.');
+        }
+    };
+
     return (
-        <Container sx={{ mt: 4 }}>
+        <Container sx={{ mt: 4, minHeight: "100vh" }}>
             {maps.length > 0 ? (
                 <Grid container spacing={3}>
                     {maps.map(map => (
                         <Grid item xs={12} sm={6} md={4} lg={3} key={map.id}>
-                            <UserMapsCard map={map} onOpenDetails={handleOpenDetails} />
+                            <UserMapsCard map={map} onOpenDetails={handleOpenDetails} onDelete={handleDeleteMap}/>
                         </Grid>
                     ))}
+                    <Grid item xs={12} sm={6} md={4} lg={3}>
+                        <CreateMapCard />
+                    </Grid>
                 </Grid>
             ) : (
                 <Box

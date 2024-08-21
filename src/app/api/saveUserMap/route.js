@@ -19,6 +19,7 @@ export async function POST(req) {
                 pinLatitude: pinLocation.latitude,
                 pinLongitude: pinLocation.longitude,
                 pinName: pinLocation.name,
+                pinImageUrl: pinLocation.imageUrl,
                 locations: {
                     create: locations.map(loc => ({
                         name: loc.name,

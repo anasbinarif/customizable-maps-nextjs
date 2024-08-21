@@ -19,7 +19,6 @@ const buttonHoverStyle = {
     backgroundColor: '#f0f0f0',
 };
 
-// Function to get a custom marker icon based on the color
 const getMarkerIcon = (color) => {
     if (!color) return null;
     return {
@@ -84,6 +83,11 @@ export default function CreateGoogleMap() {
         Entertainment: { color: '#FF8C00', locations: [] },
     });
 
+    const getStaticMapImageUrl = (lat, lng, zoom = 14, width = 400, height = 300) => {
+        const apiKey = process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY;
+        return `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lng}&zoom=${zoom}&size=${width}x${height}&maptype=roadmap&markers=color:red%7Clabel:P%7C${lat},${lng}&key=${apiKey}`;
+    };
+
     const saveMap = async () => {
 
         if (!session) {
@@ -108,9 +112,17 @@ export default function CreateGoogleMap() {
             }))
         );
         const userEmail = session?.user.email;
+        const pinLocationImage = getStaticMapImageUrl(currentLocation.lat, currentLocation.lng); // Generate the static map image URL
+
+        console.log("pinLocationImage: ", pinLocationImage)
         const dataToSave = {
             title: title,
-            pinLocation: { latitude: currentLocation.lat, longitude: currentLocation.lng, name: currentLocation.name },
+            pinLocation: {
+                latitude: currentLocation.lat,
+                longitude: currentLocation.lng,
+                name: currentLocation.name,
+                imageUrl: pinLocationImage,
+            },
             locations: locationsToSave,
             userEmail
         };
@@ -177,6 +189,7 @@ export default function CreateGoogleMap() {
             const lng = place.geometry.location.lng();
             setCurrentLocation({ lat, lng, name: place.name });
             setMarkers([{ lat, lng, name: place.name }]);
+            setTitle(place.formatted_address || "");
             console.log("place: ", place)
         } else {
             console.log('Autocomplete is not loaded yet!');
@@ -270,50 +283,60 @@ export default function CreateGoogleMap() {
         <>
             {!isMapLoaded && <LoadingSpinner />}
             <LoadScript googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY} libraries={['places']} onLoad={() => setIsMapLoaded(true)}>
-                <Box sx={{ display: 'flex', justifyContent: "center", margin: '10px 0', flexWrap: 'wrap' }}>
-                    {/*<Typography>Title</Typography>*/}
-                    <TextField
-                        id="standard-basic"
-                        label="Title"
-                        variant="standard"
-                        error={titleError}
-                        value={title}
-                        required
-                        onChange={(e) => setTitle(e.target.value)}
-                        helperText="Please enter title"
-                        sx={{
-                            width: "20%"
-                        }}
-                    />
-                </Box>
-                <Box sx={{ display: 'flex', justifyContent: 'center', margin: '10px 0', flexWrap: 'wrap' }}>
-                    {filters.map((filter) => {
-                        const isSelected = selectedFilters.some(selectedFilter => selectedFilter.type === filter.type);
-                        return (
-                            <Button
-                                key={filter.type}
-                                variant={isSelected ? 'contained' : 'outlined'}
-                                color="primary"
-                                startIcon={filter.icon}
-                                sx={{
-                                    margin: '5px',
-                                    borderRadius: '50px',
-                                    backgroundColor: isSelected ? filter.selectedColor : 'white',
-                                    color: isSelected ? 'white' : '#333',
-                                    '&:hover': {
-                                        backgroundColor: isSelected ? filter.selectedColor : buttonHoverStyle.backgroundColor,
-                                    },
-                                }}
-                                onClick={() => toggleFilter(filter)}
-                            >
-                                {filter.name}
-                            </Button>
-                        );
-                    })}
-                </Box>
                 <Grid container>
+                    {/* Location List section */}
+                    <Grid item xs={3}>
+                        <LocationList locationsByTag={locationsByTag} handleDelete={handleDelete} />
+                    </Grid>
                     {/* Map section */}
-                    <Grid item xs={8}>
+                    <Grid item xs={9}>
+                        <Box sx={{ display: 'flex', justifyContent: "space-between", margin: '10px 0', flexWrap: 'wrap' }}>
+                            <TextField
+                                id="standard-basic"
+                                label="Title"
+                                variant="standard"
+                                error={titleError}
+                                value={title}
+                                required
+                                onChange={(e) => setTitle(e.target.value)}
+                                helperText="Please enter title"
+                                sx={{
+                                    width: "20%"
+                                }}
+                            />
+                            <Box mt="10px">
+                                <Button variant="contained" color="primary" onClick={saveMap} sx={{
+                                    width: "100%"
+                                }}>
+                                    Save Map
+                                </Button>
+                            </Box>
+                        </Box>
+                        <Box sx={{ display: 'flex', justifyContent: 'center', margin: '10px 0', flexWrap: 'wrap' }}>
+                            {filters.map((filter) => {
+                                const isSelected = selectedFilters.some(selectedFilter => selectedFilter.type === filter.type);
+                                return (
+                                    <Button
+                                        key={filter.type}
+                                        variant={isSelected ? 'contained' : 'outlined'}
+                                        color="primary"
+                                        startIcon={filter.icon}
+                                        sx={{
+                                            margin: '5px',
+                                            borderRadius: '50px',
+                                            backgroundColor: isSelected ? filter.selectedColor : 'white',
+                                            color: isSelected ? 'white' : '#333',
+                                            '&:hover': {
+                                                backgroundColor: isSelected ? filter.selectedColor : buttonHoverStyle.backgroundColor,
+                                            },
+                                        }}
+                                        onClick={() => toggleFilter(filter)}
+                                    >
+                                        {filter.name}
+                                    </Button>
+                                );
+                            })}
+                        </Box>
                         <GoogleMap
                             id="search-box-example"
                             mapContainerStyle={{ width: '100%', height: '70vh' }}
@@ -338,6 +361,9 @@ export default function CreateGoogleMap() {
                                             onMouseOut={() => {
                                                 setInfoWindowHovered(false);
                                                 handleMarkerMouseOut();
+                                            }}
+                                            options={{
+                                                pixelOffset: new google.maps.Size(0, -30) // Adjusts the window's position so it doesn't affect the cursor
                                             }}
                                         >
                                             <Box sx={{ maxWidth: '250px', padding: 0, overflow: 'hidden', margin: 0, maxHeight: "200px" }}>
@@ -381,6 +407,7 @@ export default function CreateGoogleMap() {
                                                 </Box>
                                             </Box>
                                         </InfoWindow>
+
                                     )}
                                 </Marker>
                             ))}
@@ -400,20 +427,6 @@ export default function CreateGoogleMap() {
                                 />
                             </Autocomplete>
                         </GoogleMap>
-                        <Box mt="10px" sx={{
-                            display: "flex",
-                            justifyContent: "center"
-                        }}>
-                            <Button variant="contained" color="primary" onClick={saveMap} sx={{
-                                width: "50%"
-                            }}>
-                                Save Map
-                            </Button>
-                        </Box>
-                    </Grid>
-                    {/* Location List section */}
-                    <Grid item xs={4}>
-                        <LocationList locationsByTag={locationsByTag} handleDelete={handleDelete} />
                     </Grid>
                 </Grid>
             </LoadScript>
