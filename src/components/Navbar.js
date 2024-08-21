@@ -9,7 +9,8 @@ import PinDropIcon from '@mui/icons-material/PinDrop';
 import { useSession, signOut } from "next-auth/react";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import Link from "next/link";
-import LoginSignupModal from './LoginSignupModal';  // Import the modal component
+import LoginSignupModal from './LoginSignupModal';
+import ChangePasswordModal from './ChangePasswordModal';  // Import the modal component
 
 export default function Navbar() {
     const { data: session, status } = useSession();
@@ -17,6 +18,7 @@ export default function Navbar() {
     const [modalMode, setModalMode] = useState('login');
     const [anchorEl, setAnchorEl] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [changePasswordOpen, setChangePasswordOpen] = useState(false);
 
     const handleOpenModal = (mode) => {
         setModalMode(mode);
@@ -42,10 +44,29 @@ export default function Navbar() {
         setLoading(false);
     };
 
+    const handleChangePassword = () => {
+        setChangePasswordOpen(true);
+        handleMenuClose();
+    };
+
+    const handleSavePassword = async (currentPassword, newPassword) => {
+        const res = await fetch('/api/changePassword', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ currentPassword, newPassword }),
+        });
+
+        if (!res.ok) {
+            throw new Error('Failed to change password');
+        }
+    };
+
     return (
         <>
             <AppBar
-                position="sticky"  // Changed from "static" to "sticky"
+                position="sticky"
                 sx={{
                     background: 'linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(242,242,242,1) 50%, rgba(255,255,255,1) 100%)',
                     borderRadius: '20px',
@@ -53,15 +74,15 @@ export default function Navbar() {
                     maxWidth: "90%",
                     margin: '0rem auto',
                     boxShadow: "none",
-                    top: 0,  // Ensure it sticks at the top
-                    zIndex: 1100,  // Ensure it stays above other content
+                    top: 0,
+                    zIndex: 1100,
                 }}
             >
                 <Container
                     maxWidth={false}
                     disableGutters
                     sx={{
-                        padding: '0 !important',  // Ensure no padding inside Container
+                        padding: '0 !important',
                         width: '100%',
                     }}
                 >
@@ -129,6 +150,7 @@ export default function Navbar() {
                                                 {session.user.email}
                                             </Typography>
                                         </MenuItem>
+                                        <MenuItem onClick={handleChangePassword}>Change Password</MenuItem>
                                         <MenuItem onClick={handleLogout}>Logout</MenuItem>
                                     </Menu>
                                 </>
@@ -157,6 +179,11 @@ export default function Navbar() {
             </AppBar>
 
             <LoginSignupModal open={openModal} handleClose={handleCloseModal} mode={modalMode} />
+            <ChangePasswordModal
+                open={changePasswordOpen}
+                onClose={() => setChangePasswordOpen(false)}
+                onSave={handleSavePassword}
+            />
             {loading && <LoadingSpinner />}
         </>
     );

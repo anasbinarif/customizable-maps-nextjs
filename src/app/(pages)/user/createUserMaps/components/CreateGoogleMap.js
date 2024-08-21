@@ -203,7 +203,6 @@ export default function CreateGoogleMap() {
         setMarkers([{ lat, lng, name: 'Selected Location' }]);
     };
 
-    // Function to search for nearby places based on selected filters
     const searchNearbyPlaces = (filters) => {
         const service = new window.google.maps.places.PlacesService(document.createElement('div'));
         let accumulatedMarkers = [];
