@@ -10,6 +10,7 @@ import LoadingSpinner from "@/components/LoadingSpinner";
 import { useSession } from "next-auth/react";
 import AlertSnackbar from "@/components/AlertSnackbar";
 import LoginSignupModal from "@/components/LoginSignupModal";
+import ImageUploader from './AddImages';
 
 const iconStyle = {
     marginRight: '8px',
@@ -426,6 +427,7 @@ export default function CreateGoogleMap() {
                                 />
                             </Autocomplete>
                         </GoogleMap>
+                        <ImageUploader />
                     </Grid>
                 </Grid>
             </LoadScript>

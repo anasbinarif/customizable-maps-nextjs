@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.637.0",
     "@ctrl/react-adsense": "^1.7.0",
     "@emotion/react": "^11.13.0",
     "@emotion/styled": "^11.13.0",
@@ -19,6 +20,7 @@
     "@vis.gl/react-google-maps": "^1.1.0",
     "bcryptjs": "^2.4.3",
     "jsonwebtoken": "^9.0.2",
+    "multer": "^1.4.5-lts.1",
     "next": "14.2.5",
     "next-auth": "^4.24.7",
     "react": "^18",
