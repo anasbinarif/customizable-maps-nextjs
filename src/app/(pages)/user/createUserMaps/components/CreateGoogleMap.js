@@ -26,7 +26,7 @@ import LoadingSpinner from "@/components/LoadingSpinner";
 import { useSession } from "next-auth/react";
 import AlertSnackbar from "@/components/AlertSnackbar";
 import LoginSignupModal from "@/components/LoginSignupModal";
-import ImageUploader from "./AddImages";
+import ImageUploader from "./ImageUploader";
 import { StyledTextField } from "@/components/CustomTextFields";
 import { generateTextColor } from "@/lib/generateTextColor";
 
@@ -197,7 +197,7 @@ export default function CreateGoogleMap() {
     setLocationsByTag((prevTags) => {
       const updatedTag = {
         ...prevTags[location.tag],
-        locations: [...prevTags[location.tag].locations, location],
+        locations: [...prevTags[location.tag]?.locations, location],
       };
       return { ...prevTags, [location.tag]: updatedTag };
     });
@@ -607,6 +607,7 @@ export default function CreateGoogleMap() {
                 />
               </Autocomplete>
             </GoogleMap>
+            <ImageUploader />
           </Grid>
           {/* Location List section */}
           <Grid item xs={3}>
