@@ -1,14 +1,10 @@
 [build]
-  command = "npm run build"
-  publish = "out"
+command = "npm run build"
+publish = ".next"
 
 [functions]
-  node_bundler = "esbuild"
+directory = "netlify/functions"
+node_bundler = "esbuild"
 
-[caching]
-  # Disable caching for the node_modules/.prisma and prisma folders
-  # Ensure these dependencies are reinstalled on every build
-  paths = [
-    "node_modules/.prisma",
-    "prisma"
-  ]
+[[plugins]]
+package = "@netlify/plugin-nextjs"
