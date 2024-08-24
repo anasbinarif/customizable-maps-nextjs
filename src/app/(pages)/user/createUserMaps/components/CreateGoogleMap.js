@@ -363,13 +363,13 @@ export default function CreateGoogleMap() {
     },
   ];
 
-  const onMapLoad = useCallback((map) => {
-    map.controls[window.google.maps.ControlPosition.TOP_LEFT].push(
-      map.controls[window.google.maps.ControlPosition.TOP_RIGHT].getAt(0)
-    );
+  // const onMapLoad = useCallback((map) => {
+  //   map.controls[window.google.maps.ControlPosition.TOP_LEFT].push(
+  //     map.controls[window.google.maps.ControlPosition.TOP_RIGHT].getAt(0)
+  //   );
 
-    map.controls[window.google.maps.ControlPosition.TOP_RIGHT].clear();
-  }, []);
+  //   map.controls[window.google.maps.ControlPosition.TOP_RIGHT].clear();
+  // }, []);
 
   const handleMarkerMouseOver = (marker) => {
     setActiveMarker(marker);
@@ -477,7 +477,7 @@ export default function CreateGoogleMap() {
               center={currentLocation}
               zoom={zoom}
               onClick={onMapClick}
-              onLoad={onMapLoad}
+              // onLoad={onMapLoad}
             >
               <Marker position={currentLocation} />
               {markers.map((marker, index) => (
