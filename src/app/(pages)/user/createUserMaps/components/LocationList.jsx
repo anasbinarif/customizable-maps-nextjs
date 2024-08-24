@@ -9,20 +9,20 @@ export default function LocationList({ locationsByTag, handleDelete }) {
       sx={{
         width: "100%",
         padding: 2,
-        backgroundColor: "white",
+        backgroundColor: "primary.bgHero",
         margin: "0 2",
         borderRadius: "16px",
         height: "100%",
       }}
     >
-      <Typography variant="h6" gutterBottom>
+      <Typography variant="h4" gutterBottom sx={{ marginBottom: "1.5rem" }}>
         Selected Locations
       </Typography>
       {Object.keys(locationsByTag).map((tag, tagIndex) => (
         <Box key={tagIndex} sx={{ marginBottom: 2 }}>
           <Typography
             variant="subtitle1"
-            sx={{ color: "black", fontWeight: "bold" }}
+            sx={{ color: "primary.main", fontWeight: "bold" }}
           >
             {tag}
           </Typography>

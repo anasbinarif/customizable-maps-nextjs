@@ -453,10 +453,10 @@ export default function CreateGoogleMap() {
                       borderRadius: "50px",
                       backgroundColor: isSelected
                         ? filter.selectedColor
-                        : "white",
+                        : "primary.bgHero",
                       color: isSelected
                         ? generateTextColor(filter.selectedColor)
-                        : "#333",
+                        : "primary.main",
 
                       "&:hover": {
                         backgroundColor: isSelected

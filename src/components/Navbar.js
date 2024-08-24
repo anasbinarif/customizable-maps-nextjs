@@ -331,6 +331,7 @@ export default function Navbar({ selected }) {
                     variant="contained"
                     sx={{
                       backgroundColor: "#000",
+                      color: "#fff",
                       borderRadius: "10px",
                       padding: "0.5rem 1.5rem",
                       textTransform: "none",

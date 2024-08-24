@@ -22,9 +22,7 @@ export default async function RootLayout({ children }) {
     <html lang="en">
       <body
         className={inter.className}
-        style={{
-          backgroundImage: "linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%)",
-        }}
+        style={{ backgroundImage: "var(--primary-bg)" }}
       >
         <AuthProvider session={session}>
           <ThemeContextProvider>
@@ -34,8 +32,8 @@ export default async function RootLayout({ children }) {
               style={{
                 minHeight: "100vh",
                 padding: "1rem 0",
-                backgroundImage:
-                  "linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%)",
+                // backgroundColor: "red",
+                // backgroundImage: "primary.main.pageBg1",
                 position: "relative",
               }}
             >

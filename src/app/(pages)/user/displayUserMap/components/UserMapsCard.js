@@ -21,7 +21,7 @@ const UserMapsCard = ({ map, onOpenDetails, onDelete }) => {
         mb: 2,
         borderRadius: "10px",
         position: "relative",
-        height: "300px",
+        // height: "300px",
       }}
     >
       <IconButton
@@ -91,7 +91,7 @@ const UserMapsCard = ({ map, onOpenDetails, onDelete }) => {
         <Grid container justifyContent="space-between" alignItems="center">
           <Box sx={{ width: "100%" }}>
             <Typography
-              variant="h6"
+              variant="h4"
               component="div"
               sx={{ marginBottom: "0.5rem" }}
             >
@@ -104,12 +104,62 @@ const UserMapsCard = ({ map, onOpenDetails, onDelete }) => {
                 justifyContent: "space-between",
               }}
             >
-              <Typography variant="body2" color="textSecondary">
-                Pin Location
-              </Typography>
-              <Typography variant="body2" color="textSecondary">
-                {map.pinName}
-              </Typography>
+              <Box
+                sx={{
+                  width: "100%",
+                  // marginBottom: "1rem",
+                }}
+              >
+                {/* <Typography
+                  variant="body2"
+                  color="textSecondary"
+                  sx={{ fontSize: "1.3rem", marginBottom: "0.05rem" }}
+                >
+                  Location
+                </Typography> */}
+                <Box
+                  sx={{
+                    width: "100%",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    // paddingLeft: "0.5rem",
+
+                    "& .MuiTypography-root": { fontSize: "0.9rem" },
+                  }}
+                >
+                  <Typography
+                    variant="body2"
+                    color="textSecondary"
+                    sx={{ fontSize: "1rem" }}
+                  >
+                    Latitude
+                  </Typography>
+                  <Typography variant="body2" color="textSecondary">
+                    {map?.pinLatitude}
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{
+                    width: "100%",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    // paddingLeft: "0.5rem",
+
+                    "& .MuiTypography-root": { fontSize: "0.9rem" },
+                  }}
+                >
+                  <Typography
+                    variant="body2"
+                    color="textSecondary"
+                    sx={{ fontSize: "1rem" }}
+                  >
+                    Longitude
+                  </Typography>
+                  <Typography variant="body2" color="textSecondary">
+                    {map?.pinLongitude}
+                  </Typography>
+                </Box>
+              </Box>
             </Box>
             <Box
               sx={{
@@ -118,10 +168,18 @@ const UserMapsCard = ({ map, onOpenDetails, onDelete }) => {
                 justifyContent: "space-between",
               }}
             >
-              <Typography variant="body2" color="textSecondary">
+              <Typography
+                variant="body2"
+                color="textSecondary"
+                // sx={{ fontSize: "1.3rem", marginBottom: "0.05rem" }}
+              >
                 Area
               </Typography>
-              <Typography variant="body2" color="textSecondary">
+              <Typography
+                variant="body2"
+                color="textSecondary"
+                // sx={{ fontSize: "1.3rem", marginBottom: "0.05rem" }}
+              >
                 {map.locations.length}
               </Typography>
             </Box>
@@ -132,10 +190,18 @@ const UserMapsCard = ({ map, onOpenDetails, onDelete }) => {
                 justifyContent: "space-between",
               }}
             >
-              <Typography variant="body2" color="textSecondary">
+              <Typography
+                variant="body2"
+                color="textSecondary"
+                // sx={{ fontSize: "1.3rem", marginBottom: "0.05rem" }}
+              >
                 POI&apos;s
               </Typography>
-              <Typography variant="body2" color="textSecondary">
+              <Typography
+                variant="body2"
+                color="textSecondary"
+                // sx={{ fontSize: "1.3rem", marginBottom: "0.05rem" }}
+              >
                 {map.locations.length}
               </Typography>
             </Box>
