@@ -1,0 +1,14 @@
+[build]
+  command = "npm run build"
+  publish = "out"
+
+[functions]
+  node_bundler = "esbuild"
+
+[caching]
+  # Disable caching for the node_modules/.prisma and prisma folders
+  # Ensure these dependencies are reinstalled on every build
+  paths = [
+    "node_modules/.prisma",
+    "prisma"
+  ]
