@@ -12,3 +12,17 @@ body,
 #__next {
   height: 100%;
 }
+
+.ql-snow {
+  border: none !important;
+  font-family: inherit !important;
+  font-size: 16px !important;
+}
+
+.ql-snow .ql-fill {
+  fill: var(--txtClr) !important;
+}
+
+.ql-snow .ql-stroke {
+  stroke: var(--txtClr) !important;
+}

@@ -25,6 +25,7 @@ import {
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { useSession } from "next-auth/react";
 import AlertSnackbar from "@/components/AlertSnackbar";
+import TextArea from "./TextArea";
 import LoginSignupModal from "@/components/LoginSignupModal";
 import ImageUploader from "./ImageUploader";
 import { StyledTextField } from "@/components/CustomTextFields";
@@ -608,6 +609,7 @@ export default function CreateGoogleMap() {
               </Autocomplete>
             </GoogleMap>
             <ImageUploader />
+            <TextArea />
           </Grid>
           {/* Location List section */}
           <Grid item xs={3}>
