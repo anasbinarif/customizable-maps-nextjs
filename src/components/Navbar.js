@@ -231,8 +231,8 @@ export default function Navbar({ selected }) {
                     curPage === ""
                       ? 0
                       : curPage === "displayUserMap"
-                      ? "50%"
-                      : "86%",
+                      ? "46%"
+                      : "84%",
                   transform: curPage !== "" ? "translate(-50%, 0)" : "",
                   width: btnWidth,
                   zIndex: 8,
@@ -304,7 +304,7 @@ export default function Navbar({ selected }) {
                       transition: "all 0.2s ease-out 0.1s",
                     }}
                   />
-                  Create
+                  Map Editor
                 </Button>
               </Link>
               {/* <Link href="/blogs" passHref style={LinkStyles}>
@@ -374,7 +374,7 @@ export default function Navbar({ selected }) {
                   </MenuItem>
                   <MenuItem>
                     <Link href="/user/createUserMap" passHref style={LinkSmall}>
-                      <Button sx={LinkSmallBtn}>Create</Button>
+                      <Button sx={LinkSmallBtn}>Map Editor</Button>
                     </Link>
                   </MenuItem>
                 </Menu>

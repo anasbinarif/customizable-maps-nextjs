@@ -670,6 +670,52 @@ export default function CreateGoogleMap() {
             </GoogleMap>
             <ImageUploader />
             <TextArea />
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                marginTop: "1rem",
+              }}
+            >
+              <Box
+                mt="10px"
+                sx={{
+                  "@media only screen and (max-width: 750px)": {
+                    alignSelf: "flex-start",
+                  },
+                }}
+              >
+                <Button
+                  variant="contained"
+                  color="primary"
+                  // onClick={saveMap}
+                  sx={{
+                    width: "100%",
+                  }}
+                >
+                  Export
+                </Button>
+              </Box>
+              <Box
+                mt="10px"
+                sx={{
+                  "@media only screen and (max-width: 750px)": {
+                    alignSelf: "flex-start",
+                  },
+                }}
+              >
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={saveMap}
+                  sx={{
+                    width: "100%",
+                  }}
+                >
+                  Save Map
+                </Button>
+              </Box>
+            </Box>
           </Grid>
           {/* Location List section */}
           <Grid item xs={12} sm={12} md={4} lg={3}>
