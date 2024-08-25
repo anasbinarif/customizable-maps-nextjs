@@ -9,6 +9,7 @@ export default function ListMaps() {
         backgroundSize: "cover",
         backgroundPosition: "center",
         padding: "1rem 2rem",
+        minHeight: "90vh",
       }}
     >
       <CreateGoogleMap />

@@ -398,8 +398,12 @@ export default function CreateGoogleMap() {
                 display: "flex",
                 // flexDirection: "column",
                 justifyContent: "space-between",
-                margin: "10px 4.5rem",
+                margin: "10px",
                 flexWrap: "wrap",
+
+                "@media only screen and (max-width: 750px)": {
+                  flexDirection: "column",
+                },
               }}
             >
               <StyledTextField
@@ -413,10 +417,25 @@ export default function CreateGoogleMap() {
                 onChange={(e) => setTitle(e.target.value)}
                 helperText="Please enter title"
                 sx={{
-                  width: "20%",
+                  width: "40%",
+
+                  "@media only screen and (max-width: 1200px)": {
+                    width: "50%",
+                  },
+
+                  "@media only screen and (max-width: 750px)": {
+                    width: "100%",
+                  },
                 }}
               />
-              <Box mt="10px">
+              <Box
+                mt="10px"
+                sx={{
+                  "@media only screen and (max-width: 750px)": {
+                    alignSelf: "flex-start",
+                  },
+                }}
+              >
                 <Button
                   variant="contained"
                   color="primary"
@@ -430,7 +449,7 @@ export default function CreateGoogleMap() {
               </Box>
             </Box>
           </Grid>
-          <Grid item xs={9}>
+          <Grid item xs={12} sm={12} md={8} lg={9}>
             <Box
               sx={{
                 display: "flex",
@@ -458,6 +477,14 @@ export default function CreateGoogleMap() {
                       color: isSelected
                         ? generateTextColor(filter.selectedColor)
                         : "primary.main",
+                      width: "calc(33% - 2rem)",
+
+                      "@media only screen and (max-width: 660px)": {
+                        width: "calc(50% - 2rem)",
+                      },
+                      "@media only screen and (max-width: 470px)": {
+                        width: "calc(100% - 2rem)",
+                      },
 
                       "&:hover": {
                         backgroundColor: isSelected
@@ -612,7 +639,7 @@ export default function CreateGoogleMap() {
             <TextArea />
           </Grid>
           {/* Location List section */}
-          <Grid item xs={3}>
+          <Grid item xs={12} sm={12} md={4} lg={3}>
             <LocationList
               locationsByTag={locationsByTag}
               handleDelete={handleDelete}

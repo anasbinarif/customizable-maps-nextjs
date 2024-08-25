@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useLayoutEffect, useRef } from "react";
+import React, { useState, useEffect, useLayoutEffect, useRef } from "react";
 import {
   AppBar,
   Toolbar,
@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import MenuIcon from "@mui/icons-material/Menu";
 import ArticleIcon from "@mui/icons-material/Article";
 import MapIcon from "@mui/icons-material/Map";
 import PinDropIcon from "@mui/icons-material/PinDrop";
@@ -30,6 +31,19 @@ const LinkStyles = {
   position: "relative",
   zIndex: 10,
 };
+
+const LinkSmall = {
+  textDecoration: "none",
+  // backgroundColor: "red",
+  display: "block",
+  width: "100%",
+};
+
+const LinkSmallBtn = {
+  padding: "0.5rem 1rem",
+  width: "100%",
+};
+
 const LinkBtn = {
   display: "flex",
   alignItems: "center",
@@ -51,15 +65,32 @@ const LinkBtn = {
 
 export default function Navbar({ selected }) {
   const { data: session, status } = useSession();
+  const [width, setWidth] = useState(0);
   const [openModal, setOpenModal] = useState(false);
   const [modalMode, setModalMode] = useState("login");
   const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorEl2, setAnchorEl2] = useState(null);
   const [loading, setLoading] = useState(false);
   const [changePasswordOpen, setChangePasswordOpen] = useState(false);
   const router = usePathname();
   const curPage = router.split("/")[router.split("/").length - 1];
   const linkRefs = useRef({});
   const [btnWidth, setBtnWidth] = useState(0);
+
+  console.log(curPage);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWidth(window.innerWidth);
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   console.log(curPage);
   console.log(btnWidth);
@@ -84,8 +115,16 @@ export default function Navbar({ selected }) {
     setAnchorEl(event.currentTarget);
   };
 
+  const handleMenu2 = (event) => {
+    setAnchorEl2(event.currentTarget);
+  };
+
   const handleMenuClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleMenuClose2 = () => {
+    setAnchorEl2(null);
   };
 
   const handleLogout = async () => {
@@ -168,6 +207,10 @@ export default function Navbar({ selected }) {
                 bottom: 0,
                 left: "50%",
                 transform: "translate(-50%, 0)",
+
+                "@media only screen and (max-width: 1000px)": {
+                  display: "none",
+                },
               }}
             >
               <Box
@@ -262,13 +305,79 @@ export default function Navbar({ selected }) {
                 </Button>
               </Link> */}
             </Box>
+            {width < 1000 && (
+              <Box
+                sx={{
+                  marginLeft: "auto",
+                  color: "black",
+                }}
+              >
+                <IconButton
+                  onClick={handleMenu2}
+                  color="inherit"
+                  sx={{ position: "relative", zIndex: 1500 }}
+                >
+                  <MenuIcon sx={{ color: "#000" }} />
+                </IconButton>
+                <Menu
+                  id="menu-appbar"
+                  anchorEl={anchorEl2}
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  open={Boolean(anchorEl2)}
+                  onClose={handleMenuClose2}
+                  sx={{
+                    position: "absolute",
+                    "& .MuiPaper-root": {
+                      borderRadius: "16px",
+                    },
+                    "& .MuiList-root": {
+                      padding: 0,
+
+                      "& .MuiMenuItem-root": {
+                        lineHeight: 2,
+                        padding: 0,
+                        "& .MuiTypography-root": {},
+                      },
+                    },
+                  }}
+                >
+                  <MenuItem>
+                    <Link href="/" passHref style={LinkSmall}>
+                      <Button sx={LinkSmallBtn}>Home</Button>
+                    </Link>
+                  </MenuItem>
+                  <MenuItem>
+                    <Link
+                      href="/user/displayUserMap"
+                      passHref
+                      style={LinkSmall}
+                    >
+                      <Button sx={LinkSmallBtn}>Your Maps</Button>
+                    </Link>
+                  </MenuItem>
+                  <MenuItem>
+                    <Link href="/user/createUserMap" passHref style={LinkSmall}>
+                      <Button sx={LinkSmallBtn}>Create</Button>
+                    </Link>
+                  </MenuItem>
+                </Menu>
+              </Box>
+            )}
             <Box sx={{ display: "flex", alignItems: "center", gap: "1rem" }}>
               {status === "authenticated" ? (
                 <>
                   <IconButton
                     onClick={handleMenu}
                     color="inherit"
-                    sx={{ position: "relative", zIndex: 1500 }}
+                    sx={{ position: "relative", zIndex: 1700 }}
                   >
                     {session.user.image ? (
                       <Avatar

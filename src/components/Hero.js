@@ -17,7 +17,7 @@ export default function Hero() {
       sx={{
         display: "flex",
         alignItems: "center",
-        height: "80vh",
+        minHeight: "80vh",
         backgroundSize: "cover",
         backgroundPosition: "center",
         padding: "2rem",
@@ -26,7 +26,7 @@ export default function Hero() {
       <Container maxWidth="lg">
         <Grid container spacing={2} alignItems="center">
           {/* Left Content */}
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} sm={12} md={6}>
             <Box
               sx={{
                 backgroundColor: "primary.bgHero",
