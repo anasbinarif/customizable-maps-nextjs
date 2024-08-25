@@ -21,15 +21,10 @@ const ThemeContextProvider = ({ children }) => {
           mode: darkMode ? "dark" : "light",
           primary: {
             main: darkMode ? "#fff" : "#000",
-            bgHero: darkMode
-              ? "rgba(20, 20, 20, 0.85)"
-              : "rgba(255, 255, 255, 0.85)",
-            btnShadow: darkMode
-              ? "rgba(50, 50, 93, 0.15) 0px 50px 100px -20px, rgba(0, 0, 0, 0.2) 0px 30px 60px -30px, rgba(10, 37, 64, 0.25) 0px -2px 6px 0px inset"
-              : "rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset",
-            // pageBg1: darkMode
-            //   ? "linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%)"
-            //   : "linear-gradient(to top, #212121 0%, #292929 100%)",
+            bgHero: darkMode ? "#333333" : "#ffffffd8",
+            // btnShadow: darkMode
+            //   ? "#32325d26 0px 50px 100px -20px, #00000033 0px 30px 60px -30px, #0a25403f 0px -2px 6px 0px inset"
+            //   : "#32325d3f 0px 50px 100px -20px, #0000004c 0px 30px 60px -30px, #0a254059 0px -2px 6px 0px inset",
           },
           secondary: {
             main: darkMode ? "#fff" : "#000",

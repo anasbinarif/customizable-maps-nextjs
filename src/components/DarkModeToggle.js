@@ -12,7 +12,19 @@ export default function DarkModeToggle() {
     document.documentElement.style.setProperty(
       "--primary-bg",
       darkMode
-        ? "linear-gradient(to top, #212121 0%, #292929 100%)"
+        ? "linear-gradient(to top, #141414 0%, #141414 100%)"
+        : "linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%)"
+    );
+    document.documentElement.style.setProperty(
+      "--heroShadow",
+      darkMode
+        ? "#ffffff20 0px 30px 60px -10px, #ffffff20 0px 20px 40px -15px, #ffffff20 0px -1px 4px 0px inset"
+        : "#32325d3f 0px 50px 100px -20px, #0000004c 0px 30px 60px -30px, #0a254059 0px -2px 6px 0px inset"
+    );
+    document.documentElement.style.setProperty(
+      "--footer-bg",
+      darkMode
+        ? "linear-gradient(to top, #333333 0%, #333333 100%)"
         : "linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%)"
     );
   }, [darkMode]);

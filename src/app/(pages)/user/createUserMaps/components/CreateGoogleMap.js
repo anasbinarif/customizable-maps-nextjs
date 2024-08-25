@@ -380,14 +380,6 @@ export default function CreateGoogleMap() {
     },
   ];
 
-  // const onMapLoad = useCallback((map) => {
-  //   map.controls[window.google.maps.ControlPosition.TOP_LEFT].push(
-  //     map.controls[window.google.maps.ControlPosition.TOP_RIGHT].getAt(0)
-  //   );
-
-  //   map.controls[window.google.maps.ControlPosition.TOP_RIGHT].clear();
-  // }, []);
-
   const handleMarkerMouseOver = (marker) => {
     setActiveMarker(marker);
   };

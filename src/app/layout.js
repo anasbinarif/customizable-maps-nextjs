@@ -30,7 +30,7 @@ export default async function RootLayout({ children }) {
             <Navbar />
             <div
               style={{
-                minHeight: "100vh",
+                // minHeight: "100vh",
                 padding: "1rem 0",
                 // backgroundColor: "red",
                 // backgroundImage: "primary.main.pageBg1",

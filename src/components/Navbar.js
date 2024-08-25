@@ -1,5 +1,11 @@
 "use client";
-import React, { useState, useLayoutEffect, useRef } from "react";
+import React, {
+  useState,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useContext,
+} from "react";
 import {
   AppBar,
   Toolbar,
@@ -14,6 +20,7 @@ import {
 } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import MenuIcon from "@mui/icons-material/Menu";
 import ArticleIcon from "@mui/icons-material/Article";
 import MapIcon from "@mui/icons-material/Map";
 import PinDropIcon from "@mui/icons-material/PinDrop";
@@ -21,6 +28,7 @@ import { useSession, signOut } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import Link from "next/link";
+import { ThemeContext } from "@/context/ThemeContext";
 import LoginSignupModal from "./LoginSignupModal";
 import ChangePasswordModal from "./ChangePasswordModal"; // Import the modal component
 
@@ -30,10 +38,23 @@ const LinkStyles = {
   position: "relative",
   zIndex: 10,
 };
+
+const LinkSmall = {
+  textDecoration: "none",
+  // backgroundColor: "red",
+  display: "block",
+  width: "100%",
+};
+
+const LinkSmallBtn = {
+  padding: "0.5rem 1rem",
+  width: "100%",
+};
+
 const LinkBtn = {
   display: "flex",
   alignItems: "center",
-  color: "#000",
+  color: "primary.main",
   textDecoration: "none",
   borderRadius: "20px",
   padding: "0.5rem 1rem",
@@ -41,25 +62,43 @@ const LinkBtn = {
 
   "&.selected": {
     // backgroundColor: "#000",
-    color: "rgba(242,242,242,1)",
+    color: "primary.bgHero",
 
     "& svg": {
-      color: "#fff",
+      color: "primary.bgHero",
     },
   },
 };
 
 export default function Navbar({ selected }) {
   const { data: session, status } = useSession();
+  const [width, setWidth] = useState(0);
   const [openModal, setOpenModal] = useState(false);
   const [modalMode, setModalMode] = useState("login");
   const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorEl2, setAnchorEl2] = useState(null);
   const [loading, setLoading] = useState(false);
   const [changePasswordOpen, setChangePasswordOpen] = useState(false);
   const router = usePathname();
   const curPage = router.split("/")[router.split("/").length - 1];
   const linkRefs = useRef({});
   const [btnWidth, setBtnWidth] = useState(0);
+  const { darkMode } = useContext(ThemeContext);
+
+  console.log(curPage);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWidth(window.innerWidth);
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   console.log(curPage);
   console.log(btnWidth);
@@ -84,8 +123,16 @@ export default function Navbar({ selected }) {
     setAnchorEl(event.currentTarget);
   };
 
+  const handleMenu2 = (event) => {
+    setAnchorEl2(event.currentTarget);
+  };
+
   const handleMenuClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleMenuClose2 = () => {
+    setAnchorEl2(null);
   };
 
   const handleLogout = async () => {
@@ -119,8 +166,9 @@ export default function Navbar({ selected }) {
       <AppBar
         position="sticky"
         sx={{
-          background:
-            "linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(242,242,242,1) 50%, rgba(255,255,255,1) 100%)",
+          background: darkMode
+            ? "linear-gradient(90deg, #333 0%, #333 50%, #333 100%)"
+            : "linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(242,242,242,1) 50%, rgba(255,255,255,1) 100%)",
           borderRadius: "20px",
           width: "auto",
           maxWidth: "95%",
@@ -151,7 +199,7 @@ export default function Navbar({ selected }) {
               <Typography
                 variant="h6"
                 component="div"
-                sx={{ color: "#333", fontWeight: "bold" }}
+                sx={{ color: "primary.main", fontWeight: "bold" }}
               >
                 Customizable Maps
               </Typography>
@@ -168,6 +216,10 @@ export default function Navbar({ selected }) {
                 bottom: 0,
                 left: "50%",
                 transform: "translate(-50%, 0)",
+
+                "@media only screen and (max-width: 1000px)": {
+                  display: "none",
+                },
               }}
             >
               <Box
@@ -179,13 +231,13 @@ export default function Navbar({ selected }) {
                     curPage === ""
                       ? 0
                       : curPage === "displayUserMap"
-                      ? "50%"
-                      : "86%",
+                      ? "46%"
+                      : "84%",
                   transform: curPage !== "" ? "translate(-50%, 0)" : "",
                   width: btnWidth,
                   zIndex: 8,
                   borderRadius: "20px",
-                  backgroundColor: "black",
+                  backgroundColor: "primary.main",
                   transition: "all 0.3s ease-out",
                 }}
               ></Box>
@@ -252,7 +304,7 @@ export default function Navbar({ selected }) {
                       transition: "all 0.2s ease-out 0.1s",
                     }}
                   />
-                  Create
+                  Map Editor
                 </Button>
               </Link>
               {/* <Link href="/blogs" passHref style={LinkStyles}>
@@ -262,13 +314,79 @@ export default function Navbar({ selected }) {
                 </Button>
               </Link> */}
             </Box>
+            {width < 1000 && (
+              <Box
+                sx={{
+                  marginLeft: "auto",
+                  color: "black",
+                  // position: "absolute",
+                  zIndex: 1500,
+                }}
+              >
+                <IconButton onClick={handleMenu2} color="inherit" sx={{}}>
+                  <MenuIcon sx={{ color: "#000" }} />
+                </IconButton>
+                <Menu
+                  id="menu-appbar"
+                  anchorEl={anchorEl2}
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  open={Boolean(anchorEl2)}
+                  onClose={handleMenuClose2}
+                  sx={{
+                    top: 0,
+                    "& .MuiPaper-root": {
+                      position: "absolute",
+                      zIndex: 1200,
+                      borderRadius: "16px",
+                    },
+                    "& .MuiList-root": {
+                      padding: 0,
+
+                      "& .MuiMenuItem-root": {
+                        lineHeight: 2,
+                        padding: 0,
+                        "& .MuiTypography-root": {},
+                      },
+                    },
+                  }}
+                >
+                  <MenuItem>
+                    <Link href="/" passHref style={LinkSmall}>
+                      <Button sx={LinkSmallBtn}>Home</Button>
+                    </Link>
+                  </MenuItem>
+                  <MenuItem>
+                    <Link
+                      href="/user/displayUserMap"
+                      passHref
+                      style={LinkSmall}
+                    >
+                      <Button sx={LinkSmallBtn}>Your Maps</Button>
+                    </Link>
+                  </MenuItem>
+                  <MenuItem>
+                    <Link href="/user/createUserMap" passHref style={LinkSmall}>
+                      <Button sx={LinkSmallBtn}>Map Editor</Button>
+                    </Link>
+                  </MenuItem>
+                </Menu>
+              </Box>
+            )}
             <Box sx={{ display: "flex", alignItems: "center", gap: "1rem" }}>
               {status === "authenticated" ? (
                 <>
                   <IconButton
                     onClick={handleMenu}
                     color="inherit"
-                    sx={{ position: "relative", zIndex: 1500 }}
+                    sx={{ position: "relative", zIndex: 1700 }}
                   >
                     {session.user.image ? (
                       <Avatar
@@ -276,7 +394,7 @@ export default function Navbar({ selected }) {
                         src={session.user.image}
                       />
                     ) : (
-                      <AccountCircleIcon sx={{ color: "#000" }} />
+                      <AccountCircleIcon sx={{ color: "primary.main" }} />
                     )}
                   </IconButton>
                   <Menu
@@ -322,7 +440,7 @@ export default function Navbar({ selected }) {
               ) : (
                 <>
                   <Button
-                    sx={{ color: "#333", textTransform: "none" }}
+                    sx={{ color: "primary.main", textTransform: "none" }}
                     onClick={() => handleOpenModal("login")}
                   >
                     Log In
@@ -330,8 +448,8 @@ export default function Navbar({ selected }) {
                   <Button
                     variant="contained"
                     sx={{
-                      backgroundColor: "#000",
-                      color: "#fff",
+                      // backgroundColor: "#000",
+                      // color: "#fff",
                       borderRadius: "10px",
                       padding: "0.5rem 1.5rem",
                       textTransform: "none",

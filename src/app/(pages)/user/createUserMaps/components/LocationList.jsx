@@ -15,8 +15,8 @@ export default function LocationList({ locationsByTag, handleDelete }) {
         height: "100%",
       }}
     >
-      <Typography variant="h4" gutterBottom sx={{ marginBottom: "1.5rem" }}>
-        Selected Locations
+      <Typography variant="h5" gutterBottom sx={{ marginBottom: "1.5rem" }}>
+        Points of Interest
       </Typography>
       {Object.keys(locationsByTag).map((tag, tagIndex) => (
         <Box key={tagIndex} sx={{ marginBottom: 2 }}>
