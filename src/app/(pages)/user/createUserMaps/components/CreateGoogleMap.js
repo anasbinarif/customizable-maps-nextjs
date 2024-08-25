@@ -6,9 +6,8 @@ import {
   GoogleMap,
   Marker,
   InfoWindow,
-  useJsApiLoader,
 } from "@react-google-maps/api";
-import { Box, Button, TextField, Typography, Grid } from "@mui/material";
+import { Box, Button, Typography, Grid } from "@mui/material";
 import Image from "next/image";
 import LocationList from "./LocationList";
 import {
@@ -54,7 +53,7 @@ const getMarkerIcon = (color) => {
 };
 
 export default function CreateGoogleMap() {
-  const { data: session, status } = useSession();
+  const { data: session} = useSession();
   const [currentLocation, setCurrentLocation] = useState({
     lat: 0,
     lng: 0,
@@ -390,6 +389,10 @@ export default function CreateGoogleMap() {
     }
   };
 
+  const onLoadSearch = (autocomplete) => {
+    autocompleteRef.current = autocomplete;
+  };
+
   return (
     <GoogleMapsLoader>
       <Grid container spacing={3}>
@@ -587,7 +590,7 @@ export default function CreateGoogleMap() {
               </Marker>
             ))}
             <Autocomplete
-              onLoad={onLoad}
+              onLoad={onLoadSearch}
               onPlaceChanged={onPlaceChanged}
               types={["geocode"]}
             >
