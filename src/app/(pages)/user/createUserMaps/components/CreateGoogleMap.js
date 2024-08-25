@@ -4,9 +4,9 @@ import React, { useEffect, useRef, useState, useCallback } from "react";
 import {
   Autocomplete,
   GoogleMap,
-  LoadScript,
   Marker,
   InfoWindow,
+  useJsApiLoader,
 } from "@react-google-maps/api";
 import { Box, Button, TextField, Typography, Grid } from "@mui/material";
 import Image from "next/image";
@@ -30,6 +30,7 @@ import LoginSignupModal from "@/components/LoginSignupModal";
 import ImageUploader from "./ImageUploader";
 import { StyledTextField } from "@/components/CustomTextFields";
 import { generateTextColor } from "@/lib/generateTextColor";
+import GoogleMapsLoader from "@/lib/GoogleMapsLoader";
 
 const iconStyle = {
   marginRight: "8px",
@@ -48,7 +49,7 @@ const getMarkerIcon = (color) => {
     strokeColor: "#000",
     strokeWeight: 1,
     scale: 2,
-    anchor: new google.maps.Point(12, 24),
+    anchor: new window.google.maps.Point(12, 24),
   };
 };
 
@@ -61,11 +62,10 @@ export default function CreateGoogleMap() {
   });
   const [markers, setMarkers] = useState([]);
   const [selectedFilters, setSelectedFilters] = useState([]);
-  const [activeMarker, setActiveMarker] = useState(null); // For handling the currently hovered marker
+  const [activeMarker, setActiveMarker] = useState(null);
   const autocompleteRef = useRef(null);
   const [zoom, setZoom] = useState(8);
   const [infoWindowHovered, setInfoWindowHovered] = useState(false);
-  const [isMapLoaded, setIsMapLoaded] = useState(false);
   const [alertOpen, setAlertOpen] = useState(false);
   const [alertSeverity, setAlertSeverity] = useState("success");
   const [alertMessage, setAlertMessage] = useState("");
@@ -73,6 +73,17 @@ export default function CreateGoogleMap() {
   const [modalMode, setModalMode] = useState("login");
   const [title, setTitle] = useState("");
   const [titleError, settitleError] = useState(false);
+  const [loading, setLoading] = useState(false)
+
+  const mapRef = useRef(null);
+
+  const onLoad = useCallback((mapInstance) => {
+    mapRef.current = mapInstance;
+  }, []);
+
+  const onUnmount = useCallback(() => {
+    mapRef.current = null;
+  }, []);
 
   const handleOpenModal = (mode) => {
     setModalMode(mode);
@@ -128,8 +139,7 @@ export default function CreateGoogleMap() {
       handleOpenAlert("warning", "Map title is required!");
       return;
     }
-
-    setIsMapLoaded(false);
+    setLoading(true)
 
     const locationsToSave = Object.keys(locationsByTag).flatMap((tag) =>
       locationsByTag[tag].locations.map((loc) => ({
@@ -143,9 +153,8 @@ export default function CreateGoogleMap() {
     const pinLocationImage = getStaticMapImageUrl(
       currentLocation.lat,
       currentLocation.lng
-    ); // Generate the static map image URL
+    );
 
-    console.log("pinLocationImage: ", pinLocationImage);
     const dataToSave = {
       title: title,
       pinLocation: {
@@ -158,8 +167,6 @@ export default function CreateGoogleMap() {
       userEmail,
     };
     try {
-      // console.log("locationsToSave: ", dataToSave, currentLocation);
-
       const response = await fetch("/api/saveUserMap", {
         method: "POST",
         headers: {
@@ -169,16 +176,30 @@ export default function CreateGoogleMap() {
       });
 
       if (response.ok) {
-        setIsMapLoaded(true);
         handleOpenAlert("success", "Map saved successfully!");
+        setLoading(false);
+        setSelectedFilters([]);
+        setMarkers([])
+        setActiveMarker(null)
+        setLocationsByTag({
+          Restaurants: { color: "#FF9A8B", locations: [] },
+          Hotels: { color: "#6AB2FF", locations: [] },
+          "Things to do": { color: "#9CFF9C", locations: [] },
+          Museums: { color: "#FDF5A0", locations: [] },
+          Transit: { color: "#B5EAF2", locations: [] },
+          Pharmacies: { color: "#B99DFF", locations: [] },
+          ATMs: { color: "#66D0C9", locations: [] },
+          Schools: { color: "#FF9EC4", locations: [] },
+          Entertainment: { color: "#FFB46F", locations: [] },
+        })
       } else {
         alert("Failed to save the map.");
         handleOpenAlert("error", "Failed to save the map.");
-        setIsMapLoaded(true);
+        setLoading(false);
       }
     } catch (error) {
       handleOpenAlert("error", error);
-      setIsMapLoaded(false);
+      setLoading(false);
     }
   };
 
@@ -186,7 +207,7 @@ export default function CreateGoogleMap() {
     if (navigator?.geolocation) {
       navigator.geolocation.getCurrentPosition(
         ({ coords: { latitude: lat, longitude: lng } }) => {
-          const pos = { lat, lng, name: `Lat: ${lat}, Lng: ${lng}` }; // Use lat/lng as the name for now
+          const pos = { lat, lng, name: `Lat: ${lat}, Lng: ${lng}` };
           setCurrentLocation(pos);
           setZoom(14);
         }
@@ -216,10 +237,6 @@ export default function CreateGoogleMap() {
     });
   };
 
-  const onLoad = (autocomplete) => {
-    autocompleteRef.current = autocomplete;
-  };
-
   const onPlaceChanged = () => {
     if (autocompleteRef.current !== null) {
       const place = autocompleteRef.current.getPlace();
@@ -228,7 +245,6 @@ export default function CreateGoogleMap() {
       setCurrentLocation({ lat, lng, name: place.name });
       setMarkers([{ lat, lng, name: place.name }]);
       setTitle(place.formatted_address || "");
-      console.log("place: ", place);
     } else {
       console.log("Autocomplete is not loaded yet!");
     }
@@ -274,8 +290,8 @@ export default function CreateGoogleMap() {
                 openingHours: place.opening_hours
                   ? place.opening_hours.weekday_text
                   : null,
-                type: filter.name, // Use filter name to associate with tags
-                color: filter.selectedColor, // Store the color for the marker
+                type: filter.name,
+                color: filter.selectedColor,
               }));
               accumulatedMarkers = accumulatedMarkers.concat(newMarkers);
             }
@@ -383,243 +399,233 @@ export default function CreateGoogleMap() {
   };
 
   return (
-    <>
-      {/* {!isMapLoaded && <LoadingSpinner />} */}
-      <LoadScript
-        googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY}
-        libraries={["places"]}
-        onLoad={() => setIsMapLoaded(true)}
-      >
-        <Grid container spacing={3}>
-          {/* Map section */}
-          <Grid item xs={12}>
-            <Box
+    <GoogleMapsLoader>
+      <Grid container spacing={3}>
+        {/* Map section */}
+        <Grid item xs={12}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              margin: "10px 4.5rem",
+              flexWrap: "wrap",
+            }}
+          >
+            <StyledTextField
+              id="standard-basic"
+              placeholder="Title"
+              variant="outlined"
+              error={titleError}
+              value={title}
+              required
+              onChange={(e) => setTitle(e.target.value)}
+              helperText="Please enter title"
               sx={{
-                display: "flex",
-                // flexDirection: "column",
-                justifyContent: "space-between",
-                margin: "10px 4.5rem",
-                flexWrap: "wrap",
+                width: "20%",
               }}
-            >
-              <StyledTextField
-                id="standard-basic"
-                // label="Title"
-                placeholder="Title"
-                variant="outlined"
-                error={titleError}
-                value={title}
-                required
-                onChange={(e) => setTitle(e.target.value)}
-                helperText="Please enter title"
+            />
+            <Box mt="10px">
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={saveMap}
                 sx={{
-                  width: "20%",
+                  width: "100%",
                 }}
-              />
-              <Box mt="10px">
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={saveMap}
-                  sx={{
-                    width: "100%",
-                  }}
-                >
-                  Save Map
-                </Button>
-              </Box>
+              >
+                Save Map
+              </Button>
             </Box>
-          </Grid>
-          <Grid item xs={9}>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                margin: "10px 0",
-                flexWrap: "wrap",
-              }}
-            >
-              {filters.map((filter) => {
-                const isSelected = selectedFilters.some(
-                  (selectedFilter) => selectedFilter.type === filter.type
-                );
-                return (
-                  <Button
-                    key={filter.type}
-                    variant={isSelected ? "contained" : "outlined"}
-                    color="primary"
-                    startIcon={filter.icon}
-                    sx={{
-                      margin: "5px",
-                      borderRadius: "50px",
+          </Box>
+        </Grid>
+        <Grid item xs={9}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              margin: "10px 0",
+              flexWrap: "wrap",
+            }}
+          >
+            {filters.map((filter) => {
+              const isSelected = selectedFilters.some(
+                (selectedFilter) => selectedFilter.type === filter.type
+              );
+              return (
+                <Button
+                  key={filter.type}
+                  variant={isSelected ? "contained" : "outlined"}
+                  color="primary"
+                  startIcon={filter.icon}
+                  sx={{
+                    margin: "5px",
+                    borderRadius: "50px",
+                    backgroundColor: isSelected
+                      ? filter.selectedColor
+                      : "primary.bgHero",
+                    color: isSelected
+                      ? generateTextColor(filter.selectedColor)
+                      : "primary.main",
+
+                    "&:hover": {
                       backgroundColor: isSelected
                         ? filter.selectedColor
-                        : "primary.bgHero",
-                      color: isSelected
-                        ? generateTextColor(filter.selectedColor)
-                        : "primary.main",
-
-                      "&:hover": {
-                        backgroundColor: isSelected
-                          ? filter.selectedColor
-                          : buttonHoverStyle.backgroundColor,
-                      },
-                    }}
-                    onClick={() => toggleFilter(filter)}
-                  >
-                    {filter.name}
-                  </Button>
-                );
-              })}
-            </Box>
-            <GoogleMap
-              id="search-box-example"
-              mapContainerStyle={{ width: "100%", height: "70vh" }}
-              center={currentLocation}
-              zoom={zoom}
-              onClick={onMapClick}
-              // onLoad={onMapLoad}
-            >
-              <Marker position={currentLocation} />
-              {markers.map((marker, index) => (
-                <Marker
-                  key={index}
-                  position={{ lat: marker.lat, lng: marker.lng }}
-                  icon={getMarkerIcon(marker.color)}
-                  onMouseOver={() => handleMarkerMouseOver(marker)}
-                  // onMouseOut={handleMarkerMouseOut}
-                  onClick={() =>
-                    handleLocationClick({
-                      name: marker.name,
-                      tag: marker.type,
-                      latitude: marker.lat,
-                      longitude: marker.lng,
-                    })
-                  }
+                        : buttonHoverStyle.backgroundColor,
+                    },
+                  }}
+                  onClick={() => toggleFilter(filter)}
                 >
-                  {activeMarker &&
-                    activeMarker.lat === marker.lat &&
-                    activeMarker.lng === marker.lng && (
-                      <InfoWindow
-                        position={{ lat: marker.lat, lng: marker.lng }}
-                        onMouseOver={() => setInfoWindowHovered(true)}
-                        onMouseOut={() => {
-                          setInfoWindowHovered(false);
-                          handleMarkerMouseOut();
-                        }}
-                        options={{
-                          pixelOffset: new google.maps.Size(0, -30), // Adjusts the window's position so it doesn't affect the cursor
+                  {filter.name}
+                </Button>
+              );
+            })}
+          </Box>
+          <GoogleMap
+            id="search-box-example"
+            mapContainerStyle={{ width: "100%", height: "70vh" }}
+            center={currentLocation}
+            zoom={zoom}
+            onClick={onMapClick}
+            onLoad={onLoad}
+            onUnmount={onUnmount}
+          >
+            <Marker position={currentLocation} />
+            {markers.map((marker, index) => (
+              <Marker
+                key={index}
+                position={{ lat: marker.lat, lng: marker.lng }}
+                icon={getMarkerIcon(marker.color)}
+                onMouseOver={() => handleMarkerMouseOver(marker)}
+                onClick={() =>
+                  handleLocationClick({
+                    name: marker.name,
+                    tag: marker.type,
+                    latitude: marker.lat,
+                    longitude: marker.lng,
+                  })
+                }
+              >
+                {activeMarker &&
+                  activeMarker.lat === marker.lat &&
+                  activeMarker.lng === marker.lng && (
+                    <InfoWindow
+                      position={{ lat: marker.lat, lng: marker.lng }}
+                      onMouseOver={() => setInfoWindowHovered(true)}
+                      onMouseOut={() => {
+                        setInfoWindowHovered(false);
+                        handleMarkerMouseOut();
+                      }}
+                      options={{
+                        pixelOffset: new window.google.maps.Size(0, -30),
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          maxWidth: "250px",
+                          padding: 0,
+                          overflow: "hidden",
+                          margin: 0,
+                          maxHeight: "200px",
                         }}
                       >
-                        <Box
-                          sx={{
-                            maxWidth: "250px",
-                            padding: 0,
-                            overflow: "hidden",
-                            margin: 0,
-                            maxHeight: "200px",
-                          }}
-                        >
-                          {marker.photo && (
-                            <Image
-                              src={marker.photo}
-                              alt={marker.name}
-                              width={250}
-                              height={70}
-                              style={{
-                                display: "block",
-                                width: "100%",
-                                borderRadius: "8px 8px 0 0",
-                              }}
-                            />
+                        {marker.photo && (
+                          <Image
+                            src={marker.photo}
+                            alt={marker.name}
+                            width={250}
+                            height={70}
+                            style={{
+                              display: "block",
+                              width: "100%",
+                              borderRadius: "8px 8px 0 0",
+                            }}
+                          />
+                        )}
+                        <Box sx={{ padding: "8px" }}>
+                          <Typography
+                            variant="h6"
+                            component="div"
+                            sx={{ fontSize: "16px", fontWeight: "bold" }}
+                          >
+                            {marker.name}
+                          </Typography>
+                          <Typography
+                            variant="body2"
+                            color="textSecondary"
+                            sx={{ fontSize: "14px", marginTop: "4px" }}
+                          >
+                            {marker.vicinity}
+                          </Typography>
+                          <Typography
+                            variant="body2"
+                            color="textSecondary"
+                            sx={{ fontSize: "14px", marginTop: "4px" }}
+                          >
+                            Rating: {marker.rating} ({marker.userRatingsTotal}{" "}
+                            reviews)
+                          </Typography>
+                          <Typography
+                            variant="body2"
+                            sx={{
+                              fontSize: "14px",
+                              color: marker.isOpen ? "green" : "red",
+                              marginTop: "4px",
+                            }}
+                          >
+                            {marker.isOpen ? "Open Now" : "Closed"}
+                          </Typography>
+                          {marker.openingHours && (
+                            <Typography
+                              variant="body2"
+                              color="textSecondary"
+                              sx={{ fontSize: "14px", marginTop: "4px" }}
+                            >
+                              {marker.openingHours.map((hours, idx) => (
+                                <span key={idx}>
+                                  {hours}
+                                  <br />
+                                </span>
+                              ))}
+                            </Typography>
                           )}
-                          <Box sx={{ padding: "8px" }}>
-                            <Typography
-                              variant="h6"
-                              component="div"
-                              sx={{ fontSize: "16px", fontWeight: "bold" }}
-                            >
-                              {marker.name}
-                            </Typography>
-                            <Typography
-                              variant="body2"
-                              color="textSecondary"
-                              sx={{ fontSize: "14px", marginTop: "4px" }}
-                            >
-                              {marker.vicinity}
-                            </Typography>
-                            <Typography
-                              variant="body2"
-                              color="textSecondary"
-                              sx={{ fontSize: "14px", marginTop: "4px" }}
-                            >
-                              Rating: {marker.rating} ({marker.userRatingsTotal}{" "}
-                              reviews)
-                            </Typography>
-                            <Typography
-                              variant="body2"
-                              sx={{
-                                fontSize: "14px",
-                                color: marker.isOpen ? "green" : "red",
-                                marginTop: "4px",
-                              }}
-                            >
-                              {marker.isOpen ? "Open Now" : "Closed"}
-                            </Typography>
-                            {marker.openingHours && (
-                              <Typography
-                                variant="body2"
-                                color="textSecondary"
-                                sx={{ fontSize: "14px", marginTop: "4px" }}
-                              >
-                                {marker.openingHours.map((hours, idx) => (
-                                  <span key={idx}>
-                                    {hours}
-                                    <br />
-                                  </span>
-                                ))}
-                              </Typography>
-                            )}
-                          </Box>
                         </Box>
-                      </InfoWindow>
-                    )}
-                </Marker>
-              ))}
-              <Autocomplete
-                onLoad={onLoad}
-                onPlaceChanged={onPlaceChanged}
-                types={["geocode"]}
-              >
-                <StyledTextField
-                  placeholder="Search for a place"
-                  sx={{
-                    boxSizing: "border-box",
-                    width: "240px",
-                    height: "32px",
-                    padding: "0 12px",
-                    position: "absolute",
-                    top: "0.5rem",
-                    left: "50%",
-                    transform: "translate(-50%, 0)",
-                    //   marginLeft: "-120px",
-                  }}
-                  variant="outlined"
-                />
-              </Autocomplete>
-            </GoogleMap>
-            <ImageUploader />
-            <TextArea />
-          </Grid>
-          {/* Location List section */}
-          <Grid item xs={3}>
-            <LocationList
-              locationsByTag={locationsByTag}
-              handleDelete={handleDelete}
-            />
-          </Grid>
+                      </Box>
+                    </InfoWindow>
+                  )}
+              </Marker>
+            ))}
+            <Autocomplete
+              onLoad={onLoad}
+              onPlaceChanged={onPlaceChanged}
+              types={["geocode"]}
+            >
+              <StyledTextField
+                placeholder="Search for a place"
+                sx={{
+                  boxSizing: "border-box",
+                  width: "240px",
+                  height: "32px",
+                  padding: "0 12px",
+                  position: "absolute",
+                  top: "0.5rem",
+                  left: "50%",
+                  transform: "translate(-50%, 0)",
+                }}
+                variant="outlined"
+              />
+            </Autocomplete>
+          </GoogleMap>
+          <ImageUploader />
+          <TextArea />
         </Grid>
-      </LoadScript>
+        {/* Location List section */}
+        <Grid item xs={3}>
+          <LocationList
+            locationsByTag={locationsByTag}
+            handleDelete={handleDelete}
+          />
+        </Grid>
+      </Grid>
       <AlertSnackbar
         open={alertOpen}
         onClose={handleCloseAlert}
@@ -631,6 +637,7 @@ export default function CreateGoogleMap() {
         handleClose={handleCloseModal}
         mode={modalMode}
       />
-    </>
+      {loading && <LoadingSpinner />}
+    </GoogleMapsLoader>
   );
 }
