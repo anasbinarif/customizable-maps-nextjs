@@ -21,33 +21,61 @@ export default function Hero() {
         backgroundSize: "cover",
         backgroundPosition: "center",
         padding: "2rem",
+
+        "@media only screen and (max-width: 600px)": {
+          padding: "1rem",
+        },
       }}
     >
-      <Container maxWidth="lg">
+      <Container
+        maxWidth="lg"
+        sx={{
+          "@media only screen and (max-width: 600px)": {
+            padding: "0",
+          },
+        }}
+      >
         <Grid container spacing={2} alignItems="center">
           {/* Left Content */}
-          <Grid item xs={12} sm={12} md={6}>
+          <Grid item xs={12} md={6}>
             <Box
               sx={{
                 backgroundColor: "primary.bgHero",
                 padding: "2rem",
                 borderRadius: "10px",
                 maxWidth: "500px",
-                boxShadow:
-                  "rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset",
+                boxShadow: "var(--heroShadow)",
+
+                "@media only screen and (max-width: 900px)": {
+                  maxWidth: "100%",
+                },
               }}
             >
               <Typography
                 variant="h3"
                 component="h1"
-                sx={{ fontWeight: "bold" }}
+                sx={{
+                  fontWeight: "bold",
+                  "@media only screen and (max-width: 600px)": {
+                    fontSize: "2rem",
+                  },
+                  "@media only screen and (max-width: 500px)": {
+                    fontSize: "1.5rem",
+                  },
+                }}
               >
                 Create and Customize Your Maps
               </Typography>
               <Typography
                 variant="h6"
                 component="p"
-                sx={{ marginTop: "1rem", marginBottom: "2rem" }}
+                sx={{
+                  marginTop: "1rem",
+                  marginBottom: "2rem",
+                  "@media only screen and (max-width: 600px)": {
+                    fontSize: "1.2rem",
+                  },
+                }}
               >
                 Sign up to create or edit custom maps. Use the Google Maps API
                 to find points of interest, customize your map with titles and

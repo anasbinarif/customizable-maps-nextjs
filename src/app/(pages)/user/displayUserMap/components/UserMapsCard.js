@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import FullscreenIcon from "@mui/icons-material/Fullscreen";
 import DeleteIcon from "@mui/icons-material/Delete";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import AddRounded from "@mui/icons-material/AddRounded";
 import Link from "next/link";
 
 const UserMapsCard = ({ map, onOpenDetails, onDelete }) => {
@@ -48,7 +48,7 @@ const UserMapsCard = ({ map, onOpenDetails, onDelete }) => {
       >
         <DeleteIcon />
       </IconButton>
-      {/* <Box
+      {/* <Box#333
         // component="img"
         height="140"
         // image={map.pinImageUrl}
@@ -225,6 +225,7 @@ export const CreateMapCard = () => {
         alignItems: "center",
         justifyContent: "center",
         backgroundColor: "transparent",
+        backgroundImage: "none",
         boxShadow: "none",
       }}
     >
@@ -249,7 +250,7 @@ export const CreateMapCard = () => {
               color: "black",
             }}
           >
-            <AddCircleOutlineIcon sx={{ fontSize: 200, color: "#aaa" }} />
+            <AddRounded sx={{ fontSize: 200, color: "#aaa" }} />
           </Link>
           {/* <Typography variant="h6" component="div" textAlign="center">
             Create More Personalized Maps

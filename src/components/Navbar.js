@@ -1,5 +1,11 @@
 "use client";
-import React, { useState, useEffect, useLayoutEffect, useRef } from "react";
+import React, {
+  useState,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useContext,
+} from "react";
 import {
   AppBar,
   Toolbar,
@@ -22,6 +28,7 @@ import { useSession, signOut } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import Link from "next/link";
+import { ThemeContext } from "@/context/ThemeContext";
 import LoginSignupModal from "./LoginSignupModal";
 import ChangePasswordModal from "./ChangePasswordModal"; // Import the modal component
 
@@ -47,7 +54,7 @@ const LinkSmallBtn = {
 const LinkBtn = {
   display: "flex",
   alignItems: "center",
-  color: "#000",
+  color: "primary.main",
   textDecoration: "none",
   borderRadius: "20px",
   padding: "0.5rem 1rem",
@@ -55,10 +62,10 @@ const LinkBtn = {
 
   "&.selected": {
     // backgroundColor: "#000",
-    color: "rgba(242,242,242,1)",
+    color: "primary.bgHero",
 
     "& svg": {
-      color: "#fff",
+      color: "primary.bgHero",
     },
   },
 };
@@ -76,6 +83,7 @@ export default function Navbar({ selected }) {
   const curPage = router.split("/")[router.split("/").length - 1];
   const linkRefs = useRef({});
   const [btnWidth, setBtnWidth] = useState(0);
+  const { darkMode } = useContext(ThemeContext);
 
   console.log(curPage);
 
@@ -158,8 +166,9 @@ export default function Navbar({ selected }) {
       <AppBar
         position="sticky"
         sx={{
-          background:
-            "linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(242,242,242,1) 50%, rgba(255,255,255,1) 100%)",
+          background: darkMode
+            ? "linear-gradient(90deg, #333 0%, #333 50%, #333 100%)"
+            : "linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(242,242,242,1) 50%, rgba(255,255,255,1) 100%)",
           borderRadius: "20px",
           width: "auto",
           maxWidth: "95%",
@@ -190,7 +199,7 @@ export default function Navbar({ selected }) {
               <Typography
                 variant="h6"
                 component="div"
-                sx={{ color: "#333", fontWeight: "bold" }}
+                sx={{ color: "primary.main", fontWeight: "bold" }}
               >
                 Customizable Maps
               </Typography>
@@ -228,7 +237,7 @@ export default function Navbar({ selected }) {
                   width: btnWidth,
                   zIndex: 8,
                   borderRadius: "20px",
-                  backgroundColor: "black",
+                  backgroundColor: "primary.main",
                   transition: "all 0.3s ease-out",
                 }}
               ></Box>
@@ -310,13 +319,11 @@ export default function Navbar({ selected }) {
                 sx={{
                   marginLeft: "auto",
                   color: "black",
+                  // position: "absolute",
+                  zIndex: 1500,
                 }}
               >
-                <IconButton
-                  onClick={handleMenu2}
-                  color="inherit"
-                  sx={{ position: "relative", zIndex: 1500 }}
-                >
+                <IconButton onClick={handleMenu2} color="inherit" sx={{}}>
                   <MenuIcon sx={{ color: "#000" }} />
                 </IconButton>
                 <Menu
@@ -334,8 +341,10 @@ export default function Navbar({ selected }) {
                   open={Boolean(anchorEl2)}
                   onClose={handleMenuClose2}
                   sx={{
-                    position: "absolute",
+                    top: 0,
                     "& .MuiPaper-root": {
+                      position: "absolute",
+                      zIndex: 1200,
                       borderRadius: "16px",
                     },
                     "& .MuiList-root": {
@@ -385,7 +394,7 @@ export default function Navbar({ selected }) {
                         src={session.user.image}
                       />
                     ) : (
-                      <AccountCircleIcon sx={{ color: "#000" }} />
+                      <AccountCircleIcon sx={{ color: "primary.main" }} />
                     )}
                   </IconButton>
                   <Menu
@@ -431,7 +440,7 @@ export default function Navbar({ selected }) {
               ) : (
                 <>
                   <Button
-                    sx={{ color: "#333", textTransform: "none" }}
+                    sx={{ color: "primary.main", textTransform: "none" }}
                     onClick={() => handleOpenModal("login")}
                   >
                     Log In
@@ -439,8 +448,8 @@ export default function Navbar({ selected }) {
                   <Button
                     variant="contained"
                     sx={{
-                      backgroundColor: "#000",
-                      color: "#fff",
+                      // backgroundColor: "#000",
+                      // color: "#fff",
                       borderRadius: "10px",
                       padding: "0.5rem 1.5rem",
                       textTransform: "none",

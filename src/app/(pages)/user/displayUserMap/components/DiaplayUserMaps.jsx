@@ -6,10 +6,11 @@ import { Container, Grid, Typography, Box, Button } from "@mui/material";
 import MapDetailsModal from "./MapDetailsModal";
 import UserMapsCard, { CreateMapCard } from "./UserMapsCard";
 import Link from "next/link";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 const DisplayUserMaps = () => {
   const { data: session, status } = useSession();
-  const [maps, setMaps] = useState([]);
+  const [maps, setMaps] = useState(null);
   const [alertOpen, setAlertOpen] = useState(false);
   const [alertSeverity, setAlertSeverity] = useState("success");
   const [alertMessage, setAlertMessage] = useState("");
@@ -33,6 +34,8 @@ const DisplayUserMaps = () => {
     setSelectedMap(null);
   };
 
+  console.log(maps);
+
   useEffect(() => {
     const fetchUserMaps = async () => {
       if (status === "authenticated") {
@@ -49,7 +52,7 @@ const DisplayUserMaps = () => {
         } catch (error) {
           console.error("Error fetching user maps:", error);
         }
-      }
+      } else setMaps([]);
     };
     fetchUserMaps();
   }, [status]);
@@ -74,7 +77,7 @@ const DisplayUserMaps = () => {
 
   return (
     <Container sx={{ mt: 4, minHeight: "100vh" }}>
-      {maps.length > 0 ? (
+      {maps?.length > 0 ? (
         <Grid container spacing={3}>
           {maps.map((map) => (
             <Grid item xs={12} sm={6} md={4} lg={3} key={map.id}>
@@ -89,6 +92,10 @@ const DisplayUserMaps = () => {
             <CreateMapCard />
           </Grid>
         </Grid>
+      ) : !maps ? (
+        <>
+          <LoadingSpinner />
+        </>
       ) : (
         <Box
           sx={{
@@ -106,7 +113,7 @@ const DisplayUserMaps = () => {
           <Typography variant="body1" color="textSecondary" gutterBottom>
             Go to the Create section to create your first map.
           </Typography>
-          <Link href="/createUserMaps" passHref>
+          <Link href="/user/createUserMaps" passHref>
             <Button variant="contained" color="primary">
               Create Your First Map
             </Button>

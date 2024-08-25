@@ -74,6 +74,8 @@ export default function CreateGoogleMap() {
   const [title, setTitle] = useState("");
   const [titleError, settitleError] = useState(false);
 
+  console.log(currentLocation);
+
   const handleOpenModal = (mode) => {
     setModalMode(mode);
     setOpenModal(true);
@@ -192,6 +194,8 @@ export default function CreateGoogleMap() {
         }
       );
     }
+
+    return () => {};
   }, []);
 
   const handleLocationClick = (location) => {
@@ -364,14 +368,6 @@ export default function CreateGoogleMap() {
     },
   ];
 
-  // const onMapLoad = useCallback((map) => {
-  //   map.controls[window.google.maps.ControlPosition.TOP_LEFT].push(
-  //     map.controls[window.google.maps.ControlPosition.TOP_RIGHT].getAt(0)
-  //   );
-
-  //   map.controls[window.google.maps.ControlPosition.TOP_RIGHT].clear();
-  // }, []);
-
   const handleMarkerMouseOver = (marker) => {
     setActiveMarker(marker);
   };
@@ -390,9 +386,9 @@ export default function CreateGoogleMap() {
         libraries={["places"]}
         onLoad={() => setIsMapLoaded(true)}
       >
-        <Grid container spacing={3}>
+        <Grid container spacing={3} sx={{ marginTop: "0.5rem" }}>
           {/* Map section */}
-          <Grid item xs={12}>
+          {/* <Grid item xs={12}>
             <Box
               sx={{
                 display: "flex",
@@ -448,8 +444,44 @@ export default function CreateGoogleMap() {
                 </Button>
               </Box>
             </Box>
-          </Grid>
+          </Grid> */}
           <Grid item xs={12} sm={12} md={8} lg={9}>
+            <Box
+              sx={{
+                display: "flex",
+                // flexDirection: "column",
+                justifyContent: "space-between",
+                margin: "10px",
+                flexWrap: "wrap",
+
+                "@media only screen and (max-width: 750px)": {
+                  flexDirection: "column",
+                },
+              }}
+            >
+              <StyledTextField
+                id="standard-basic"
+                // label="Title"
+                placeholder="Title"
+                variant="outlined"
+                error={titleError}
+                value={title}
+                required
+                onChange={(e) => setTitle(e.target.value)}
+                helperText="Please enter title"
+                sx={{
+                  width: "40%",
+
+                  "@media only screen and (max-width: 1200px)": {
+                    width: "50%",
+                  },
+
+                  "@media only screen and (max-width: 750px)": {
+                    width: "100%",
+                  },
+                }}
+              />
+            </Box>
             <Box
               sx={{
                 display: "flex",
@@ -469,6 +501,8 @@ export default function CreateGoogleMap() {
                     color="primary"
                     startIcon={filter.icon}
                     sx={{
+                      // fontSize: "0.9rem",
+                      textTransform: "none",
                       margin: "5px",
                       borderRadius: "50px",
                       backgroundColor: isSelected
@@ -505,7 +539,6 @@ export default function CreateGoogleMap() {
               center={currentLocation}
               zoom={zoom}
               onClick={onMapClick}
-              // onLoad={onMapLoad}
             >
               <Marker position={currentLocation} />
               {markers.map((marker, index) => (
