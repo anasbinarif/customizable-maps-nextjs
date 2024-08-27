@@ -29,3 +29,37 @@ body,
 .ql-snow .ql-stroke {
   stroke: var(--txtClr) !important;
 }
+
+@keyframes showContent {
+  from {
+    opacity: 0;
+    transform: translate(0, 100px);
+    /* filter: blur(33px); */
+  }
+  to {
+    opacity: 1;
+    transform: translate(0, 0);
+    /* filter: blur(0); */
+  }
+}
+
+.animate {
+  animation: showContent 0.7s ease-in-out forwards;
+}
+
+.animate__out {
+  animation: showContent--out 0.5s ease-in-out forwards;
+}
+
+@keyframes showContent--out {
+  from {
+    opacity: 1;
+    transform: translate(0, 0px);
+    /* filter: blur(0); */
+  }
+  to {
+    opacity: 0;
+    transform: translate(0, 100px);
+    /* filter: blur(33px); */
+  }
+}

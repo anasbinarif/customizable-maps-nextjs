@@ -84,7 +84,10 @@ export default function Hero() {
               <Box sx={{ display: "flex", gap: "1rem" }}>
                 <Button
                   variant="contained"
-                  sx={{ backgroundColor: "primary.main", borderRadius: "20px" }}
+                  sx={{
+                    backgroundColor: "primary.main",
+                    borderRadius: "20px",
+                  }}
                 >
                   Get Started
                 </Button>
