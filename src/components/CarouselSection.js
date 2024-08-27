@@ -45,36 +45,32 @@ function getTransitionStyles(index, curIndex, len) {
 export default function CarouselSection() {
   const { darkMode } = useContext(ThemeContext);
   const theme = useTheme();
-  const [hoveredCard, setHoveredCard] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const cardData = [
     {
       imgSrc: "/img/home_map.jpg",
-      name: "Cars",
+      name: "Neighborhood Guides",
       pkgs: [
-        "Car Exterior Cleaning",
-        "Interior Steam Cleaning",
-        "Paint Polishing & Sealing",
-        "High quality glass coating",
-        "Paint Sealant and WaxGuard",
+        "Share your local neighborhood expertise",
+        "create local guides to highlight your parks, restaurants and other places",
       ],
     },
     {
       imgSrc: "/img/home_map2.jpg",
-      name: "All Types of Vehicle",
+      name: "Gather real estate data",
       pkgs: [
-        "We also cater to caravans, campers, boats and trucks.",
-        "The interior cleaning of a camper, caravan, boat and truck is no problem for us.",
-        "Steam cleaning is a very efficient environmentally friendly way to clean your vehicles.",
+        "Discover what's around you and map all the places of interest nearby!",
+        "Explore local hotspots and hidden gems effortlessly with dynamic, interactive maps.",
+        "Uncover your neighborhood’s best spots and visualize them on a user-friendly map.",
       ],
     },
     {
       imgSrc: "/img/home_map3.jpg",
-      name: "Bikes",
+      name: "Tourism",
       pkgs: [
-        "These are exposed to harsh weather conditions and endure a lot.",
-        "Our steam cleaner, reaching a temperature of 180 °C, can clean even the the most difficult places.",
+        "Explore top tourist attractions and hidden gems with interactive maps right at your fingertips!",
+        "Discover and visualize your travel itinerary with ease, finding the best sights and experiences around you.",
       ],
     },
   ];
@@ -88,14 +84,6 @@ export default function CarouselSection() {
       clearTimeout(timer);
     };
   }, [currentIndex, cardData.length]);
-
-  const handleMouseEnter = (index) => {
-    setHoveredCard(index);
-  };
-
-  const handleMouseLeave = () => {
-    setHoveredCard(null);
-  };
 
   const handleNext = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % cardData.length);
