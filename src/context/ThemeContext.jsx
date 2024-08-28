@@ -20,7 +20,8 @@ const ThemeContextProvider = ({ children }) => {
         palette: {
           mode: darkMode ? "dark" : "light",
           primary: {
-            main: darkMode ? "#fff" : "#000",
+            // main: darkMode ? "#fff" : "#000",
+            main: "#0092A2",
             bgHero: darkMode ? "#333333" : "#ffffffd8",
             // btnShadow: darkMode
             //   ? "#32325d26 0px 50px 100px -20px, #00000033 0px 30px 60px -30px, #0a25403f 0px -2px 6px 0px inset"

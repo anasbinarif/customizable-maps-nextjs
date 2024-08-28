@@ -54,7 +54,7 @@ const LinkSmallBtn = {
 const LinkBtn = {
   display: "flex",
   alignItems: "center",
-  color: "primary.main",
+  color: "secondary.main",
   textDecoration: "none",
   borderRadius: "20px",
   padding: "0.5rem 1rem",
@@ -199,7 +199,7 @@ export default function Navbar({ selected }) {
               <Typography
                 variant="h6"
                 component="div"
-                sx={{ color: "primary.main", fontWeight: "bold" }}
+                sx={{ color: "secondary.main", fontWeight: "bold" }}
               >
                 Customizable Maps
               </Typography>
@@ -394,7 +394,7 @@ export default function Navbar({ selected }) {
                         src={session.user.image}
                       />
                     ) : (
-                      <AccountCircleIcon sx={{ color: "primary.main" }} />
+                      <AccountCircleIcon sx={{ color: "secondary.main" }} />
                     )}
                   </IconButton>
                   <Menu
@@ -440,7 +440,7 @@ export default function Navbar({ selected }) {
               ) : (
                 <>
                   <Button
-                    sx={{ color: "primary.main", textTransform: "none" }}
+                    sx={{ color: "secondary.main", textTransform: "none" }}
                     onClick={() => handleOpenModal("login")}
                   >
                     Log In

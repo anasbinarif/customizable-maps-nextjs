@@ -8,7 +8,7 @@ export default function CTA() {
       sx={{
         display: "flex",
         alignItems: "center",
-        minHeight: "80vh",
+        // minHeight: "80vh",
         backgroundSize: "cover",
         backgroundPosition: "center",
         padding: "2rem",

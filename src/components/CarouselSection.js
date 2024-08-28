@@ -181,7 +181,7 @@ export default function CarouselSection() {
                         fontWeight: "bold",
                         opacity: 0,
                         animation: "showContent 1s ease-in-out forwards",
-                        color: "#00c3ff",
+                        color: "primary.main",
                         marginBottom: "2rem",
                       }}
                     >
@@ -225,7 +225,7 @@ export default function CarouselSection() {
                         color: "white",
                         "&:hover": {
                           backgroundColor: "white",
-                          color: "black",
+                          color: "primary.main",
                           // border: "none",
                         },
                         // color: theme.palette.primary.accent,

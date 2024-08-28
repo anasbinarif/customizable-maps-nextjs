@@ -53,7 +53,7 @@ const getMarkerIcon = (color) => {
 };
 
 export default function CreateGoogleMap() {
-  const { data: session} = useSession();
+  const { data: session } = useSession();
   const [currentLocation, setCurrentLocation] = useState({
     lat: 0,
     lng: 0,
@@ -72,7 +72,7 @@ export default function CreateGoogleMap() {
   const [modalMode, setModalMode] = useState("login");
   const [title, setTitle] = useState("");
   const [titleError, settitleError] = useState(false);
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   const mapRef = useRef(null);
 
@@ -138,7 +138,7 @@ export default function CreateGoogleMap() {
       handleOpenAlert("warning", "Map title is required!");
       return;
     }
-    setLoading(true)
+    setLoading(true);
 
     const locationsToSave = Object.keys(locationsByTag).flatMap((tag) =>
       locationsByTag[tag].locations.map((loc) => ({
@@ -178,8 +178,8 @@ export default function CreateGoogleMap() {
         handleOpenAlert("success", "Map saved successfully!");
         setLoading(false);
         setSelectedFilters([]);
-        setMarkers([])
-        setActiveMarker(null)
+        setMarkers([]);
+        setActiveMarker(null);
         setLocationsByTag({
           Restaurants: { color: "#FF9A8B", locations: [] },
           Hotels: { color: "#6AB2FF", locations: [] },
@@ -190,7 +190,7 @@ export default function CreateGoogleMap() {
           ATMs: { color: "#66D0C9", locations: [] },
           Schools: { color: "#FF9EC4", locations: [] },
           Entertainment: { color: "#FFB46F", locations: [] },
-        })
+        });
       } else {
         alert("Failed to save the map.");
         handleOpenAlert("error", "Failed to save the map.");
@@ -395,9 +395,9 @@ export default function CreateGoogleMap() {
 
   return (
     <GoogleMapsLoader>
-      <Grid container spacing={3}>
+      <Grid container spacing={3} sx={{ marginTop: "1rem" }}>
         {/* Map section */}
-        <Grid item xs={12}>
+        {/* <Grid item xs={12}>
           <Box
             sx={{
               display: "flex",
@@ -432,8 +432,46 @@ export default function CreateGoogleMap() {
               </Button>
             </Box>
           </Box>
-        </Grid>
-        <Grid item xs={9}>
+        </Grid> */}
+        <Grid item xs={12} sm={12} md={8} lg={9}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              margin: "10px 0.5rem",
+              flexWrap: "wrap",
+            }}
+          >
+            <StyledTextField
+              id="standard-basic"
+              placeholder="Title"
+              variant="outlined"
+              error={titleError}
+              value={title}
+              required
+              onChange={(e) => setTitle(e.target.value)}
+              helperText="Please enter title"
+              sx={{
+                width: "40%",
+
+                "@media only screen and (max-width: 1200px)": {
+                  width: "100%",
+                },
+              }}
+            />
+            {/* <Box mt="10px">
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={saveMap}
+                sx={{
+                  width: "100%",
+                }}
+              >
+                Save Map
+              </Button>
+            </Box> */}
+          </Box>
           <Box
             sx={{
               display: "flex",
@@ -461,6 +499,14 @@ export default function CreateGoogleMap() {
                     color: isSelected
                       ? generateTextColor(filter.selectedColor)
                       : "primary.main",
+                    width: "calc(33% - 0.5rem)",
+
+                    "@media only screen and (max-width: 900px)": {
+                      width: "calc(50% - 0.7rem)",
+                    },
+                    "@media only screen and (max-width: 600px)": {
+                      width: "calc(100% - 0.7rem)",
+                    },
 
                     "&:hover": {
                       backgroundColor: isSelected
@@ -612,9 +658,48 @@ export default function CreateGoogleMap() {
           </GoogleMap>
           <ImageUploader />
           <TextArea />
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <Box mt="10px">
+              <Button
+                variant="contained"
+                color="primary"
+                sx={{
+                  width: "100%",
+                  backgroundColor: "transparent",
+                  color: "primary.main",
+                  boxShadow: "none",
+
+                  "&:hover": {
+                    fontWeight: "bold",
+                    backgroundColor: "transparent",
+                    boxShadow: "none",
+                  },
+                }}
+              >
+                Export
+              </Button>
+            </Box>
+            <Box mt="10px">
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={saveMap}
+                sx={{
+                  width: "100%",
+                }}
+              >
+                Save Map
+              </Button>
+            </Box>
+          </Box>
         </Grid>
         {/* Location List section */}
-        <Grid item xs={3}>
+        <Grid item xs={12} sm={12} md={4} lg={3}>
           <LocationList
             locationsByTag={locationsByTag}
             handleDelete={handleDelete}

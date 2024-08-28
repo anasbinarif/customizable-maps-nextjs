@@ -21,6 +21,7 @@ const UserMapsCard = ({ map, onOpenDetails, onDelete }) => {
         mb: 2,
         borderRadius: "10px",
         position: "relative",
+        boxShadow: "var(--heroShadow)",
         // height: "300px",
       }}
     >
@@ -93,7 +94,7 @@ const UserMapsCard = ({ map, onOpenDetails, onDelete }) => {
             <Typography
               variant="h4"
               component="div"
-              sx={{ marginBottom: "0.5rem" }}
+              sx={{ marginBottom: "0.5rem", color: "primary.main" }}
             >
               {map.title}
             </Typography>
