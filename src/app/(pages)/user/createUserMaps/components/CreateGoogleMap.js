@@ -28,6 +28,7 @@ import TextArea from "./TextArea";
 import LoginSignupModal from "@/components/LoginSignupModal";
 import ImageUploader from "./ImageUploader";
 import { StyledTextField } from "@/components/CustomTextFields";
+import ConfirmModal from "@/components/ConfirmModal";
 import { generateTextColor } from "@/lib/generateTextColor";
 import GoogleMapsLoader from "@/lib/GoogleMapsLoader";
 
@@ -73,8 +74,15 @@ export default function CreateGoogleMap() {
   const [title, setTitle] = useState("");
   const [titleError, settitleError] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [openConfirm, setOpenConfirm] = useState(false);
+  const [latLangTmp, setLatLangTmp] = useState({ lat: "", lng: "" });
 
   const mapRef = useRef(null);
+
+  const handleConfirmClose = () => {
+    setLatLangTmp({ lat: "", lng: "" });
+    setOpenConfirm(false);
+  };
 
   const onLoad = useCallback((mapInstance) => {
     mapRef.current = mapInstance;
@@ -250,10 +258,18 @@ export default function CreateGoogleMap() {
   };
 
   const onMapClick = (e) => {
-    const lat = e.latLng.lat();
-    const lng = e.latLng.lng();
+    setLatLangTmp({ lat: e.latLng.lat(), lng: e.latLng.lng() });
+    setOpenConfirm(true);
+  };
+
+  const handleConfirmMap = () => {
+    const lat = latLangTmp?.lat;
+    const lng = latLangTmp?.lng;
     setCurrentLocation({ lat, lng, name: "Selected Location" });
+    setLatLangTmp({ lat: "", lng: "" });
     setMarkers([{ lat, lng, name: "Selected Location" }]);
+    setOpenConfirm(false);
+    setSelectedFilters([]);
   };
 
   const searchNearbyPlaces = (filters) => {
@@ -716,6 +732,11 @@ export default function CreateGoogleMap() {
         open={openModal}
         handleClose={handleCloseModal}
         mode={modalMode}
+      />
+      <ConfirmModal
+        open={openConfirm}
+        handleClose={handleConfirmClose}
+        handleConfirm={handleConfirmMap}
       />
       {loading && <LoadingSpinner />}
     </GoogleMapsLoader>
