@@ -27,7 +27,7 @@ export default function CTA() {
             marginBottom: "2rem",
           }}
         >
-          Customizable Maps
+            Create, Customize and Print Your Map Now
         </Typography>
         <Typography variant="body1">
           We come to you at your location to service your vehicle
@@ -44,7 +44,7 @@ export default function CTA() {
             fontSize: "1.5rem",
           }}
         >
-          Book Now
+            Get Started
         </Button>
       </Container>
     </Box>

@@ -160,7 +160,7 @@ export default function Testimonials() {
         >
           <Box sx={{ position: "relative", zIndex: 1, display: "flex" }}>
             <Typography variant="h4" sx={{ fontWeight: "bold" }} align="center">
-              DRIVING A DIRTY CAR IS A THING OF THE PAST
+              MAP YOUR WORLD...YOUR WAY!
             </Typography>
           </Box>
         </Box>
@@ -211,8 +211,6 @@ export default function Testimonials() {
                         ? "1px solid rgba(255, 255, 255, 0.45)"
                         : "1px solid rgba(0, 0, 0, 0.45)",
                       overflow: "hidden",
-
-                      border: "none",
                       width: `${100 / testimonials.length}%`,
                       ...(currentIndex === 0 &&
                       index === testimonials.length - 1
