@@ -1,24 +1,8 @@
 "use client";
-import React, {
-  useState,
-  useEffect,
-  useContext,
-  useRef,
-  useLayoutEffect,
-} from "react";
-import { CardTravelSharp } from "@mui/icons-material";
+import React, {useContext, useEffect, useLayoutEffect, useRef, useState,} from "react";
 import MobileStepper from "@mui/material/MobileStepper";
-import {
-  Box,
-  Typography,
-  Button,
-  Container,
-  Grid,
-  styled,
-} from "@mui/material";
-import Image from "next/image";
-import { ThemeContext } from "@/context/ThemeContext";
-import { useTheme } from "@mui/material";
+import {Box, Container, styled, Typography,} from "@mui/material";
+import {ThemeContext} from "@/context/ThemeContext";
 
 const StyledMobileStepper = styled(MobileStepper)(({ theme }) => ({
   display: "flex",
@@ -34,7 +18,6 @@ const StyledMobileStepper = styled(MobileStepper)(({ theme }) => ({
 
 export default function Testimonials() {
   const { darkMode } = useContext(ThemeContext);
-  const theme = useTheme();
   const sliderRef = useRef(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [activeHeight, setActiveHeight] = useState("auto");
@@ -85,16 +68,14 @@ export default function Testimonials() {
     const rightNum = centerNum * -1 + 100;
     const leftNum = centerNum * -1 - 100;
 
-    const styles = {
-      left: { opacity: 0, transform: `translateX(${leftNum}%)` },
+    return {
+      left: {opacity: 0, transform: `translateX(${leftNum}%)`},
       center: {
         opacity: 1,
         transform: `translateX(${centerNum !== 0 ? "-" : ""}${centerNum}%)`,
       },
-      right: { opacity: 0, transform: `translateX(${rightNum}%)` },
+      right: {opacity: 0, transform: `translateX(${rightNum}%)`},
     };
-
-    return styles;
   };
 
   useEffect(() => {
@@ -127,11 +108,6 @@ export default function Testimonials() {
       });
     }
   }, [currentIndex]);
-
-  const handleStepChange = (step) => {
-    setCurrentIndex(step);
-  };
-
   return (
     <Box
       sx={{
