@@ -5,7 +5,7 @@ export default function ListMaps() {
   return (
     <Box
       sx={{
-        backgroundColor: "primary.main.pageBg1",
+        // backgroundColor: "primary.main.pageBg1",
         backgroundSize: "cover",
         backgroundPosition: "center",
         padding: "1rem 2rem",
