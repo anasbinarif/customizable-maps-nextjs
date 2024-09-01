@@ -34,7 +34,7 @@ const DisplayUserMaps = () => {
     setSelectedMap(null);
   };
 
-  console.log(maps);
+  // console.log(maps);
 
   useEffect(() => {
     const fetchUserMaps = async () => {
@@ -55,7 +55,7 @@ const DisplayUserMaps = () => {
       } else setMaps([]);
     };
     fetchUserMaps();
-  }, [status]);
+  }, [status, session?.user]);
 
   const handleDeleteMap = async (mapId) => {
     try {
@@ -74,6 +74,8 @@ const DisplayUserMaps = () => {
       handleOpenAlert("error", "An error occurred while deleting the map.");
     }
   };
+
+  console.log(maps);
 
   return (
     <Container sx={{ mt: 4, minHeight: "100vh" }}>

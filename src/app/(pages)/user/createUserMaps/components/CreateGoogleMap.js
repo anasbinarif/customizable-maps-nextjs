@@ -1,6 +1,12 @@
 "use client";
 
-import React, { useEffect, useRef, useState, useCallback } from "react";
+import React, {
+  useEffect,
+  useRef,
+  useState,
+  useCallback,
+  useMemo,
+} from "react";
 import {
   Autocomplete,
   GoogleMap,
@@ -31,6 +37,7 @@ import { StyledTextField } from "@/components/CustomTextFields";
 import ConfirmModal from "@/components/ConfirmModal";
 import { generateTextColor } from "@/lib/generateTextColor";
 import GoogleMapsLoader from "@/lib/GoogleMapsLoader";
+import { usePathname, useRouter } from "next/navigation";
 
 const iconStyle = {
   marginRight: "8px",
@@ -53,7 +60,8 @@ const getMarkerIcon = (color) => {
   };
 };
 
-export default function CreateGoogleMap() {
+export default function CreateGoogleMap({ mapData = null }) {
+  const router = usePathname();
   const { data: session } = useSession();
   const [currentLocation, setCurrentLocation] = useState({
     lat: 0,
@@ -76,8 +84,9 @@ export default function CreateGoogleMap() {
   const [loading, setLoading] = useState(false);
   const [openConfirm, setOpenConfirm] = useState(false);
   const [latLangTmp, setLatLangTmp] = useState({ lat: "", lng: "" });
-
   const mapRef = useRef(null);
+
+  const [isGoogleMapsLoaded, setIsGoogleMapsLoaded] = useState(false);
 
   const handleConfirmClose = () => {
     setLatLangTmp({ lat: "", lng: "" });
@@ -163,6 +172,7 @@ export default function CreateGoogleMap() {
     );
 
     const dataToSave = {
+      id: mapData ? mapData.id : null,
       title: title,
       pinLocation: {
         latitude: currentLocation.lat,
@@ -174,13 +184,25 @@ export default function CreateGoogleMap() {
       userEmail,
     };
     try {
-      const response = await fetch("/api/saveUserMap", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(dataToSave),
-      });
+      let response;
+      if (!mapData) {
+        response = await fetch("/api/saveUserMap", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(dataToSave),
+        });
+      } else {
+        console.log(mapData);
+        response = await fetch("/api/updateUserMap", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(dataToSave),
+        });
+      }
 
       if (response.ok) {
         handleOpenAlert("success", "Map saved successfully!");
@@ -210,16 +232,64 @@ export default function CreateGoogleMap() {
     }
   };
 
-  useEffect(() => {
-    if (navigator?.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        ({ coords: { latitude: lat, longitude: lng } }) => {
-          const pos = { lat, lng, name: `Lat: ${lat}, Lng: ${lng}` };
-          setCurrentLocation(pos);
-          setZoom(14);
-        }
-      );
-    }
+  // Example filter buttons with icons and unique selection colors
+  const filters = useMemo(() => {
+    return [
+      {
+        name: "Restaurants",
+        type: "restaurant",
+        icon: <FaUtensils style={iconStyle} />,
+        selectedColor: "#FF9A8B",
+      },
+      {
+        name: "Hotels",
+        type: "lodging",
+        icon: <FaHotel style={iconStyle} />,
+        selectedColor: "#6AB2FF",
+      },
+      {
+        name: "Things to do",
+        type: "tourist_attraction",
+        icon: <FaCamera style={iconStyle} />,
+        selectedColor: "#9CFF9C",
+      },
+      {
+        name: "Museums",
+        type: "museum",
+        icon: <FaLandmark style={iconStyle} />,
+        selectedColor: "#FDF5A0",
+      },
+      {
+        name: "Transit",
+        type: "transit_station",
+        icon: <FaBus style={iconStyle} />,
+        selectedColor: "#B5EAF2",
+      },
+      {
+        name: "Pharmacies",
+        type: "pharmacy",
+        icon: <FaPrescriptionBottle style={iconStyle} />,
+        selectedColor: "#B99DFF",
+      },
+      {
+        name: "ATMs",
+        type: "atm",
+        icon: <FaMoneyBillAlt style={iconStyle} />,
+        selectedColor: "#66D0C9",
+      },
+      {
+        name: "Schools",
+        type: "school",
+        icon: <FaSchool style={iconStyle} />,
+        selectedColor: "#FF9EC4",
+      },
+      {
+        name: "Entertainment",
+        type: "movie_theater",
+        icon: <FaFilm style={iconStyle} />,
+        selectedColor: "#FFB46F",
+      },
+    ];
   }, []);
 
   const handleLocationClick = (location) => {
@@ -272,7 +342,7 @@ export default function CreateGoogleMap() {
     setSelectedFilters([]);
   };
 
-  const searchNearbyPlaces = (filters) => {
+  const searchNearbyPlaces = useCallback((filters, loc) => {
     const service = new window.google.maps.places.PlacesService(
       document.createElement("div")
     );
@@ -282,7 +352,7 @@ export default function CreateGoogleMap() {
       return new Promise((resolve) => {
         service.nearbySearch(
           {
-            location: currentLocation,
+            location: loc,
             radius: 5000,
             type: filter.type,
           },
@@ -319,7 +389,7 @@ export default function CreateGoogleMap() {
     Promise.all(promises).then(() => {
       setMarkers(accumulatedMarkers);
     });
-  };
+  }, []);
 
   const toggleFilter = (filter) => {
     const isSelected = selectedFilters.some(
@@ -333,67 +403,10 @@ export default function CreateGoogleMap() {
     } else {
       updatedFilters = [...selectedFilters, filter];
     }
+    // console.log(updatedFilters);
     setSelectedFilters(updatedFilters);
-    searchNearbyPlaces(updatedFilters);
+    searchNearbyPlaces(updatedFilters, currentLocation);
   };
-
-  // Example filter buttons with icons and unique selection colors
-  const filters = [
-    {
-      name: "Restaurants",
-      type: "restaurant",
-      icon: <FaUtensils style={iconStyle} />,
-      selectedColor: "#FF9A8B",
-    },
-    {
-      name: "Hotels",
-      type: "lodging",
-      icon: <FaHotel style={iconStyle} />,
-      selectedColor: "#6AB2FF",
-    },
-    {
-      name: "Things to do",
-      type: "tourist_attraction",
-      icon: <FaCamera style={iconStyle} />,
-      selectedColor: "#9CFF9C",
-    },
-    {
-      name: "Museums",
-      type: "museum",
-      icon: <FaLandmark style={iconStyle} />,
-      selectedColor: "#FDF5A0",
-    },
-    {
-      name: "Transit",
-      type: "transit_station",
-      icon: <FaBus style={iconStyle} />,
-      selectedColor: "#B5EAF2",
-    },
-    {
-      name: "Pharmacies",
-      type: "pharmacy",
-      icon: <FaPrescriptionBottle style={iconStyle} />,
-      selectedColor: "#B99DFF",
-    },
-    {
-      name: "ATMs",
-      type: "atm",
-      icon: <FaMoneyBillAlt style={iconStyle} />,
-      selectedColor: "#66D0C9",
-    },
-    {
-      name: "Schools",
-      type: "school",
-      icon: <FaSchool style={iconStyle} />,
-      selectedColor: "#FF9EC4",
-    },
-    {
-      name: "Entertainment",
-      type: "movie_theater",
-      icon: <FaFilm style={iconStyle} />,
-      selectedColor: "#FFB46F",
-    },
-  ];
 
   const handleMarkerMouseOver = (marker) => {
     setActiveMarker(marker);
@@ -408,6 +421,85 @@ export default function CreateGoogleMap() {
   const onLoadSearch = (autocomplete) => {
     autocompleteRef.current = autocomplete;
   };
+
+  useEffect(() => {
+    if (navigator?.geolocation && !mapData) {
+      navigator.geolocation.getCurrentPosition(
+        ({ coords: { latitude: lat, longitude: lng } }) => {
+          const pos = { lat, lng, name: `Lat: ${lat}, Lng: ${lng}` };
+          setCurrentLocation(pos);
+          setZoom(14);
+        }
+      );
+    }
+
+    const checkGoogleMapsAvailability = () => {
+      if (window.google && window.google.maps && window.google.maps.places) {
+        setIsGoogleMapsLoaded(true);
+      } else {
+        setTimeout(checkGoogleMapsAvailability, 100);
+      }
+    };
+
+    if (mapData) {
+      let filters0 = new Set();
+      mapData?.locations.forEach((loc) => filters0.add(loc?.tag));
+      filters0 = [...filters0];
+      const filterData = filters0.map((filter) => {
+        return filters.find((fil) => fil.name === filter);
+      });
+      setCurrentLocation({
+        lat: mapData?.pinLatitude,
+        lng: mapData?.pinLongitude,
+      });
+      setZoom(14);
+      setTitle(mapData?.title);
+      setSelectedFilters(filterData);
+      const locData = mapData?.locations.map((loc) => {
+        return {
+          name: loc.name,
+          tag: loc.tag,
+          longitude: loc.longitude,
+          latitude: loc.latitude,
+        };
+      });
+      locData.forEach((loc) => {
+        setLocationsByTag((prevTags) => {
+          const tag = loc.tag;
+          const existingTag = prevTags[tag] || { locations: [] };
+
+          const uniqueLocations = [
+            ...existingTag.locations.filter(
+              (location) => location.name !== loc.name
+            ),
+            loc,
+          ];
+
+          const updatedTag = {
+            ...existingTag,
+            locations: uniqueLocations,
+          };
+
+          return { ...prevTags, [tag]: updatedTag };
+        });
+      });
+
+      checkGoogleMapsAvailability();
+    }
+  }, [mapData, filters]);
+
+  useEffect(() => {
+    if (window.google.maps.places) {
+      searchNearbyPlaces(selectedFilters, currentLocation);
+    }
+  }, [
+    currentLocation,
+    selectedFilters,
+    searchNearbyPlaces,
+    isGoogleMapsLoaded,
+  ]);
+
+  // console.log(location)
 
   return (
     <GoogleMapsLoader>
@@ -500,6 +592,7 @@ export default function CreateGoogleMap() {
               const isSelected = selectedFilters.some(
                 (selectedFilter) => selectedFilter.type === filter.type
               );
+              console.log(filter, isSelected);
               return (
                 <Button
                   key={filter.type}
@@ -709,7 +802,7 @@ export default function CreateGoogleMap() {
                   width: "100%",
                 }}
               >
-                Save Map
+                {mapData ? "Update Map" : "Save Map"}
               </Button>
             </Box>
           </Box>

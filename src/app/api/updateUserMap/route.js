@@ -3,13 +3,15 @@ import { NextResponse } from "next/server";
 
 export async function POST(req) {
   try {
-    const { title, pinLocation, locations, userEmail } = await req.json();
+    const { id, title, pinLocation, locations, userEmail } = await req.json();
+    console.log(id, title);
 
     if (!title && !pinLocation && !locations && !userEmail) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const map = await prisma.map.create({
+    const updatedMap = await prisma.map.update({
+      where: { id: id },
       data: {
         title,
         user: {
@@ -20,6 +22,7 @@ export async function POST(req) {
         pinName: pinLocation.name,
         pinImageUrl: pinLocation.imageUrl,
         locations: {
+          deleteMany: {},
           create: locations.map((loc) => ({
             name: loc.name,
             tag: loc.tag,
@@ -30,7 +33,7 @@ export async function POST(req) {
       },
     });
 
-    return NextResponse.json({ map }, { status: 201 });
+    return NextResponse.json({ updatedMap }, { status: 201 });
   } catch (e) {
     console.error("Error saving map:", e);
     return NextResponse.json({ error: "Error saving map" }, { status: 500 });
