@@ -19,7 +19,7 @@ export default function DarkModeToggle() {
       "--heroShadow",
       darkMode
         ? "#ffffff20 0px 30px 60px -10px, #ffffff20 0px 20px 40px -15px, #ffffff20 0px -1px 4px 0px inset"
-        : "#32325d3f 0px 50px 100px -20px, #0000004c 0px 30px 60px -30px, #0a254059 0px -2px 6px 0px inset"
+        : "#32325d3f 0px 30px 60px -10px, #0000004c 0px 20px 40px -15px, #0a254059 0px -1px 4px 0px inset"
     );
     document.documentElement.style.setProperty(
       "--footer-bg",
