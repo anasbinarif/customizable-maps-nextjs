@@ -85,7 +85,7 @@ export default function Navbar({ selected }) {
   const [btnWidth, setBtnWidth] = useState(0);
   const { darkMode } = useContext(ThemeContext);
 
-  console.log(curPage);
+  // console.log(curPage);
 
   useEffect(() => {
     const handleResize = () => {
@@ -100,12 +100,12 @@ export default function Navbar({ selected }) {
     };
   }, []);
 
-  console.log(curPage);
-  console.log(btnWidth);
+  // console.log(curPage);
+  // console.log(btnWidth);
   useLayoutEffect(() => {
     if (linkRefs.current[curPage]) {
       const currentWidth = linkRefs.current[curPage].offsetWidth;
-      console.log(currentWidth);
+      // console.log(currentWidth);
       setBtnWidth(currentWidth);
     }
   }, [curPage, router.asPath]);
@@ -173,7 +173,7 @@ export default function Navbar({ selected }) {
           width: "auto",
           maxWidth: "95%",
           margin: "0rem auto",
-          boxShadow: "none",
+          // boxShadow: "none",
           top: "1rem",
           boxShadow: "rgba(0, 0, 0, 0.1) 0px 4px 12px",
           zIndex: 1100,

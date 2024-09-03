@@ -1,13 +1,12 @@
-import React, { useContext, useState } from "react";
+import React, {useContext, useEffect, useState} from "react";
 import { Box, Button, Grid, IconButton, Typography } from "@mui/material";
 import { Upload as UploadIcon, Close as ClearIcon } from "@mui/icons-material";
 import { ThemeContext } from "@/context/ThemeContext";
 import Image from "next/image";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
-const ImageUploader = () => {
+const ImageUploader = ({setUploadedFiles, uploadedFiles}) => {
   const [images, setImages] = useState([]);
-  const [uploadedFiles, setUploadedFiles] = useState([]); // Store the File objects
   const { darkMode } = useContext(ThemeContext);
 
   const handleImageUpload = (event) => {
@@ -22,30 +21,9 @@ const ImageUploader = () => {
     setUploadedFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
   };
 
-  const handleSaveImages = async () => {
-    const formData = new FormData();
-    uploadedFiles.forEach((file) => formData.append("files", file));
-    formData.append("mapId", selectedMapId); // Ensure you pass the correct map ID
-    formData.append("pinName", pinName); // Ensure you pass the correct pin name
-
-    try {
-      const response = await fetch("/api/imageUpload", {
-        method: "POST",
-        body: formData,
-      });
-
-      const result = await response.json();
-      if (response.ok) {
-        alert("Images saved successfully");
-        setUploadedFiles([]);
-        setImages(result.savedImages.map((img) => img.url));
-      } else {
-        console.error("Error saving images:", result.message);
-      }
-    } catch (error) {
-      console.error("Error saving images:", error);
-    }
-  };
+  useEffect(() => {
+    console.log("uploadedFiles:", uploadedFiles)
+  }, [uploadedFiles]);
 
   return (
     <Box

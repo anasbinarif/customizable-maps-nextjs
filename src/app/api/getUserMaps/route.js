@@ -19,7 +19,8 @@ export async function GET(req) {
                 },
             },
             include: {
-                locations: true,  // Include associated locations
+                locations: true,
+                images: true,
             },
         });
 

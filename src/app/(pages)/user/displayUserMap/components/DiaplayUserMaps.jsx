@@ -34,7 +34,7 @@ const DisplayUserMaps = () => {
     setSelectedMap(null);
   };
 
-  console.log(maps);
+  // console.log(maps);
 
   useEffect(() => {
     const fetchUserMaps = async () => {

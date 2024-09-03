@@ -30,6 +30,7 @@ model Map {
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
   locations    Location[]
+  images       Image[]
 }
 
 model Location {
@@ -40,5 +41,13 @@ model Location {
   tag       String
   latitude  Float
   longitude Float
+  createdAt DateTime @default(now())
+}
+
+model Image {
+  id        Int      @id @default(autoincrement())
+  url       String
+  map       Map      @relation(fields: [mapId], references: [id], onDelete: Cascade)
+  mapId     Int
   createdAt DateTime @default(now())
 }

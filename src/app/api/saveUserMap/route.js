@@ -2,11 +2,10 @@ import prisma from "@/lib/prisma";
 import { NextResponse } from 'next/server';
 
 export async function POST(req) {
-
     try {
-        const { title, pinLocation, locations, userEmail } = await req.json();
+        const { title, pinLocation, locations, userEmail, uploadedFileUrls } = await req.json();
 
-        if (!title && !pinLocation && !locations && !userEmail) {
+        if (!title || !pinLocation || !locations || !userEmail) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
@@ -26,6 +25,11 @@ export async function POST(req) {
                         tag: loc.tag,
                         latitude: loc.latitude,
                         longitude: loc.longitude,
+                    })),
+                },
+                images: {
+                    create: uploadedFileUrls.map(url => ({
+                        url,
                     })),
                 },
             },

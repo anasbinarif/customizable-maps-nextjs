@@ -2,10 +2,10 @@
 
 import multer from 'multer';
 
-const storage = multer.memoryStorage(); // Store files in memory temporarily
+const storage = multer.memoryStorage();
 
 const upload = multer({ storage: storage });
 
-const uploadMiddleware = upload.array('files'); // Change 'files' to your form field name if different
+const uploadMiddleware = upload.array('files');
 
 export default uploadMiddleware;

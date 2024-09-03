@@ -13,7 +13,7 @@ export default function TextArea() {
     setEditorHtml(html);
   };
 
-  console.log(editorHtml);
+  // console.log(editorHtml);
 
   return (
     <Box
