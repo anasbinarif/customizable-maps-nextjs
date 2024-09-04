@@ -1,17 +1,11 @@
 "use client";
-import React, { useState, useEffect, useContext } from "react";
-import { CardTravelSharp } from "@mui/icons-material";
-import { Box, Typography, Button, Container, Grid } from "@mui/material";
-import Image from "next/image";
-
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import "leaflet/dist/leaflet.css";
-import dynamic from "next/dynamic";
-import("react-leaflet");
-import "../../../../lib/leaflet-config";
-import { ThemeContext } from "@/context/ThemeContext";
+import React, { useState, useContext } from "react";
+import { Box, Container, Typography } from "@mui/material";
 import { useTheme } from "@mui/material";
+import dynamic from "next/dynamic";
+import { ThemeContext } from "@/context/ThemeContext";
 import Form from "./components/Form";
+import { Map, Marker } from "pigeon-maps";
 
 export default function CarouselSection() {
   const { darkMode } = useContext(ThemeContext);
@@ -31,7 +25,6 @@ export default function CarouselSection() {
         backgroundSize: "cover",
         backgroundPosition: "center",
         padding: "2rem",
-
         "@media only screen and (max-width: 600px)": {
           padding: "1rem",
         },
@@ -58,7 +51,6 @@ export default function CarouselSection() {
             overflow: "hidden",
             flex: 1,
             padding: 0,
-            // height: "500px",
           }}
         >
           <Box
@@ -70,22 +62,15 @@ export default function CarouselSection() {
               clipPath: "polygon(0 0, 100% 0%, 93% 100%, 0% 100%)",
             }}
           >
-            <Box sx={{ width: "100%", height: "100%" }}>
-              <MapContainer
-                center={position}
-                zoom={16}
-                scrollWheelZoom={false}
-                style={{ height: "100%", width: "100%" }}
-              >
-                <TileLayer
-                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                />
-                <Marker position={position}>
-                  <Popup>Nederland</Popup>
-                </Marker>
-              </MapContainer>
-            </Box>
+            <Map
+              center={position}
+              zoom={15}
+              height={600}
+              width={600}
+              style={{ height: "100%" }}
+            >
+              <Marker anchor={position} payload={1} />
+            </Map>
           </Box>
         </Box>
         <Box
@@ -98,9 +83,6 @@ export default function CarouselSection() {
         >
           <Box
             sx={{
-              //   display: "flex",
-              //   flexDirection: "column",
-              //   justifyContent: "space-between",
               height: "100%",
               padding: "2rem 1rem",
               width: "100%",
