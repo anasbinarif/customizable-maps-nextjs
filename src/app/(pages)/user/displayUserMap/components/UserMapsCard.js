@@ -11,6 +11,7 @@ import {
 import FullscreenIcon from "@mui/icons-material/Fullscreen";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddRounded from "@mui/icons-material/AddRounded";
+import EditIcon from "@mui/icons-material/Edit";
 import Link from "next/link";
 
 const UserMapsCard = ({ map, onOpenDetails, onDelete }) => {
@@ -30,7 +31,7 @@ const UserMapsCard = ({ map, onOpenDetails, onDelete }) => {
         sx={{
           position: "absolute",
           top: "8px",
-          right: "8px",
+          right: "48px",
           color: "white",
           zIndex: 8,
         }}
@@ -42,13 +43,27 @@ const UserMapsCard = ({ map, onOpenDetails, onDelete }) => {
         sx={{
           position: "absolute",
           top: "8px",
-          right: "48px",
+          right: "90px",
           color: "white",
           zIndex: 8,
         }}
       >
         <DeleteIcon />
       </IconButton>
+      <Link
+        href={`/user/createUserMaps/${map?.id}`}
+        style={{
+          position: "absolute",
+          top: "8px",
+          right: "8px",
+          color: "white",
+          zIndex: 8,
+        }}
+      >
+        <IconButton sx={{ color: "white" }}>
+          <EditIcon />
+        </IconButton>
+      </Link>
       {/* <Box#333
         // component="img"
         height="140"
