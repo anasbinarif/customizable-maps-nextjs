@@ -20,6 +20,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 export default function LoginSignupModal({ open, handleClose, mode }) {
   const [isLogin, setIsLogin] = useState(true);
+  const [showForgetPw, setShowForgetPw] = useState(false);
   const [loading, setLoading] = useState(false); // State to manage loading spinner
   const [loginData, setLoginData] = useState({
     email: "",
@@ -31,6 +32,7 @@ export default function LoginSignupModal({ open, handleClose, mode }) {
     password: "",
     confirmPassword: "",
   });
+  const [forgetEmail, setForgetEmail] = useState("");
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("error");
@@ -38,6 +40,7 @@ export default function LoginSignupModal({ open, handleClose, mode }) {
 
   useEffect(() => {
     setIsLogin(mode === "login");
+    setShowForgetPw(false);
     setLoginData({ email: "", password: "" });
     setSignupData({ name: "", email: "", password: "", confirmPassword: "" });
     setSnackbarOpen(false);
@@ -143,8 +146,43 @@ export default function LoginSignupModal({ open, handleClose, mode }) {
     }
   };
 
+  const handleEmailVerification = async () => {
+    setLoading(true);
+    const email = forgetEmail;
+
+    try {
+      const res = await fetch("/api/sendResetPassword", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      const data = await res.json();
+
+      if (res.ok) {
+        setSnackbarMessage(data.message);
+        setSnackbarSeverity("success");
+        setSnackbarOpen(true);
+      } else {
+        setSnackbarMessage(data.message);
+        setSnackbarSeverity("error");
+        setSnackbarOpen(true);
+      }
+    } catch (err) {
+      console.log(err);
+      setSnackbarMessage("We ran into an issue, please try again later..");
+      setSnackbarSeverity("error");
+      setSnackbarOpen(true);
+    }
+
+    setLoading(false);
+  };
+
   const toggleForm = () => {
     setIsLogin(!isLogin);
+  };
+
+  const toggleForgetPw = () => {
+    setShowForgetPw(!showForgetPw);
   };
 
   const handleSnackbarClose = () => {
@@ -157,7 +195,10 @@ export default function LoginSignupModal({ open, handleClose, mode }) {
         open={open}
         TransitionComponent={Transition}
         keepMounted
-        onClose={handleClose}
+        onClose={(e) => {
+          setShowForgetPw(false);
+          handleClose();
+        }}
         sx={{
           "& .MuiDialog-paper": {
             backgroundColor: !darkMode
@@ -184,15 +225,18 @@ export default function LoginSignupModal({ open, handleClose, mode }) {
               sx={{
                 display: "flex",
                 flexDirection: "column",
-                gap: "1.5rem",
                 width: "300px",
                 margin: "0 auto",
                 transition: "all 0.5s ease-in-out",
+
+                "& > *:not(:last-child)": {
+                  marginBottom: "1.5rem",
+                },
               }}
             >
               {!isLogin && (
-                <TextField
-                  label="Name"
+                <StyledTextField
+                  placeholder="Name"
                   variant="outlined"
                   fullWidth
                   required
@@ -200,34 +244,57 @@ export default function LoginSignupModal({ open, handleClose, mode }) {
                   onChange={(e) =>
                     setSignupData({ ...signupData, name: e.target.value })
                   }
-                  sx={{ backgroundColor: "rgba(255, 255, 255, 0.7)" }}
+                  // sx={{ backgroundColor: "rgba(255, 255, 255, 0.7)" }}
                 />
               )}
-              <StyledTextField
-                placeholder="Email"
-                variant="outlined"
-                fullWidth
-                required
-                value={isLogin ? loginData.email : signupData.email}
-                onChange={(e) =>
-                  isLogin
-                    ? setLoginData({ ...loginData, email: e.target.value })
-                    : setSignupData({ ...signupData, email: e.target.value })
-                }
-              />
-              <StyledTextField
-                placeholder="Password"
-                variant="outlined"
-                type="password"
-                fullWidth
-                required
-                value={isLogin ? loginData.password : signupData.password}
-                onChange={(e) =>
-                  isLogin
-                    ? setLoginData({ ...loginData, password: e.target.value })
-                    : setSignupData({ ...signupData, password: e.target.value })
-                }
-              />
+              {showForgetPw ? (
+                <StyledTextField
+                  placeholder="Forget Email"
+                  variant="outlined"
+                  type="email"
+                  fullWidth
+                  required
+                  value={forgetEmail}
+                  onChange={(e) => setForgetEmail(e.target.value)}
+                />
+              ) : (
+                <>
+                  <StyledTextField
+                    placeholder="Email"
+                    variant="outlined"
+                    fullWidth
+                    required
+                    value={isLogin ? loginData.email : signupData.email}
+                    onChange={(e) =>
+                      isLogin
+                        ? setLoginData({ ...loginData, email: e.target.value })
+                        : setSignupData({
+                            ...signupData,
+                            email: e.target.value,
+                          })
+                    }
+                  />
+                  <StyledTextField
+                    placeholder="Password"
+                    variant="outlined"
+                    type="password"
+                    fullWidth
+                    required
+                    value={isLogin ? loginData.password : signupData.password}
+                    onChange={(e) =>
+                      isLogin
+                        ? setLoginData({
+                            ...loginData,
+                            password: e.target.value,
+                          })
+                        : setSignupData({
+                            ...signupData,
+                            password: e.target.value,
+                          })
+                    }
+                  />
+                </>
+              )}
               {!isLogin && (
                 <StyledTextField
                   placeholder="Confirm Password"
@@ -244,24 +311,51 @@ export default function LoginSignupModal({ open, handleClose, mode }) {
                   }
                 />
               )}
-              <Button
-                variant="contained"
-                color="primary"
-                fullWidth
-                onClick={handleLoginSignup}
-              >
-                {isLogin ? "Login" : "Sign Up"}
-              </Button>
-              <Button
-                variant="text"
-                color="secondary"
-                onClick={toggleForm}
-                sx={{ textTransform: "none" }}
-              >
-                {isLogin
-                  ? "Don't have an account? Sign Up"
-                  : "Already have an account? Login"}
-              </Button>
+              {showForgetPw ? (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  fullWidth
+                  onClick={handleEmailVerification}
+                >
+                  Confirm
+                </Button>
+              ) : (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  fullWidth
+                  onClick={handleLoginSignup}
+                >
+                  {isLogin ? "Login" : "Sign Up"}
+                </Button>
+              )}
+              {isLogin && (
+                <Button
+                  variant="text"
+                  color="secondary"
+                  onClick={toggleForgetPw}
+                  style={{
+                    textTransform: "none",
+                    // backgroundColor: "red",
+                    marginBottom: "0",
+                  }}
+                >
+                  {showForgetPw ? "Login?" : "Forgot Password?"}
+                </Button>
+              )}
+              {!showForgetPw && (
+                <Button
+                  variant="text"
+                  color="secondary"
+                  onClick={toggleForm}
+                  sx={{ textTransform: "none" }}
+                >
+                  {isLogin
+                    ? "Don't have an account? Sign Up"
+                    : "Already have an account? Login"}
+                </Button>
+              )}
             </Box>
           </Box>
         </DialogContent>

@@ -16,6 +16,8 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   maps      Map[]
+  resetToken           String?
+  resetTokenExpires    DateTime?
 }
 
 model Map {

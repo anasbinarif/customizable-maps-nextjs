@@ -37,7 +37,7 @@ import { StyledTextField } from "@/components/CustomTextFields";
 import ConfirmModal from "@/components/ConfirmModal";
 import { generateTextColor } from "@/lib/generateTextColor";
 import GoogleMapsLoader from "@/lib/GoogleMapsLoader";
-import {uploadFileToS3} from "@/lib/uploadFileToS3";
+import { uploadFileToS3 } from "@/lib/uploadFileToS3";
 import { usePathname, useRouter } from "next/navigation";
 
 const iconStyle = {
@@ -86,7 +86,7 @@ export default function CreateGoogleMap({ mapData = null }) {
   const [openConfirm, setOpenConfirm] = useState(false);
   const [latLangTmp, setLatLangTmp] = useState({ lat: "", lng: "" });
   const mapRef = useRef(null);
-    const [uploadedFiles, setUploadedFiles] = useState([]);
+  const [uploadedFiles, setUploadedFiles] = useState([]);
 
   const [isGoogleMapsLoaded, setIsGoogleMapsLoaded] = useState(false);
 
@@ -159,8 +159,10 @@ export default function CreateGoogleMap({ mapData = null }) {
     }
     setLoading(true);
 
-      const fileUploadPromises = uploadedFiles.map((file) => uploadFileToS3(file));
-      const fileUrls = await Promise.all(fileUploadPromises);
+    const fileUploadPromises = uploadedFiles.map((file) =>
+      uploadFileToS3(file)
+    );
+    const fileUrls = await Promise.all(fileUploadPromises);
 
     const locationsToSave = Object.keys(locationsByTag).flatMap((tag) =>
       locationsByTag[tag].locations.map((loc) => ({
@@ -187,7 +189,7 @@ export default function CreateGoogleMap({ mapData = null }) {
       },
       locations: locationsToSave,
       userEmail,
-      uploadedFileUrls: fileUrls
+      uploadedFileUrls: fileUrls,
     };
     try {
       let response;
@@ -326,6 +328,7 @@ export default function CreateGoogleMap({ mapData = null }) {
       const lat = place.geometry.location.lat();
       const lng = place.geometry.location.lng();
       setCurrentLocation({ lat, lng, name: place.name });
+      setZoom(14);
       setMarkers([{ lat, lng, name: place.name }]);
       setTitle(place.formatted_address || "");
     } else {
@@ -342,6 +345,7 @@ export default function CreateGoogleMap({ mapData = null }) {
     const lat = latLangTmp?.lat;
     const lng = latLangTmp?.lng;
     setCurrentLocation({ lat, lng, name: "Selected Location" });
+    setZoom(14);
     setLatLangTmp({ lat: "", lng: "" });
     setMarkers([{ lat, lng, name: "Selected Location" }]);
     setOpenConfirm(false);
@@ -771,7 +775,10 @@ export default function CreateGoogleMap({ mapData = null }) {
               />
             </Autocomplete>
           </GoogleMap>
-          <ImageUploader uploadedFiles={uploadedFiles} setUploadedFiles={setUploadedFiles} />
+          <ImageUploader
+            uploadedFiles={uploadedFiles}
+            setUploadedFiles={setUploadedFiles}
+          />
           <TextArea />
           <Box
             sx={{
