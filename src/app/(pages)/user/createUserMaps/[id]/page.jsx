@@ -35,8 +35,9 @@ export default async function ListMaps({ params }) {
   let sessionTokenCookie = cookieStore.get("next-auth.session-token");
   let sessionToken = sessionTokenCookie?.value || null;
   const { id } = params;
+  // console.log(id);
   const data = await fetchData(id, sessionToken);
-  console.log(data);
+  // console.log(data);
 
   return (
     <Box

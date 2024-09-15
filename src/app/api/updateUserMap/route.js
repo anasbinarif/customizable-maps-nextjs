@@ -3,8 +3,10 @@ import { NextResponse } from "next/server";
 
 export async function POST(req) {
   try {
-    const { id, title, pinLocation, locations, userEmail } = await req.json();
-    console.log(id, title);
+    const { id, title, pinLocation, locations, userEmail, uploadedFileUrls } =
+      await req.json();
+    // console.log(id, title);
+    // console.log(uploadedFileUrls);
 
     if (!title && !pinLocation && !locations && !userEmail) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -29,6 +31,10 @@ export async function POST(req) {
             latitude: loc.latitude,
             longitude: loc.longitude,
           })),
+        },
+        images: {
+          deleteMany: {},
+          create: uploadedFileUrls.map((url) => ({ url })),
         },
       },
     });

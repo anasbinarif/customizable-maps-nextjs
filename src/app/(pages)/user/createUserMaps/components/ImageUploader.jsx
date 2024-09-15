@@ -1,11 +1,16 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Box, Button, Grid, IconButton, Typography } from "@mui/material";
 import { Upload as UploadIcon, Close as ClearIcon } from "@mui/icons-material";
 import { ThemeContext } from "@/context/ThemeContext";
 import Image from "next/image";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
-const ImageUploader = ({setUploadedFiles, uploadedFiles}) => {
+const ImageUploader = ({
+  setUploadedFiles,
+  uploadedFiles,
+  oldImgs,
+  setOldImgs,
+}) => {
   const [images, setImages] = useState([]);
   const { darkMode } = useContext(ThemeContext);
 
@@ -21,9 +26,15 @@ const ImageUploader = ({setUploadedFiles, uploadedFiles}) => {
     setUploadedFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
   };
 
+  const handleRemoveOldImage = (index) => {
+    setOldImgs((prevImages) => prevImages.filter((_, i) => i !== index));
+  };
+
   useEffect(() => {
-    console.log("uploadedFiles:", uploadedFiles)
+    console.log("uploadedFiles:", uploadedFiles);
   }, [uploadedFiles]);
+
+  console.log(oldImgs);
 
   return (
     <Box
@@ -37,7 +48,7 @@ const ImageUploader = ({setUploadedFiles, uploadedFiles}) => {
         mt: "20px",
       }}
     >
-      {images.length === 0 ? (
+      {images.length === 0 && oldImgs.length === 0 ? (
         <Box
           sx={{
             display: "flex",
@@ -79,6 +90,36 @@ const ImageUploader = ({setUploadedFiles, uploadedFiles}) => {
       ) : (
         <>
           <Grid container spacing={2}>
+            {oldImgs.map((image, index) => (
+              <Grid item xs={6} sm={4} md={3} key={index}>
+                <Box sx={{ position: "relative", width: "100%" }}>
+                  <Image
+                    src={image.url}
+                    alt={`Uploaded image ${index + 1}`}
+                    layout="responsive"
+                    width={150}
+                    height={150}
+                    objectFit="cover"
+                    style={{ borderRadius: "8px" }}
+                  />
+                  <IconButton
+                    sx={{
+                      position: "absolute",
+                      top: "8px",
+                      right: "8px",
+                      color: "black",
+                      backgroundColor: "rgba(255, 255, 255, 0.8)",
+                      "&:hover": {
+                        backgroundColor: "rgba(255, 255, 255, 1)",
+                      },
+                    }}
+                    onClick={() => handleRemoveOldImage(index)}
+                  >
+                    <ClearIcon />
+                  </IconButton>
+                </Box>
+              </Grid>
+            ))}
             {images.map((image, index) => (
               <Grid item xs={6} sm={4} md={3} key={index}>
                 <Box sx={{ position: "relative", width: "100%" }}>
@@ -110,7 +151,7 @@ const ImageUploader = ({setUploadedFiles, uploadedFiles}) => {
               </Grid>
             ))}
 
-            {images.length < 7 && (
+            {images.length + oldImgs.length < 7 && (
               <Grid item xs={6} sm={4} md={3}>
                 <Button
                   variant="outlined"

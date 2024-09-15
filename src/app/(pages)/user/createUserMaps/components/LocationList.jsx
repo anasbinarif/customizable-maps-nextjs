@@ -4,6 +4,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { generateTextColor } from "@/lib/generateTextColor";
 
 export default function LocationList({ locationsByTag, handleDelete }) {
+  console.log(locationsByTag);
   return (
     <Box
       sx={{
@@ -34,7 +35,6 @@ export default function LocationList({ locationsByTag, handleDelete }) {
             locationsByTag[tag].locations.map((location, locationIndex) => (
               <Chip
                 key={locationIndex}
-                label={location.name}
                 onDelete={() => handleDelete(tag, locationIndex)}
                 deleteIcon={<DeleteIcon />}
                 variant="outlined"
@@ -44,6 +44,20 @@ export default function LocationList({ locationsByTag, handleDelete }) {
                   color: generateTextColor(locationsByTag[tag].color),
                   backgroundColor: locationsByTag[tag].color,
                 }}
+                label={
+                  <Box
+                    sx={{ display: "flex", gap: "5px", alignItems: "flex-end" }}
+                  >
+                    <Typography variant="body2">{location.name}</Typography>
+                    <Typography
+                      variant="caption"
+                      color="textSecondary"
+                      sx={{ lineHeight: 1.5 }}
+                    >
+                      {location.distance.toFixed(2)}m
+                    </Typography>
+                  </Box>
+                }
               />
             ))
           )}

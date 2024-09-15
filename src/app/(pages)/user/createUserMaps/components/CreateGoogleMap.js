@@ -39,6 +39,9 @@ import { generateTextColor } from "@/lib/generateTextColor";
 import GoogleMapsLoader from "@/lib/GoogleMapsLoader";
 import { uploadFileToS3 } from "@/lib/uploadFileToS3";
 import { usePathname, useRouter } from "next/navigation";
+import { jsPDF } from "jspdf";
+import html2canvas from "html2canvas";
+import { haversineDistance } from "@/lib/data";
 
 const iconStyle = {
   marginRight: "8px",
@@ -48,7 +51,7 @@ const buttonHoverStyle = {
   backgroundColor: "#f0f0f0",
 };
 
-const getMarkerIcon = (color) => {
+const getMarkerIcon = (color, scale) => {
   if (!color) return null;
   return {
     path: "M12 2C8.13 2 5 5.13 5 9c0 3.25 2.83 7.44 7.11 11.54.49.47 1.29.47 1.78 0C16.17 16.44 19 12.25 19 9c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z",
@@ -56,7 +59,7 @@ const getMarkerIcon = (color) => {
     fillOpacity: 1,
     strokeColor: "#000",
     strokeWeight: 1,
-    scale: 2,
+    scale: scale,
     anchor: new window.google.maps.Point(12, 24),
   };
 };
@@ -87,6 +90,8 @@ export default function CreateGoogleMap({ mapData = null }) {
   const [latLangTmp, setLatLangTmp] = useState({ lat: "", lng: "" });
   const mapRef = useRef(null);
   const [uploadedFiles, setUploadedFiles] = useState([]);
+  const [oldImgs, setOldImgs] = useState([]);
+  const contentRef = useRef();
 
   const [isGoogleMapsLoaded, setIsGoogleMapsLoaded] = useState(false);
 
@@ -159,10 +164,13 @@ export default function CreateGoogleMap({ mapData = null }) {
     }
     setLoading(true);
 
+    console.log(uploadedFiles);
     const fileUploadPromises = uploadedFiles.map((file) =>
       uploadFileToS3(file)
     );
-    const fileUrls = await Promise.all(fileUploadPromises);
+    const newFileUrls = await Promise.all(fileUploadPromises);
+    const fileUrls = [...oldImgs.map((img) => img.url), ...newFileUrls];
+    console.log(fileUrls);
 
     const locationsToSave = Object.keys(locationsByTag).flatMap((tag) =>
       locationsByTag[tag].locations.map((loc) => ({
@@ -240,6 +248,26 @@ export default function CreateGoogleMap({ mapData = null }) {
     }
   };
 
+  const exportMap = async () => {
+    const input = contentRef.current;
+    console.log(input);
+
+    const canvas = await html2canvas(input);
+    console.log(canvas);
+    const imgData = canvas.toDataURL("image/png");
+
+    const doc = new jsPDF("p", "mm", "a4");
+    const imgWidth = 210;
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+    doc.addImage(imgData, "PNG", 10, 10, imgWidth, imgHeight);
+
+    doc.setFontSize(12);
+    doc.text("Points of Interest", 10, imgHeight + 20);
+
+    doc.save("exported-page.pdf");
+  };
+
   // Example filter buttons with icons and unique selection colors
   const filters = useMemo(() => {
     return [
@@ -301,6 +329,7 @@ export default function CreateGoogleMap({ mapData = null }) {
   }, []);
 
   const handleLocationClick = (location) => {
+    console.log(location);
     setLocationsByTag((prevTags) => {
       const updatedTag = {
         ...prevTags[location.tag],
@@ -329,6 +358,17 @@ export default function CreateGoogleMap({ mapData = null }) {
       const lng = place.geometry.location.lng();
       setCurrentLocation({ lat, lng, name: place.name });
       setZoom(14);
+      setLocationsByTag({
+        Restaurants: { color: "#FF9A8B", locations: [] },
+        Hotels: { color: "#6AB2FF", locations: [] },
+        "Things to do": { color: "#9CFF9C", locations: [] },
+        Museums: { color: "#FDF5A0", locations: [] },
+        Transit: { color: "#B5EAF2", locations: [] },
+        Pharmacies: { color: "#B99DFF", locations: [] },
+        ATMs: { color: "#66D0C9", locations: [] },
+        Schools: { color: "#FF9EC4", locations: [] },
+        Entertainment: { color: "#FFB46F", locations: [] },
+      });
       setMarkers([{ lat, lng, name: place.name }]);
       setTitle(place.formatted_address || "");
     } else {
@@ -348,58 +388,86 @@ export default function CreateGoogleMap({ mapData = null }) {
     setZoom(14);
     setLatLangTmp({ lat: "", lng: "" });
     setMarkers([{ lat, lng, name: "Selected Location" }]);
+    setLocationsByTag({
+      Restaurants: { color: "#FF9A8B", locations: [] },
+      Hotels: { color: "#6AB2FF", locations: [] },
+      "Things to do": { color: "#9CFF9C", locations: [] },
+      Museums: { color: "#FDF5A0", locations: [] },
+      Transit: { color: "#B5EAF2", locations: [] },
+      Pharmacies: { color: "#B99DFF", locations: [] },
+      ATMs: { color: "#66D0C9", locations: [] },
+      Schools: { color: "#FF9EC4", locations: [] },
+      Entertainment: { color: "#FFB46F", locations: [] },
+    });
     setOpenConfirm(false);
     setSelectedFilters([]);
   };
 
-  const searchNearbyPlaces = useCallback((filters, loc) => {
-    const service = new window.google.maps.places.PlacesService(
-      document.createElement("div")
-    );
-    let accumulatedMarkers = [];
+  const searchNearbyPlaces = useCallback(
+    (filters, loc) => {
+      const service = new window.google.maps.places.PlacesService(
+        document.createElement("div")
+      );
+      let accumulatedMarkers = [];
 
-    const promises = filters.map((filter) => {
-      return new Promise((resolve) => {
-        service.nearbySearch(
-          {
-            location: loc,
-            radius: 5000,
-            type: filter.type,
-          },
-          (results, status) => {
-            if (
-              status === window.google.maps.places.PlacesServiceStatus.OK &&
-              results
-            ) {
-              const newMarkers = results.map((place) => ({
-                lat: place.geometry.location.lat(),
-                lng: place.geometry.location.lng(),
-                name: place.name,
-                rating: place.rating,
-                userRatingsTotal: place.user_ratings_total,
-                vicinity: place.vicinity,
-                photo: place.photos ? place.photos[0].getUrl() : null,
-                isOpen: place.opening_hours
-                  ? place.opening_hours.isOpen()
-                  : null,
-                openingHours: place.opening_hours
-                  ? place.opening_hours.weekday_text
-                  : null,
-                type: filter.name,
-                color: filter.selectedColor,
-              }));
-              accumulatedMarkers = accumulatedMarkers.concat(newMarkers);
+      const promises = filters.map((filter) => {
+        return new Promise((resolve) => {
+          service.nearbySearch(
+            {
+              location: loc,
+              radius: 5000,
+              type: filter.type,
+            },
+            (results, status) => {
+              if (
+                status === window.google.maps.places.PlacesServiceStatus.OK &&
+                results
+              ) {
+                const newMarkers = results.map((place) => {
+                  // console.log(place);
+                  return {
+                    lat: place.geometry.location.lat(),
+                    lng: place.geometry.location.lng(),
+                    name: place.name,
+                    rating: place.rating,
+                    userRatingsTotal: place.user_ratings_total,
+                    vicinity: place.vicinity,
+                    photo: place.photos ? place.photos[0].getUrl() : null,
+                    isOpen: place.opening_hours
+                      ? place.opening_hours.isOpen()
+                      : null,
+                    openingHours: place.opening_hours
+                      ? place.opening_hours.weekday_text
+                      : null,
+                    type: filter.name,
+                    color: filter.selectedColor,
+                  };
+                });
+                accumulatedMarkers = accumulatedMarkers.concat(newMarkers);
+              }
+              resolve();
             }
-            resolve();
-          }
-        );
+          );
+        });
       });
-    });
 
-    Promise.all(promises).then(() => {
-      setMarkers(accumulatedMarkers);
-    });
-  }, []);
+      Promise.all(promises).then(() => {
+        console.log(accumulatedMarkers);
+        console.log(locationsByTag);
+        const uxMarkers = accumulatedMarkers.map((marker) => {
+          const catLocations = locationsByTag[marker.type]?.locations;
+          const found = catLocations.find((loc) => loc.name === marker.name);
+          return {
+            ...marker,
+            color: found ? "#000" : marker.color,
+            scale: found ? 2.5 : 2,
+          };
+        });
+        setMarkers(uxMarkers);
+      });
+    },
+    [locationsByTag]
+  );
 
   const toggleFilter = (filter) => {
     const isSelected = selectedFilters.some(
@@ -471,6 +539,13 @@ export default function CreateGoogleMap({ mapData = null }) {
           tag: loc.tag,
           longitude: loc.longitude,
           latitude: loc.latitude,
+          distance: haversineDistance(
+            {
+              lat: mapData?.pinLatitude,
+              lng: mapData?.pinLongitude,
+            },
+            { lat: loc.latitude, lng: loc.longitude }
+          ),
         };
       });
       locData.forEach((loc) => {
@@ -493,6 +568,7 @@ export default function CreateGoogleMap({ mapData = null }) {
           return { ...prevTags, [tag]: updatedTag };
         });
       });
+      setOldImgs(mapData?.images || []);
 
       checkGoogleMapsAvailability();
     }
@@ -509,11 +585,9 @@ export default function CreateGoogleMap({ mapData = null }) {
     isGoogleMapsLoaded,
   ]);
 
-  // console.log(location)
-
   return (
     <GoogleMapsLoader>
-      <Grid container spacing={3} sx={{ marginTop: "1rem" }}>
+      <Grid container spacing={3} sx={{ marginTop: "1rem" }} ref={contentRef}>
         {/* Map section */}
         {/* <Grid item xs={12}>
           <Box
@@ -602,7 +676,7 @@ export default function CreateGoogleMap({ mapData = null }) {
               const isSelected = selectedFilters.some(
                 (selectedFilter) => selectedFilter.type === filter.type
               );
-              console.log(filter, isSelected);
+              // console.log(filter, isSelected);
               return (
                 <Button
                   key={filter.type}
@@ -654,7 +728,7 @@ export default function CreateGoogleMap({ mapData = null }) {
               <Marker
                 key={index}
                 position={{ lat: marker.lat, lng: marker.lng }}
-                icon={getMarkerIcon(marker.color)}
+                icon={getMarkerIcon(marker.color, marker.scale)}
                 onMouseOver={() => handleMarkerMouseOver(marker)}
                 onClick={() =>
                   handleLocationClick({
@@ -662,6 +736,10 @@ export default function CreateGoogleMap({ mapData = null }) {
                     tag: marker.type,
                     latitude: marker.lat,
                     longitude: marker.lng,
+                    distance: haversineDistance(currentLocation, {
+                      lat: marker.lat,
+                      lng: marker.lng,
+                    }),
                   })
                 }
               >
@@ -778,6 +856,8 @@ export default function CreateGoogleMap({ mapData = null }) {
           <ImageUploader
             uploadedFiles={uploadedFiles}
             setUploadedFiles={setUploadedFiles}
+            oldImgs={oldImgs}
+            setOldImgs={setOldImgs}
           />
           <TextArea />
           <Box
@@ -790,6 +870,7 @@ export default function CreateGoogleMap({ mapData = null }) {
               <Button
                 variant="contained"
                 color="primary"
+                onClick={exportMap}
                 sx={{
                   width: "100%",
                   backgroundColor: "transparent",

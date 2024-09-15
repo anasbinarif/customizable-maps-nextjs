@@ -23,6 +23,7 @@ export async function GET(req, { params }) {
       },
       include: {
         locations: true,
+        images: true,
       },
     });
     // console.log(map);
