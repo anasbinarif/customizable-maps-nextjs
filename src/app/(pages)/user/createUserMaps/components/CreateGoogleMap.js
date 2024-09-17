@@ -31,6 +31,7 @@ import LoadingSpinner from "@/components/LoadingSpinner";
 import { useSession } from "next-auth/react";
 import AlertSnackbar from "@/components/AlertSnackbar";
 import TextArea from "./TextArea";
+import LogoUploader from "./LogoUploader";
 import LoginSignupModal from "@/components/LoginSignupModal";
 import ImageUploader from "./ImageUploader";
 import { StyledTextField } from "@/components/CustomTextFields";
@@ -41,7 +42,8 @@ import { uploadFileToS3 } from "@/lib/uploadFileToS3";
 import { usePathname, useRouter } from "next/navigation";
 import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
-import { haversineDistance } from "@/lib/data";
+import CustomPdf from "./exportedDoc";
+import { haversineDistance, getMarkerIcon } from "@/lib/data";
 
 const iconStyle = {
   marginRight: "8px",
@@ -49,19 +51,6 @@ const iconStyle = {
 
 const buttonHoverStyle = {
   backgroundColor: "#f0f0f0",
-};
-
-const getMarkerIcon = (color, scale) => {
-  if (!color) return null;
-  return {
-    path: "M12 2C8.13 2 5 5.13 5 9c0 3.25 2.83 7.44 7.11 11.54.49.47 1.29.47 1.78 0C16.17 16.44 19 12.25 19 9c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z",
-    fillColor: color,
-    fillOpacity: 1,
-    strokeColor: "#000",
-    strokeWeight: 1,
-    scale: scale,
-    anchor: new window.google.maps.Point(12, 24),
-  };
 };
 
 export default function CreateGoogleMap({ mapData = null }) {
@@ -91,6 +80,7 @@ export default function CreateGoogleMap({ mapData = null }) {
   const mapRef = useRef(null);
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [oldImgs, setOldImgs] = useState([]);
+  const [logoFile, setLogoFile] = useState({});
   const contentRef = useRef();
 
   const [isGoogleMapsLoaded, setIsGoogleMapsLoaded] = useState(false);
@@ -223,6 +213,7 @@ export default function CreateGoogleMap({ mapData = null }) {
       if (response.ok) {
         handleOpenAlert("success", "Map saved successfully!");
         setLoading(false);
+        setTitle("");
         setSelectedFilters([]);
         setMarkers([]);
         setActiveMarker(null);
@@ -237,6 +228,9 @@ export default function CreateGoogleMap({ mapData = null }) {
           Schools: { color: "#FF9EC4", locations: [] },
           Entertainment: { color: "#FFB46F", locations: [] },
         });
+        setUploadedFiles([]);
+        setOldImgs([]);
+        setLogoFile({});
       } else {
         alert("Failed to save the map.");
         handleOpenAlert("error", "Failed to save the map.");
@@ -587,7 +581,7 @@ export default function CreateGoogleMap({ mapData = null }) {
 
   return (
     <GoogleMapsLoader>
-      <Grid container spacing={3} sx={{ marginTop: "1rem" }} ref={contentRef}>
+      <Grid container spacing={3} sx={{ marginTop: "1rem" }}>
         {/* Map section */}
         {/* <Grid item xs={12}>
           <Box
@@ -859,7 +853,7 @@ export default function CreateGoogleMap({ mapData = null }) {
             oldImgs={oldImgs}
             setOldImgs={setOldImgs}
           />
-          <TextArea />
+          {/* <TextArea />
           <Box
             sx={{
               display: "flex",
@@ -899,7 +893,7 @@ export default function CreateGoogleMap({ mapData = null }) {
                 {mapData ? "Update Map" : "Save Map"}
               </Button>
             </Box>
-          </Box>
+          </Box> */}
         </Grid>
         {/* Location List section */}
         <Grid item xs={12} sm={12} md={4} lg={3}>
@@ -908,7 +902,67 @@ export default function CreateGoogleMap({ mapData = null }) {
             handleDelete={handleDelete}
           />
         </Grid>
+        <Grid item xs={12} sm={12} md={12} lg={12}>
+          <Grid container spacing={3}>
+            <Grid item xs={12} sm={12} md={8} lg={9}>
+              <TextArea />
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Box mt="10px">
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={exportMap}
+                    sx={{
+                      width: "100%",
+                      backgroundColor: "transparent",
+                      color: "primary.main",
+                      boxShadow: "none",
+
+                      "&:hover": {
+                        fontWeight: "bold",
+                        backgroundColor: "transparent",
+                        boxShadow: "none",
+                      },
+                    }}
+                  >
+                    Export
+                  </Button>
+                </Box>
+                <Box mt="10px">
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={saveMap}
+                    sx={{
+                      width: "100%",
+                    }}
+                  >
+                    {mapData ? "Update Map" : "Save Map"}
+                  </Button>
+                </Box>
+              </Box>
+            </Grid>
+            <Grid item xs={12} sm={12} md={4} lg={3}>
+              <LogoUploader logoFile={logoFile} setLogoFile={setLogoFile} />
+            </Grid>
+          </Grid>
+        </Grid>
       </Grid>
+      <CustomPdf
+        customRef={contentRef}
+        data={{
+          title: title,
+          oldImgs: oldImgs,
+          newImgFiles: uploadedFiles,
+          locationsByTag: locationsByTag,
+          currentLocation: currentLocation,
+        }}
+      />
       <AlertSnackbar
         open={alertOpen}
         onClose={handleCloseAlert}

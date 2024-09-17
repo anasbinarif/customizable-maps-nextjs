@@ -155,6 +155,7 @@ export default function Navbar({ selected }) {
       },
       body: JSON.stringify({ currentPassword, newPassword }),
     });
+    // console.log(res);
 
     if (!res.ok) {
       throw new Error("Failed to change password");
@@ -201,7 +202,7 @@ export default function Navbar({ selected }) {
                 component="div"
                 sx={{ color: "secondary.main", fontWeight: "bold" }}
               >
-                Customizable Maps
+                Map Maven
               </Typography>
             </Box>
             <Box

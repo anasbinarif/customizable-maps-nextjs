@@ -24,7 +24,7 @@ export default function TextArea() {
         // margin: "0 2",
         borderRadius: "16px",
         height: "200px",
-        marginTop: "2rem",
+        // marginTop: "2rem",
         "--txtClr": !darkMode ? "#000" : "#fff",
       }}
     >

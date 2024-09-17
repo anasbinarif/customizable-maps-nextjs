@@ -1,34 +1,54 @@
-import { getSession } from 'next-auth/react';
-import bcrypt from 'bcryptjs';
-import prisma from '@/lib/prisma';
+import { getServerSession } from "next-auth/next";
+import { NextResponse } from "next/server";
+import { authOptions } from "@/lib/auth";
+import bcrypt from "bcryptjs";
+import prisma from "@/lib/prisma";
 
-export default async function handler(req, res) {
-    if (req.method !== 'POST') {
-        return res.status(405).json({ message: 'Method not allowed' });
-    }
-
-    const session = await getSession({ req });
+export async function POST(req) {
+  try {
+    // console.log(req);
+    const session = await getServerSession(authOptions);
     if (!session) {
-        return res.status(401).json({ message: 'Unauthorized' });
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
-    const { currentPassword, newPassword } = req.body;
+    // console.log(session);
+
+    const { currentPassword, newPassword } = await req.json();
+
+    // console.log(newPassword);
 
     const user = await prisma.user.findUnique({
-        where: { email: session.user.email },
+      where: { email: session.user.email },
     });
+
+    // console.log(user);
 
     const isMatch = await bcrypt.compare(currentPassword, user.password);
     if (!isMatch) {
-        return res.status(400).json({ message: 'Current password is incorrect' });
+      return NextResponse.json(
+        { message: "Current password is incorrect" },
+        { status: 400 }
+      );
     }
 
     const hashedPassword = await bcrypt.hash(newPassword, 10);
+    // console.log(hashedPassword);
 
     await prisma.user.update({
-        where: { email: session.user.email },
-        data: { password: hashedPassword },
+      where: { email: session.user.email },
+      data: { password: hashedPassword },
     });
 
-    return res.status(200).json({ message: 'Password updated successfully' });
+    return NextResponse.json(
+      { message: "Password updated successfully" },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error("Error updating password:", error);
+    return NextResponse.json(
+      { message: "Internal Server Error" },
+      { status: 500 }
+    );
+  }
 }

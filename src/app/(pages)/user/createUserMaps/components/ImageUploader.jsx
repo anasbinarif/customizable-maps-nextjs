@@ -14,15 +14,17 @@ const ImageUploader = ({
   const [images, setImages] = useState([]);
   const { darkMode } = useContext(ThemeContext);
 
+  // console.log(uploadedFiles);
+
   const handleImageUpload = (event) => {
     const files = Array.from(event.target.files);
-    const newImages = files.map((file) => URL.createObjectURL(file));
-    setImages((prevImages) => [...prevImages, ...newImages]);
+    // const newImages = files.map((file) => URL.createObjectURL(file));
+    // setImages((prevImages) => [...prevImages, ...newImages]);
     setUploadedFiles((prevFiles) => [...prevFiles, ...files]);
   };
 
   const handleRemoveImage = (index) => {
-    setImages((prevImages) => prevImages.filter((_, i) => i !== index));
+    // setImages((prevImages) => prevImages.filter((_, i) => i !== index));
     setUploadedFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
   };
 
@@ -32,6 +34,9 @@ const ImageUploader = ({
 
   useEffect(() => {
     console.log("uploadedFiles:", uploadedFiles);
+    const newImages = uploadedFiles.map((file) => URL.createObjectURL(file));
+    console.log(newImages);
+    setImages(newImages);
   }, [uploadedFiles]);
 
   console.log(oldImgs);
