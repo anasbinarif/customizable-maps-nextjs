@@ -162,6 +162,12 @@ export default function CreateGoogleMap({ mapData = null }) {
     const fileUrls = [...oldImgs.map((img) => img.url), ...newFileUrls];
     console.log(fileUrls);
 
+    let logo = "";
+    if (logoFile.name) {
+      logo = await uploadFileToS3(logoFile);
+    }
+    console.log(logo);
+
     const locationsToSave = Object.keys(locationsByTag).flatMap((tag) =>
       locationsByTag[tag].locations.map((loc) => ({
         name: loc.name,
@@ -188,6 +194,7 @@ export default function CreateGoogleMap({ mapData = null }) {
       locations: locationsToSave,
       userEmail,
       uploadedFileUrls: fileUrls,
+      logo,
     };
     try {
       let response;
@@ -563,6 +570,7 @@ export default function CreateGoogleMap({ mapData = null }) {
         });
       });
       setOldImgs(mapData?.images || []);
+      setLogoFile({ url: mapData?.logo });
 
       checkGoogleMapsAvailability();
     }

@@ -35,11 +35,11 @@ const ImageUploader = ({
   useEffect(() => {
     console.log("uploadedFiles:", uploadedFiles);
     const newImages = uploadedFiles.map((file) => URL.createObjectURL(file));
-    console.log(newImages);
+    // console.log(newImages);
     setImages(newImages);
   }, [uploadedFiles]);
 
-  console.log(oldImgs);
+  // console.log(oldImgs);
 
   return (
     <Box

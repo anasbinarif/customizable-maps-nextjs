@@ -3,10 +3,17 @@ import { NextResponse } from "next/server";
 
 export async function POST(req) {
   try {
-    const { id, title, pinLocation, locations, userEmail, uploadedFileUrls } =
-      await req.json();
+    const {
+      id,
+      title,
+      pinLocation,
+      locations,
+      userEmail,
+      uploadedFileUrls,
+      logo,
+    } = await req.json();
     // console.log(id, title);
-    // console.log(uploadedFileUrls);
+    console.log(logo);
 
     if (!title && !pinLocation && !locations && !userEmail) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -36,6 +43,7 @@ export async function POST(req) {
           deleteMany: {},
           create: uploadedFileUrls.map((url) => ({ url })),
         },
+        logo: logo,
       },
     });
 

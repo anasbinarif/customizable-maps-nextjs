@@ -37,7 +37,7 @@ export default async function ListMaps({ params }) {
   const { id } = params;
   // console.log(id);
   const data = await fetchData(id, sessionToken);
-  // console.log(data);
+  console.log(data);
 
   return (
     <Box

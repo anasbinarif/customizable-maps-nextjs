@@ -42,7 +42,7 @@ const LogoUploader = ({ setLogoFile, logoFile }) => {
         height: "100%",
       }}
     >
-      {!logoFile.name ? (
+      {!logoFile.name && !logoFile.url ? (
         <Box
           sx={{
             display: "flex",
@@ -117,7 +117,11 @@ const LogoUploader = ({ setLogoFile, logoFile }) => {
             <Grid item xs={12} sm={12} md={12}>
               <Box sx={{ position: "relative", width: "100%" }}>
                 <Image
-                  src={URL.createObjectURL(logoFile)}
+                  src={
+                    logoFile.name
+                      ? URL.createObjectURL(logoFile)
+                      : logoFile?.url
+                  }
                   alt="Uploaded logo"
                   layout="responsive"
                   width={150}

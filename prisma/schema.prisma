@@ -33,6 +33,7 @@ model Map {
   updatedAt    DateTime   @updatedAt
   locations    Location[]
   images       Image[]
+  logo         String?
 }
 
 model Location {
