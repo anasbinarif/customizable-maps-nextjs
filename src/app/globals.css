@@ -10,12 +10,6 @@ body {
   font-family: "Roboto", sans-serif;
 }
 
-html,
-body,
-#__next {
-  height: 100%;
-}
-
 .ql-snow {
   border: none !important;
   font-family: inherit !important;

@@ -910,7 +910,18 @@ export default function CreateGoogleMap({ mapData = null }) {
             handleDelete={handleDelete}
           />
         </Grid>
-        <Grid item xs={12} sm={12} md={12} lg={12}>
+        <Grid
+          item
+          xs={12}
+          sm={12}
+          md={12}
+          lg={12}
+          sx={{
+            "@media only screen and (max-width: 900px)": {
+              flexDirection: "row-reverse",
+            },
+          }}
+        >
           <Grid container spacing={3}>
             <Grid item xs={12} sm={12} md={8} lg={9}>
               <TextArea />
