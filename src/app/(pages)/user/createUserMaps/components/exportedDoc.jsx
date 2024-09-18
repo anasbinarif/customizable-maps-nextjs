@@ -46,6 +46,7 @@ export default function CustomPdf({ data, customRef }) {
             padding: "1rem 2rem",
             borderBottom: "3px solid #000",
             display: "flex",
+            m: "1rem 0 3rem",
           }}
         >
           <Typography
@@ -58,7 +59,7 @@ export default function CustomPdf({ data, customRef }) {
             {data?.title}
           </Typography>
         </Box>
-        <Box sx={{ display: "flex", gap: "1rem", m: "2rem 0", height: "60vh" }}>
+        <Box sx={{ display: "flex", gap: "1rem", m: "4rem 0", height: "60vh" }}>
           <Box sx={{ flexBasis: "60%" }}>
             <GoogleMap
               id="search-box-example"

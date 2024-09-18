@@ -250,23 +250,18 @@ export default function CreateGoogleMap({ mapData = null }) {
   };
 
   const exportMap = async () => {
-    const input = contentRef.current;
-    console.log(input);
+    const canvas = await html2canvas(contentRef.current, {
+      useCORS: true,
+      scale: 2,
+    });
 
-    const canvas = await html2canvas(input);
-    console.log(canvas);
     const imgData = canvas.toDataURL("image/png");
-
-    const doc = new jsPDF("p", "mm", "a4");
+    const pdf = new jsPDF("p", "mm", "a4");
     const imgWidth = 210;
     const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-    doc.addImage(imgData, "PNG", 10, 10, imgWidth, imgHeight);
-
-    doc.setFontSize(12);
-    doc.text("Points of Interest", 10, imgHeight + 20);
-
-    doc.save("exported-page.pdf");
+    pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+    pdf.save("exported-document.pdf");
   };
 
   // Example filter buttons with icons and unique selection colors
@@ -978,6 +973,7 @@ export default function CreateGoogleMap({ mapData = null }) {
           title: title,
           oldImgs: oldImgs,
           newImgFiles: uploadedFiles,
+          logoFile: logoFile,
           locationsByTag: locationsByTag,
           currentLocation: currentLocation,
         }}
