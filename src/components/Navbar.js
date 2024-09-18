@@ -102,10 +102,12 @@ export default function Navbar({ selected }) {
 
   // console.log(curPage);
   // console.log(btnWidth);
+  console.log(linkRefs);
   useLayoutEffect(() => {
     if (linkRefs.current[curPage]) {
+      console.log(curPage);
       const currentWidth = linkRefs.current[curPage].offsetWidth;
-      // console.log(currentWidth);
+      console.log(currentWidth);
       setBtnWidth(currentWidth);
     }
   }, [curPage, router.asPath]);
@@ -231,9 +233,13 @@ export default function Navbar({ selected }) {
                   left:
                     curPage === ""
                       ? 0
+                      : curPage === "subscriptions"
+                      ? "26%"
+                      : curPage === "contact"
+                      ? "47%"
                       : curPage === "displayUserMap"
-                      ? "46%"
-                      : "84%",
+                      ? "68%"
+                      : "90%",
                   transform: curPage !== "" ? "translate(-50%, 0)" : "",
                   width: btnWidth,
                   zIndex: 8,
@@ -262,6 +268,50 @@ export default function Navbar({ selected }) {
                     }}
                   />
                   Home
+                </Button>
+              </Link>
+              <Link
+                href="/user/subscriptions"
+                passHref
+                style={LinkStyles}
+                ref={(el) => (linkRefs.current["subscriptions"] = el)}
+              >
+                <Button
+                  sx={LinkBtn}
+                  className={curPage === "subscriptions" ? "selected" : ""}
+                >
+                  <PinDropIcon
+                    sx={{
+                      marginRight: "0.5rem",
+                      color: "#000",
+                      width: curPage === "subscriptions" ? "auto" : "0",
+                      opacity: curPage === "subscriptions" ? "1" : "0",
+                      transition: "all 0.2s ease-out 0.1s",
+                    }}
+                  />
+                  Subscribe
+                </Button>
+              </Link>
+              <Link
+                href="/user/contact"
+                passHref
+                style={LinkStyles}
+                ref={(el) => (linkRefs.current["contact"] = el)}
+              >
+                <Button
+                  sx={LinkBtn}
+                  className={curPage === "contact" ? "selected" : ""}
+                >
+                  <MapIcon
+                    sx={{
+                      marginRight: "0.5rem",
+                      color: "#000",
+                      width: curPage === "contact" ? "auto" : "0",
+                      opacity: curPage === "contact" ? "1" : "0",
+                      transition: "all 0.2s ease-out 0.1s",
+                    }}
+                  />
+                  Contact
                 </Button>
               </Link>
               <Link
@@ -362,6 +412,16 @@ export default function Navbar({ selected }) {
                   <MenuItem>
                     <Link href="/" passHref style={LinkSmall}>
                       <Button sx={LinkSmallBtn}>Home</Button>
+                    </Link>
+                  </MenuItem>
+                  <MenuItem>
+                    <Link href="/user/subscriptions" passHref style={LinkSmall}>
+                      <Button sx={LinkSmallBtn}>Subscribe</Button>
+                    </Link>
+                  </MenuItem>
+                  <MenuItem>
+                    <Link href="/user/contact" passHref style={LinkSmall}>
+                      <Button sx={LinkSmallBtn}>Contact</Button>
                     </Link>
                   </MenuItem>
                   <MenuItem>
