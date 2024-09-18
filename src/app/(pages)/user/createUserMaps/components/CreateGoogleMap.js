@@ -162,7 +162,7 @@ export default function CreateGoogleMap({ mapData = null }) {
     const fileUrls = [...oldImgs.map((img) => img.url), ...newFileUrls];
     console.log(fileUrls);
 
-    let logo = "";
+    let logo = logoFile?.url || "";
     if (logoFile.name) {
       logo = await uploadFileToS3(logoFile);
     }
