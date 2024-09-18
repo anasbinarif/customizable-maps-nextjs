@@ -14,17 +14,21 @@ const ImageUploader = ({
   const [images, setImages] = useState([]);
   const { darkMode } = useContext(ThemeContext);
 
-  // console.log(uploadedFiles);
-
-  const handleImageUpload = (event) => {
-    const files = Array.from(event.target.files);
-    // const newImages = files.map((file) => URL.createObjectURL(file));
-    // setImages((prevImages) => [...prevImages, ...newImages]);
+  const handleImageUpload = (files) => {
     setUploadedFiles((prevFiles) => [...prevFiles, ...files]);
   };
 
+  const handleDrop = (event) => {
+    event.preventDefault();
+    const files = Array.from(event.dataTransfer.files);
+    handleImageUpload(files);
+  };
+
+  const handleDragOver = (event) => {
+    event.preventDefault();
+  };
+
   const handleRemoveImage = (index) => {
-    // setImages((prevImages) => prevImages.filter((_, i) => i !== index));
     setUploadedFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
   };
 
@@ -33,13 +37,9 @@ const ImageUploader = ({
   };
 
   useEffect(() => {
-    console.log("uploadedFiles:", uploadedFiles);
     const newImages = uploadedFiles.map((file) => URL.createObjectURL(file));
-    // console.log(newImages);
     setImages(newImages);
   }, [uploadedFiles]);
-
-  // console.log(oldImgs);
 
   return (
     <Box
@@ -48,10 +48,12 @@ const ImageUploader = ({
         p: 2,
         border: `2px dashed ${darkMode ? "#333" : "#333"}`,
         borderRadius: "8px",
-        // minHeight: "400px",
         backgroundColor: "transparent",
         mt: "20px",
+        position: "relative",
       }}
+      onDrop={handleDrop}
+      onDragOver={handleDragOver}
     >
       {images.length === 0 && oldImgs.length === 0 ? (
         <Box
@@ -88,7 +90,9 @@ const ImageUploader = ({
               hidden
               multiple
               accept="image/*"
-              onChange={handleImageUpload}
+              onChange={(event) =>
+                handleImageUpload(Array.from(event.target.files))
+              }
             />
           </Button>
         </Box>
@@ -182,29 +186,14 @@ const ImageUploader = ({
                     hidden
                     multiple
                     accept="image/*"
-                    onChange={handleImageUpload}
+                    onChange={(event) =>
+                      handleImageUpload(Array.from(event.target.files))
+                    }
                   />
                 </Button>
               </Grid>
             )}
           </Grid>
-
-          {/* <Box sx={{ mt: 2, textAlign: 'center' }}>
-                        <Button
-                            variant="contained"
-                            sx={{
-                                mt: 2,
-                                backgroundColor: 'blue',
-                                color: 'white',
-                                '&:hover': {
-                                    backgroundColor: 'darkblue',
-                                },
-                            }}
-                            onClick={handleSaveImages}
-                        >
-                            Save Images
-                        </Button>
-                    </Box> */}
         </>
       )}
     </Box>
