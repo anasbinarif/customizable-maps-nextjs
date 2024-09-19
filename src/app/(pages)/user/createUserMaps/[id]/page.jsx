@@ -7,14 +7,17 @@ export async function fetchData(id, sessionToken) {
   const baseUrl = process.env.NEXT_PUBLIC_URL || "http://localhost:3000";
 
   try {
-    const response = await fetch(`${baseUrl}/api/getMap/${id}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Cookie: `next-auth.session-token=${sessionToken};path=/;expires=Session`,
-      },
-      credentials: "include",
-    });
+    const response = await fetch(
+      `https://customizable-maps-nextjs.vercel.app/api/getMap/${id}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Cookie: `next-auth.session-token=${sessionToken};path=/;expires=Session`,
+        },
+        credentials: "include",
+      }
+    );
     const responseData = await response.json();
 
     console.log(responseData);
