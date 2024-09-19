@@ -26,6 +26,7 @@
     "aws-sdk": "^2.1687.0",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "html2canvas": "^1.4.1",
     "jsonwebtoken": "^9.0.2",
