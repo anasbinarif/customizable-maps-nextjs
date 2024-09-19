@@ -84,6 +84,7 @@ export default function CreateGoogleMap({ mapData = null }) {
   const contentRef = useRef();
 
   const [isGoogleMapsLoaded, setIsGoogleMapsLoaded] = useState(false);
+  console.log("sarim", mapData);
 
   const handleConfirmClose = () => {
     setLatLangTmp({ lat: "", lng: "" });
