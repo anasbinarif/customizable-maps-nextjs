@@ -5,6 +5,8 @@ import { cookies } from "next/headers";
 export async function fetchData(id, sessionToken) {
   console.log(id, sessionToken);
   const baseUrl = process.env.NEXT_PUBLIC_URL || "http://localhost:3000";
+  const mongo = process.env.DATABASE_URL;
+  console.log(mongo);
 
   try {
     const response = await fetch(`${baseUrl}/api/getMap/${id}`, {
