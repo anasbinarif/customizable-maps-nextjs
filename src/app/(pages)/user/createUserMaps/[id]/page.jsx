@@ -1,15 +1,15 @@
+"use client";
+import { useEffect, useState } from "react";
 import { Box } from "@mui/material";
 import CreateGoogleMap from "../components/CreateGoogleMap";
-import { cookies } from "next/headers";
+import Cookies from "js-cookie"; // to handle cookies on client-side
 
-export async function fetchData(id, sessionToken) {
+async function fetchData(id, sessionToken) {
   console.log(id, sessionToken);
   const baseUrl = process.env.NEXT_PUBLIC_URL || "http://localhost:3000";
-  const mongo = process.env.DATABASE_URL;
-  console.log(mongo);
 
   try {
-    const response = await fetch(`${baseUrl}/api/getMap/${id}`, {
+    const response = await fetch(`/api/getMap/${id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -19,40 +19,41 @@ export async function fetchData(id, sessionToken) {
     });
     const responseData = await response.json();
 
-    console.log(responseData);
     if (!responseData.map) throw new Error("Map not found");
-    return {
-      map: responseData.map,
-    };
+    return responseData.map;
   } catch (err) {
-    console.log(err);
-
-    return {
-      map: null,
-    };
+    console.error(err);
+    return null;
   }
 }
 
-export default async function ListMaps({ params }) {
-  const cookieStore = cookies();
-  let sessionTokenCookie = cookieStore.get("next-auth.session-token");
-  let sessionToken = sessionTokenCookie?.value || null;
-  const { id } = params;
-  // console.log(id);
-  const data = await fetchData(id, sessionToken);
-  console.log(data);
+export default function ListMaps({ params }) {
+  const [mapData, setMapData] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setLoading(true);
+    const sessionToken = Cookies.get("next-auth.session-token");
+    const { id } = params;
+
+    async function fetchMap() {
+      const map = await fetchData(id, sessionToken);
+      setMapData(map);
+    }
+
+    fetchMap().then((res) => setLoading(false));
+  }, [params]);
 
   return (
     <Box
       sx={{
-        // backgroundColor: "primary.main.pageBg1",
         backgroundSize: "cover",
         backgroundPosition: "center",
         padding: "1rem 2rem",
         minHeight: "90vh",
       }}
     >
-      <CreateGoogleMap mapData={data?.map} />
+      {!loading && <CreateGoogleMap mapData={mapData} />}
     </Box>
   );
 }

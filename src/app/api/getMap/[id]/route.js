@@ -11,7 +11,7 @@ export async function GET(req, { params }) {
   try {
     // await runMiddleware(req, NextResponse.next());
     const session = await getServerSession(authOptions);
-    // console.log(session);
+    console.log(session);
 
     if (!session)
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -19,16 +19,14 @@ export async function GET(req, { params }) {
     const map = await prisma.map.findUnique({
       where: {
         id: parseInt(id),
-        user: {
-          email: session.email,
-        },
+        userId: session.user.id,
       },
       include: {
         locations: true,
         images: true,
       },
     });
-    // console.log(map);
+    console.log(map);
 
     if (!map)
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

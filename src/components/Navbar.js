@@ -220,6 +220,13 @@ export default function Navbar({ selected }) {
                 left: "50%",
                 transform: "translate(-50%, 0)",
 
+                "@media only screen and (max-width: 1440px)": {
+                  gap: "0.3rem",
+                  "& .MuiButtonBase-root": {
+                    fontSize: "0.75rem",
+                    textWrap: "nowrap",
+                  },
+                },
                 "@media only screen and (max-width: 1000px)": {
                   display: "none",
                 },

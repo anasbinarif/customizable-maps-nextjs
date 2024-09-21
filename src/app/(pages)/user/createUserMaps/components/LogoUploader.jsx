@@ -27,7 +27,7 @@ const LogoUploader = ({ setLogoFile, logoFile }) => {
     // setUploadedFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
   };
 
-  console.log(logoFile);
+  // console.log(logoFile);
 
   return (
     <Box
@@ -115,7 +115,14 @@ const LogoUploader = ({ setLogoFile, logoFile }) => {
               </Grid>
             ))} */}
             <Grid item xs={12} sm={12} md={12}>
-              <Box sx={{ position: "relative", width: "100%" }}>
+              <Box
+                sx={{
+                  position: "relative",
+                  width: "100%",
+                  width: "100%",
+                  height: "13rem",
+                }}
+              >
                 <Image
                   src={
                     logoFile.name
@@ -123,11 +130,16 @@ const LogoUploader = ({ setLogoFile, logoFile }) => {
                       : logoFile?.url
                   }
                   alt="Uploaded logo"
-                  layout="responsive"
+                  // layout="responsive"
                   width={150}
                   height={150}
-                  objectFit="cover"
-                  style={{ borderRadius: "8px" }}
+                  objectFit="contain"
+                  style={{
+                    borderRadius: "8px",
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "contain",
+                  }}
                 />
                 <IconButton
                   sx={{
