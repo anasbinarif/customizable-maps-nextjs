@@ -262,7 +262,7 @@ export default function CreateGoogleMap({ mapData = null }) {
     const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
     pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
-    pdf.save("exported-document.pdf");
+    pdf.save(`${title}.pdf`);
   };
 
   // Example filter buttons with icons and unique selection colors

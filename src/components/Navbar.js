@@ -278,50 +278,6 @@ export default function Navbar({ selected }) {
                 </Button>
               </Link>
               <Link
-                href="/user/subscriptions"
-                passHref
-                style={LinkStyles}
-                ref={(el) => (linkRefs.current["subscriptions"] = el)}
-              >
-                <Button
-                  sx={LinkBtn}
-                  className={curPage === "subscriptions" ? "selected" : ""}
-                >
-                  <PinDropIcon
-                    sx={{
-                      marginRight: "0.5rem",
-                      color: "#000",
-                      width: curPage === "subscriptions" ? "auto" : "0",
-                      opacity: curPage === "subscriptions" ? "1" : "0",
-                      transition: "all 0.2s ease-out 0.1s",
-                    }}
-                  />
-                  Subscribe
-                </Button>
-              </Link>
-              <Link
-                href="/user/contact"
-                passHref
-                style={LinkStyles}
-                ref={(el) => (linkRefs.current["contact"] = el)}
-              >
-                <Button
-                  sx={LinkBtn}
-                  className={curPage === "contact" ? "selected" : ""}
-                >
-                  <MapIcon
-                    sx={{
-                      marginRight: "0.5rem",
-                      color: "#000",
-                      width: curPage === "contact" ? "auto" : "0",
-                      opacity: curPage === "contact" ? "1" : "0",
-                      transition: "all 0.2s ease-out 0.1s",
-                    }}
-                  />
-                  Contact
-                </Button>
-              </Link>
-              <Link
                 href="/user/displayUserMap"
                 passHref
                 style={LinkStyles}
@@ -363,6 +319,50 @@ export default function Navbar({ selected }) {
                     }}
                   />
                   Map Editor
+                </Button>
+              </Link>
+              <Link
+                href="/user/subscriptions"
+                passHref
+                style={LinkStyles}
+                ref={(el) => (linkRefs.current["subscriptions"] = el)}
+              >
+                <Button
+                  sx={LinkBtn}
+                  className={curPage === "subscriptions" ? "selected" : ""}
+                >
+                  <PinDropIcon
+                    sx={{
+                      marginRight: "0.5rem",
+                      color: "#000",
+                      width: curPage === "subscriptions" ? "auto" : "0",
+                      opacity: curPage === "subscriptions" ? "1" : "0",
+                      transition: "all 0.2s ease-out 0.1s",
+                    }}
+                  />
+                  Subscribe
+                </Button>
+              </Link>
+              <Link
+                href="/user/contact"
+                passHref
+                style={LinkStyles}
+                ref={(el) => (linkRefs.current["contact"] = el)}
+              >
+                <Button
+                  sx={LinkBtn}
+                  className={curPage === "contact" ? "selected" : ""}
+                >
+                  <MapIcon
+                    sx={{
+                      marginRight: "0.5rem",
+                      color: "#000",
+                      width: curPage === "contact" ? "auto" : "0",
+                      opacity: curPage === "contact" ? "1" : "0",
+                      transition: "all 0.2s ease-out 0.1s",
+                    }}
+                  />
+                  Contact
                 </Button>
               </Link>
               {/* <Link href="/blogs" passHref style={LinkStyles}>
