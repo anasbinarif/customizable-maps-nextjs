@@ -456,7 +456,7 @@ export default function CreateGoogleMap({ mapData = null }) {
           const found = catLocations.find((loc) => loc.name === marker.name);
           return {
             ...marker,
-            color: found ? "#000" : marker.color,
+            color: found ? marker.color : `${marker.color}80`,
             scale: found ? 2.5 : 2,
           };
         });

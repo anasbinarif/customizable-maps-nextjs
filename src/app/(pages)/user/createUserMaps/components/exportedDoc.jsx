@@ -215,32 +215,34 @@ export default function CustomPdf({ data, customRef }) {
               m: "2rem",
             }}
           >
-            <Box
-              sx={{
-                position: "relative",
-                width: "12rem",
-                height: "10rem",
-              }}
-            >
-              <Image
-                src={
-                  data?.logoFile?.name
-                    ? URL.createObjectURL(data?.logoFile)
-                    : data?.logoFile?.url
-                }
-                alt="Uploaded logo"
-                // layout="responsive"
-                width={150}
-                height={150}
-                objectFit="contain"
-                style={{
-                  borderRadius: "8px",
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "contain",
+            {(data?.logoFile?.name || data?.logoFile?.url) && (
+              <Box
+                sx={{
+                  position: "relative",
+                  width: "12rem",
+                  height: "10rem",
                 }}
-              />
-            </Box>
+              >
+                <Image
+                  src={
+                    data?.logoFile?.name
+                      ? URL.createObjectURL(data?.logoFile)
+                      : data?.logoFile?.url
+                  }
+                  alt="Uploaded logo"
+                  // layout="responsive"
+                  width={150}
+                  height={150}
+                  objectFit="contain"
+                  style={{
+                    borderRadius: "8px",
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "contain",
+                  }}
+                />
+              </Box>
+            )}
           </Box>
           <Box
             sx={{

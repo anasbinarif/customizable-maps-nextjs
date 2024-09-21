@@ -3,6 +3,7 @@ import { Modal, Box, Typography, Grid, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import CustomPdf from "../../createUserMaps/components/exportedDoc";
 import { haversineDistance } from "@/lib/data";
+import GoogleMapsLoader from "@/lib/GoogleMapsLoader";
 
 const style = {
   position: "absolute",
@@ -127,36 +128,36 @@ const MapDetailsModal = ({ open, onClose, map }) => {
   //   console.log(locationsByTag);
 
   return (
-    // <GoogleMapsLoader>
-    <Modal
-      open={open}
-      onClose={onClose}
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
-    >
-      <Box sx={style}>
-        <Grid container justifyContent="space-between" alignItems="center">
-          {/* <Typography id="modal-modal-title" variant="h6" component="h2">
+    <GoogleMapsLoader>
+      <Modal
+        open={open}
+        onClose={onClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Grid container justifyContent="space-between" alignItems="center">
+            {/* <Typography id="modal-modal-title" variant="h6" component="h2">
             {map.title}
           </Typography> */}
-          <IconButton onClick={onClose} aria-label="close">
-            <CloseIcon />
-          </IconButton>
-        </Grid>
-        <CustomPdf
-          data={{
-            title: map?.title,
-            oldImgs: map?.images,
-            newImgFiles: [],
-            logoFile: { url: map?.logo },
-            locationsByTag: locationsByTag,
-            currentLocation: {
-              lat: Number(map.pinLatitude),
-              lng: Number(map.pinLongitude),
-            },
-          }}
-        />
-        {/* <Box sx={contentStyle}>
+            <IconButton onClick={onClose} aria-label="close">
+              <CloseIcon />
+            </IconButton>
+          </Grid>
+          <CustomPdf
+            data={{
+              title: map?.title,
+              oldImgs: map?.images,
+              newImgFiles: [],
+              logoFile: map?.logo ? { url: map?.logo } : {},
+              locationsByTag: locationsByTag,
+              currentLocation: {
+                lat: Number(map.pinLatitude),
+                lng: Number(map.pinLongitude),
+              },
+            }}
+          />
+          {/* <Box sx={contentStyle}>
                         <Box sx={{ width: '40%', height: '100%', overflowY: "scroll", pr: 2 }}>
                             <Typography variant="body2" color="textSecondary">
                                 Pin Location: {map.pinName} ({map.pinLatitude}, {map.pinLongitude})
@@ -201,9 +202,9 @@ const MapDetailsModal = ({ open, onClose, map }) => {
                             </GoogleMap>
                         </Box>
                     </Box> */}
-      </Box>
-    </Modal>
-    // </GoogleMapsLoader>
+        </Box>
+      </Modal>
+    </GoogleMapsLoader>
   );
 };
 
