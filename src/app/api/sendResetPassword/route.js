@@ -39,7 +39,7 @@ export async function POST(req, res) {
     });
 
     const resetURL = `${
-      process.env.NEXT_PUBLIC_URL || "localhost:3000"
+      process.env.NEXT_BASE_URL || "localhost:3000"
     }/user/reset-password?token=${combinedToken}`;
 
     await transporter.sendMail({
