@@ -240,13 +240,13 @@ export default function Navbar({ selected }) {
                   left:
                     curPage === ""
                       ? 0
-                      : curPage === "subscriptions"
-                      ? "26%"
-                      : curPage === "contact"
-                      ? "47%"
                       : curPage === "displayUserMap"
-                      ? "68%"
-                      : "90%",
+                      ? "26.4%"
+                      : curPage === "createUserMaps"
+                      ? "48.5%"
+                      : curPage === "subscriptions"
+                      ? "71%"
+                      : "91.5%",
                   transform: curPage !== "" ? "translate(-50%, 0)" : "",
                   width: btnWidth,
                   zIndex: 8,
