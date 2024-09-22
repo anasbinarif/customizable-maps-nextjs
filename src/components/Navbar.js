@@ -219,12 +219,12 @@ export default function Navbar({ selected }) {
                 bottom: 0,
                 left: "50%",
                 transform: "translate(-50%, 0)",
+                textWrap: "nowrap",
 
                 "@media only screen and (max-width: 1440px)": {
                   gap: "0.3rem",
                   "& .MuiButtonBase-root": {
                     fontSize: "0.75rem",
-                    textWrap: "nowrap",
                   },
                 },
                 "@media only screen and (max-width: 1000px)": {
@@ -253,6 +253,19 @@ export default function Navbar({ selected }) {
                   borderRadius: "20px",
                   backgroundColor: "primary.main",
                   transition: "all 0.3s ease-out",
+
+                  "@media only screen and (max-width: 1440px)": {
+                    left:
+                      curPage === ""
+                        ? 0
+                        : curPage === "displayUserMap"
+                        ? "27%"
+                        : curPage === "createUserMaps"
+                        ? "48.5%"
+                        : curPage === "subscriptions"
+                        ? "70.5%"
+                        : "90%",
+                  },
                 }}
               ></Box>
               <Link
