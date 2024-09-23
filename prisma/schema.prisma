@@ -34,6 +34,7 @@ model Map {
   locations    Location[]
   images       Image[]
   logo         String?
+  helperText   String?
 }
 
 model Location {

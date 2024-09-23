@@ -3,8 +3,15 @@ import { NextResponse } from "next/server";
 
 export async function POST(req) {
   try {
-    const { title, pinLocation, locations, userEmail, uploadedFileUrls, logo } =
-      await req.json();
+    const {
+      title,
+      pinLocation,
+      locations,
+      userEmail,
+      uploadedFileUrls,
+      logo,
+      helperText,
+    } = await req.json();
 
     if (!title || !pinLocation || !locations || !userEmail) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -34,6 +41,7 @@ export async function POST(req) {
           })),
         },
         logo: logo,
+        helperText: helperText,
       },
     });
 

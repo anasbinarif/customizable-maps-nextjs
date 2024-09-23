@@ -160,7 +160,7 @@ const ImageUploader = ({
               </Grid>
             ))}
 
-            {images.length + oldImgs.length < 7 && (
+            {images.length + oldImgs.length < 10 && (
               <Grid item xs={6} sm={4} md={3}>
                 <Button
                   variant="outlined"

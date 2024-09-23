@@ -5,12 +5,12 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { ThemeContext } from "@/context/ThemeContext";
 
-export default function TextArea() {
-  const [editorHtml, setEditorHtml] = useState("");
+export default function TextArea({ helperHtml, setHelperHtml }) {
+  // const [editorHtml, setEditorHtml] = useState("");
   const { darkMode } = useContext(ThemeContext);
 
   const handleChange = (html) => {
-    setEditorHtml(html);
+    setHelperHtml(html);
   };
 
   // console.log(editorHtml);
@@ -29,7 +29,7 @@ export default function TextArea() {
       }}
     >
       <ReactQuill
-        value={editorHtml}
+        value={helperHtml}
         onChange={handleChange}
         modules={TextArea.modules}
         formats={TextArea.formats}

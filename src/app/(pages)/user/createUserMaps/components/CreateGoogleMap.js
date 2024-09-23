@@ -7,6 +7,7 @@ import React, {
   useCallback,
   useMemo,
 } from "react";
+import ReactDOM from "react-dom/client";
 import {
   Autocomplete,
   GoogleMap,
@@ -82,6 +83,7 @@ export default function CreateGoogleMap({ mapData = null }) {
   const [oldImgs, setOldImgs] = useState([]);
   const [logoFile, setLogoFile] = useState({});
   const contentRef = useRef();
+  const [helperHtml, setHelperHtml] = useState("");
 
   const [isGoogleMapsLoaded, setIsGoogleMapsLoaded] = useState(false);
   console.log("sarim", mapData);
@@ -196,6 +198,7 @@ export default function CreateGoogleMap({ mapData = null }) {
       userEmail,
       uploadedFileUrls: fileUrls,
       logo,
+      helperText: helperHtml,
     };
     try {
       let response;
@@ -250,8 +253,46 @@ export default function CreateGoogleMap({ mapData = null }) {
     }
   };
 
+  // const exportMap = async () => {
+  //   const canvas = await html2canvas(contentRef.current, {
+  //     useCORS: true,
+  //     scale: 2,
+  //   });
+
+  //   const imgData = canvas.toDataURL("image/png");
+  //   const pdf = new jsPDF("p", "mm", "a4");
+  //   const imgWidth = 210;
+  //   const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+  //   pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+  //   pdf.save(`${title}.pdf`);
+  // };
   const exportMap = async () => {
-    const canvas = await html2canvas(contentRef.current, {
+    const pdfContent = document.createElement("div");
+    document.body.appendChild(pdfContent);
+
+    const root = ReactDOM.createRoot(pdfContent);
+
+    root.render(
+      <CustomPdf
+        customRef={null}
+        data={{
+          title: title,
+          oldImgs: oldImgs,
+          newImgFiles: uploadedFiles,
+          logoFile: logoFile,
+          locationsByTag: locationsByTag,
+          currentLocation: currentLocation,
+          helperHtml: helperHtml,
+        }}
+      />
+    );
+
+    await new Promise((resolve) => {
+      setTimeout(resolve, 2000);
+    });
+
+    const canvas = await html2canvas(pdfContent, {
       useCORS: true,
       scale: 2,
     });
@@ -263,6 +304,9 @@ export default function CreateGoogleMap({ mapData = null }) {
 
     pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
     pdf.save(`${title}.pdf`);
+
+    root.unmount();
+    document.body.removeChild(pdfContent);
   };
 
   // Example filter buttons with icons and unique selection colors
@@ -567,6 +611,7 @@ export default function CreateGoogleMap({ mapData = null }) {
       });
       setOldImgs(mapData?.images || []);
       setLogoFile({ url: mapData?.logo });
+      setHelperHtml(mapData?.helperText);
 
       checkGoogleMapsAvailability();
     }
@@ -920,7 +965,7 @@ export default function CreateGoogleMap({ mapData = null }) {
         >
           <Grid container spacing={3}>
             <Grid item xs={12} sm={12} md={8} lg={9}>
-              <TextArea />
+              <TextArea helperHtml={helperHtml} setHelperHtml={setHelperHtml} />
               <Box
                 sx={{
                   display: "flex",
@@ -968,7 +1013,7 @@ export default function CreateGoogleMap({ mapData = null }) {
           </Grid>
         </Grid>
       </Grid>
-      <CustomPdf
+      {/* <CustomPdf
         customRef={contentRef}
         data={{
           title: title,
@@ -977,8 +1022,9 @@ export default function CreateGoogleMap({ mapData = null }) {
           logoFile: logoFile,
           locationsByTag: locationsByTag,
           currentLocation: currentLocation,
+          helperHtml: helperHtml,
         }}
-      />
+      /> */}
       <AlertSnackbar
         open={alertOpen}
         onClose={handleCloseAlert}

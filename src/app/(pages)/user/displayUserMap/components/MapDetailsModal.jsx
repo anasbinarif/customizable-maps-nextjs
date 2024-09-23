@@ -155,6 +155,7 @@ const MapDetailsModal = ({ open, onClose, map }) => {
                 lat: Number(map.pinLatitude),
                 lng: Number(map.pinLongitude),
               },
+              helperHtml: map?.helperText,
             }}
           />
           {/* <Box sx={contentStyle}>

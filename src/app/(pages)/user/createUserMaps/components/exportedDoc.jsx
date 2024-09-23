@@ -9,12 +9,14 @@ import {
 } from "@react-google-maps/api";
 import GoogleMapsLoader from "@/lib/GoogleMapsLoader";
 import { getMarkerIcon } from "@/lib/data";
+import DOMPurify from "dompurify";
 
 export default function CustomPdf({ data, customRef }) {
   const categories = useMemo(
     () => Object.keys(data?.locationsByTag).map((cat) => cat),
     [data]
   );
+
   const allLocations = useMemo(
     () =>
       Object.entries(data?.locationsByTag)
@@ -22,14 +24,20 @@ export default function CustomPdf({ data, customRef }) {
         .flat(),
     [data]
   );
+
+  const safeHTML = DOMPurify.sanitize(data?.helperHtml, {
+    ALLOWED_TAGS: ["h1", "h2", "p"],
+    ALLOWED_ATTR: [],
+  });
+  // console.log(data);
   // console.log(data?.locationsByTag);
-  console.log(data);
   // console.log(categories);
   // console.log(allLocations);
+  // console.log(safeHTML);
 
-  const dpi = 220;
+  const dpi = 250;
   const a4HeightMm = 297;
-  const pixelsPerMm = dpi / 25.4;
+  const pixelsPerMm = dpi / 27;
   const maxHeightPx = a4HeightMm * pixelsPerMm;
 
   return (
@@ -43,6 +51,7 @@ export default function CustomPdf({ data, customRef }) {
           flexDirection: "column",
           justifyContent: "space-between",
           padding: "50px",
+          // visibility: "hidden",
         }}
         ref={customRef}
       >
@@ -74,6 +83,9 @@ export default function CustomPdf({ data, customRef }) {
                 mapContainerStyle={{ width: "100%", height: "100%" }}
                 center={data?.currentLocation}
                 zoom={15}
+                options={{
+                  disableDefaultUI: true, // To prevent any UI stretching
+                }}
               >
                 <Marker position={data?.currentLocation} />
                 {allLocations.map((loc, index) => {
@@ -171,27 +183,54 @@ export default function CustomPdf({ data, customRef }) {
               })}
             </Box>
           </Box>
-          <Box sx={{ display: "flex", gap: "1rem" }}>
+          <Box
+            sx={{
+              display: "flex",
+              gap: "1rem",
+              // height: "300px",
+              // width: "300px",
+            }}
+          >
             {data?.oldImgs?.map((image, index) => (
               <Box
                 key={index}
-                sx={{ position: "relative", width: "100%", width: "300px" }}
+                sx={{
+                  position: "relative",
+                  height: "300px",
+                  width: "300px",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
               >
                 <Image
                   src={image.url}
                   alt={`Uploaded image ${index + 1}`}
-                  layout="responsive"
-                  width={150}
-                  height={150}
-                  objectFit="cover"
-                  style={{ borderRadius: "8px" }}
+                  // layout="responsive"
+                  width={300}
+                  height={300}
+                  // objectFit="cover"
+                  style={{
+                    borderRadius: "8px",
+                    height: "100%",
+                    width: "100%",
+                    // objectFit: "cover",
+                    objectFit: "contain",
+                  }}
                 />
               </Box>
             ))}
             {data?.newImgFiles?.map((imgFile, index) => (
               <Box
                 key={index}
-                sx={{ position: "relative", width: "100%", width: "300px" }}
+                sx={{
+                  position: "relative",
+                  height: "300px",
+                  width: "300px",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
               >
                 <Image
                   src={URL.createObjectURL(imgFile)}
@@ -200,11 +239,22 @@ export default function CustomPdf({ data, customRef }) {
                   width={150}
                   height={150}
                   objectFit="cover"
-                  style={{ borderRadius: "8px" }}
+                  style={{
+                    borderRadius: "8px",
+                    height: "100%",
+                    width: "100%",
+                    objectFit: "contain",
+                  }}
                 />
               </Box>
             ))}
           </Box>
+          {data?.helperHtml && (
+            <Box
+              // sx={{ backgroundColor: "red" }}
+              dangerouslySetInnerHTML={{ __html: safeHTML }}
+            ></Box>
+          )}
         </Box>
         <Box sx={{ mt: "5rem" }}>
           <Box

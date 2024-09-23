@@ -11,6 +11,7 @@ export async function POST(req) {
       userEmail,
       uploadedFileUrls,
       logo,
+      helperText,
     } = await req.json();
     // console.log(id, title);
     console.log(logo);
@@ -44,6 +45,7 @@ export async function POST(req) {
           create: uploadedFileUrls.map((url) => ({ url })),
         },
         logo: logo,
+        helperText: helperText,
       },
     });
 
