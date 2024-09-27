@@ -1,23 +1,26 @@
-import nodemailer from "nodemailer";
-import crypto from "crypto";
-import { NextResponse } from "next/server";
-import prisma from "@/lib/prisma";
+import crypto from 'crypto';
 
-export async function POST(req, res) {
+import {NextResponse} from 'next/server';
+import nodemailer from 'nodemailer';
+
+import prisma from '@/lib/prisma';
+
+export async function POST(req) {
   try {
     const { email } = await req.json();
     // console.log(email);
 
     const user = await prisma.user.findUnique({ where: { email } });
+
     if (!user) {
       return NextResponse.json(
-        { message: "User does not exist" },
+        { message: 'User does not exist' },
         { status: 404 }
       );
     }
     // console.log(user);
 
-    const token = crypto.randomBytes(20).toString("hex");
+    const token = crypto.randomBytes(20).toString('hex');
     const expires = Date.now() + 3600000;
 
     await prisma.user.update({
@@ -28,10 +31,10 @@ export async function POST(req, res) {
       },
     });
 
-    const combinedToken = Buffer.from(`${token}:${email}`).toString("base64");
+    const combinedToken = Buffer.from(`${token}:${email}`).toString('base64');
 
     const transporter = nodemailer.createTransport({
-      service: "Gmail",
+      service: 'Gmail',
       auth: {
         user: process.env.GOOGLE_EMAIL,
         pass: process.env.GOOGLE_PASS,
@@ -39,13 +42,13 @@ export async function POST(req, res) {
     });
 
     const resetURL = `${
-      process.env.NEXT_BASE_URL || "localhost:3000"
+      process.env.NEXT_BASE_URL || 'localhost:3000'
     }/user/reset-password?token=${combinedToken}`;
 
     await transporter.sendMail({
       to: email,
       from: process.env.EMAIL_USER,
-      subject: "Password Reset",
+      subject: 'Password Reset',
       html: `
             <p>You requested a password reset</p>
             <p>Click <a href="${resetURL}">here</a> to reset your password.</p>
@@ -53,13 +56,12 @@ export async function POST(req, res) {
     });
 
     return NextResponse.json(
-      { message: "Password reset email sent" },
+      { message: 'Password reset email sent' },
       { status: 200 }
     );
   } catch (error) {
-    console.log("Error processing request-reset:", error);
     return NextResponse.json(
-      { message: "Internal server error" },
+      { message: 'Internal server error' },
       { status: 500 }
     );
   }

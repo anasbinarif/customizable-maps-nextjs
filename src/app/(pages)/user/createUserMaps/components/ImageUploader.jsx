@@ -1,9 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Box, Button, Grid, IconButton, Typography } from "@mui/material";
-import { Upload as UploadIcon, Close as ClearIcon } from "@mui/icons-material";
-import { ThemeContext } from "@/context/ThemeContext";
-import Image from "next/image";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import {Close as ClearIcon, Upload as UploadIcon} from '@mui/icons-material';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import {Box, Button, Grid, IconButton, Typography} from '@mui/material';
+import Image from 'next/image';
+import React, {useContext, useEffect, useState} from 'react';
+
+import {ThemeContext} from '@/context/ThemeContext';
 
 const ImageUploader = ({
   setUploadedFiles,
@@ -21,6 +22,7 @@ const ImageUploader = ({
   const handleDrop = (event) => {
     event.preventDefault();
     const files = Array.from(event.dataTransfer.files);
+
     handleImageUpload(files);
   };
 
@@ -38,19 +40,20 @@ const ImageUploader = ({
 
   useEffect(() => {
     const newImages = uploadedFiles.map((file) => URL.createObjectURL(file));
+
     setImages(newImages);
   }, [uploadedFiles]);
 
   return (
     <Box
       sx={{
-        width: "100%",
+        width: '100%',
         p: 2,
-        border: `2px dashed ${darkMode ? "#333" : "#333"}`,
-        borderRadius: "8px",
-        backgroundColor: "transparent",
-        mt: "20px",
-        position: "relative",
+        border: `2px dashed ${darkMode ? '#333' : '#333'}`,
+        borderRadius: '8px',
+        backgroundColor: 'transparent',
+        mt: '20px',
+        position: 'relative',
       }}
       onDrop={handleDrop}
       onDragOver={handleDragOver}
@@ -58,14 +61,14 @@ const ImageUploader = ({
       {images.length === 0 && oldImgs.length === 0 ? (
         <Box
           sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            height: "100%",
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: '100%',
           }}
         >
-          <CloudUploadIcon sx={{ fontSize: 50, color: "grey" }} />
+          <CloudUploadIcon sx={{ fontSize: 50, color: 'grey' }} />
           <Typography variant="body1" color="grey">
             Drag & drop to upload
           </Typography>
@@ -77,10 +80,10 @@ const ImageUploader = ({
             component="label"
             sx={{
               mt: 2,
-              backgroundColor: "grey",
-              color: "white",
-              "&:hover": {
-                backgroundColor: "#555",
+              backgroundColor: 'grey',
+              color: 'white',
+              '&:hover': {
+                backgroundColor: '#555',
               },
             }}
           >
@@ -101,7 +104,7 @@ const ImageUploader = ({
           <Grid container spacing={2}>
             {oldImgs.map((image, index) => (
               <Grid item xs={6} sm={4} md={3} key={index}>
-                <Box sx={{ position: "relative", width: "100%" }}>
+                <Box sx={{ position: 'relative', width: '100%' }}>
                   <Image
                     src={image.url}
                     alt={`Uploaded image ${index + 1}`}
@@ -109,17 +112,17 @@ const ImageUploader = ({
                     width={150}
                     height={150}
                     objectFit="cover"
-                    style={{ borderRadius: "8px" }}
+                    style={{ borderRadius: '8px' }}
                   />
                   <IconButton
                     sx={{
-                      position: "absolute",
-                      top: "8px",
-                      right: "8px",
-                      color: "black",
-                      backgroundColor: "rgba(255, 255, 255, 0.8)",
-                      "&:hover": {
-                        backgroundColor: "rgba(255, 255, 255, 1)",
+                      position: 'absolute',
+                      top: '8px',
+                      right: '8px',
+                      color: 'black',
+                      backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                      '&:hover': {
+                        backgroundColor: 'rgba(255, 255, 255, 1)',
                       },
                     }}
                     onClick={() => handleRemoveOldImage(index)}
@@ -131,7 +134,7 @@ const ImageUploader = ({
             ))}
             {images.map((image, index) => (
               <Grid item xs={6} sm={4} md={3} key={index}>
-                <Box sx={{ position: "relative", width: "100%" }}>
+                <Box sx={{ position: 'relative', width: '100%' }}>
                   <Image
                     src={image}
                     alt={`Uploaded image ${index + 1}`}
@@ -139,17 +142,17 @@ const ImageUploader = ({
                     width={150}
                     height={150}
                     objectFit="cover"
-                    style={{ borderRadius: "8px" }}
+                    style={{ borderRadius: '8px' }}
                   />
                   <IconButton
                     sx={{
-                      position: "absolute",
-                      top: "8px",
-                      right: "8px",
-                      color: "black",
-                      backgroundColor: "rgba(255, 255, 255, 0.8)",
-                      "&:hover": {
-                        backgroundColor: "rgba(255, 255, 255, 1)",
+                      position: 'absolute',
+                      top: '8px',
+                      right: '8px',
+                      color: 'black',
+                      backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                      '&:hover': {
+                        backgroundColor: 'rgba(255, 255, 255, 1)',
                       },
                     }}
                     onClick={() => handleRemoveImage(index)}
@@ -166,17 +169,17 @@ const ImageUploader = ({
                   variant="outlined"
                   component="label"
                   sx={{
-                    width: "100%",
-                    height: "100%",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    borderRadius: "8px",
-                    border: "2px dashed grey",
-                    color: "grey",
-                    "&:hover": {
-                      border: "2px dashed black",
-                      color: "black",
+                    width: '100%',
+                    height: '100%',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    borderRadius: '8px',
+                    border: '2px dashed grey',
+                    color: 'grey',
+                    '&:hover': {
+                      border: '2px dashed black',
+                      color: 'black',
                     },
                   }}
                 >

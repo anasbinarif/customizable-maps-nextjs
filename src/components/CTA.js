@@ -1,30 +1,28 @@
-import { CardTravelSharp } from "@mui/icons-material";
-import { Box, Typography, Button, Container, Grid } from "@mui/material";
-import Image from "next/image";
+import {Box, Button, Container, Typography} from '@mui/material';
 
 export default function CTA() {
   return (
     <Box
       sx={{
-        display: "flex",
-        alignItems: "center",
+        display: 'flex',
+        alignItems: 'center',
         // minHeight: "80vh",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        padding: "2rem",
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        padding: '2rem',
 
-        "@media only screen and (max-width: 600px)": {
-          padding: "1rem",
+        '@media only screen and (max-width: 600px)': {
+          padding: '1rem',
         },
       }}
     >
       <Container
-        sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+        sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
       >
         <Typography
           variant="h2"
           sx={{
-            marginBottom: "2rem",
+            marginBottom: '2rem',
           }}
         >
             Create, Customize and Print Your Map Now
@@ -38,10 +36,10 @@ export default function CTA() {
           variant="contained"
           color="primary"
           sx={{
-            borderRadius: "10px",
-            textTransform: "none",
-            marginTop: "2rem",
-            fontSize: "1.5rem",
+            borderRadius: '10px',
+            textTransform: 'none',
+            marginTop: '2rem',
+            fontSize: '1.5rem',
           }}
         >
             Get Started
