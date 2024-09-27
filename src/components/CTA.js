@@ -1,6 +1,4 @@
-import { CardTravelSharp } from "@mui/icons-material";
-import { Box, Typography, Button, Container, Grid } from "@mui/material";
-import Image from "next/image";
+import {Box, Button, Container, Typography} from "@mui/material";
 
 export default function CTA() {
   return (

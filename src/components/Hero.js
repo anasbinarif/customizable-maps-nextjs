@@ -1,4 +1,4 @@
-import { Box, Typography, Button, Container, Grid } from "@mui/material";
+import {Box, Button, Container, Grid, Typography} from "@mui/material";
 import Image from "next/image";
 
 export default function Hero() {

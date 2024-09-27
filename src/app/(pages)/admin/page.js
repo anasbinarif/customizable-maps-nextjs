@@ -1,8 +1,22 @@
 "use client";
-import { useSession, signOut } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
-import { Box, Drawer, List, ListItem, ListItemIcon, ListItemText, IconButton, CssBaseline, AppBar, Toolbar, Typography, Divider, Button } from '@mui/material';
+import {signOut, useSession} from 'next-auth/react';
+import {useRouter} from 'next/navigation';
+import React, {useEffect, useState} from 'react';
+import {
+    AppBar,
+    Box,
+    Button,
+    CssBaseline,
+    Divider,
+    Drawer,
+    IconButton,
+    List,
+    ListItem,
+    ListItemIcon,
+    ListItemText,
+    Toolbar,
+    Typography
+} from '@mui/material';
 import PeopleIcon from '@mui/icons-material/People';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LocationOnIcon from '@mui/icons-material/LocationOn';

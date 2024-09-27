@@ -1,7 +1,7 @@
 import React from "react";
-import { Box, Chip, Typography } from "@mui/material";
+import {Box, Chip, Typography} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { generateTextColor } from "@/lib/generateTextColor";
+import {generateTextColor} from "@/lib/generateTextColor";
 
 export default function LocationList({ locationsByTag, handleDelete }) {
   console.log(locationsByTag);

@@ -1,7 +1,7 @@
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { NextResponse } from "next/server";
+import {NextResponse} from "next/server";
 import prisma from "@/lib/prisma";
 
 const login = async (credentials) => {
@@ -26,9 +26,8 @@ const login = async (credentials) => {
     }
 };
 
-
-
 export const authOptions = {
+    secret: process.env.NEXTAUTH_SECRET,
     pages: {
         signIn: "/",
     },
@@ -39,14 +38,24 @@ export const authOptions = {
             async authorize(credentials) {
                 try {
                     const user = await login(credentials);
-                    if (user) {
+
+                    const userWithSubscription = await prisma.user.findUnique({
+                        where: { email: user.email },
+                        include: { subscription: true },
+                    });
+
+                    if (userWithSubscription) {
                         const accessToken = await jwt.sign(
-                            { userId: user.id, email: user.email },
+                            { userId: userWithSubscription.id, email: userWithSubscription.email },
                             process.env.JWT_SECRET,
                             { expiresIn: "2h" }
                         );
 
-                        return { ...user, accessToken };
+                        return {
+                            ...userWithSubscription,
+                            subscriptionType: userWithSubscription.subscription?.subscriptionType || 'BASIC',
+                            accessToken,
+                        };
                     }
                     return null;
                 } catch (err) {
@@ -68,8 +77,6 @@ export const authOptions = {
         async signIn({ user, account, profile, email, credentials }) {
             if (account.provider === "credentials") {
                 return true;
-            } else if (account.provider === "email") {
-                return true;
             }
             return false;
         },
@@ -80,7 +87,7 @@ export const authOptions = {
                 token.username = user.name;
                 token.email = user.email;
                 token.accessToken = user.accessToken;
-                // Additional fields as needed
+                token.subscriptionType = user.subscriptionType;
             }
             return token;
         },
@@ -91,7 +98,7 @@ export const authOptions = {
                 session.user.username = token.username;
                 session.user.email = token.email;
                 session.user.accessToken = token.accessToken;
-                // Additional fields as needed
+                session.user.subscriptionType = token.subscriptionType;
             }
             return session;
         },

@@ -1,6 +1,6 @@
-import { uploadImageToS3 } from '@/lib/aws-s3';
+import {uploadImageToS3} from '@/lib/aws-s3';
 import uploadMiddleware from '@/lib/middleware';
-import { NextResponse } from 'next/server';
+import {NextResponse} from 'next/server';
 import prisma from "@/lib/prisma";
 
 

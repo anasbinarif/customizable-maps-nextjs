@@ -1,3 +1,4 @@
+"use server"
 export const haversineDistance = (loc1, loc2) => {
   const R = 3958.8; // Radius of Earth in miles
   const toRadians = (degrees) => degrees * (Math.PI / 180);

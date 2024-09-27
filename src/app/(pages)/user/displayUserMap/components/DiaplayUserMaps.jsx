@@ -1,10 +1,10 @@
 "use client";
-import React, { useEffect, useMemo, useState } from "react";
-import { useSession } from "next-auth/react";
+import React, {useEffect, useState} from "react";
+import {useSession} from "next-auth/react";
 import AlertSnackbar from "@/components/AlertSnackbar";
-import { Container, Grid, Typography, Box, Button } from "@mui/material";
+import {Box, Button, Container, Grid, Typography} from "@mui/material";
 import MapDetailsModal from "./MapDetailsModal";
-import UserMapsCard, { CreateMapCard } from "./UserMapsCard";
+import UserMapsCard, {CreateMapCard} from "./UserMapsCard";
 import Link from "next/link";
 import LoadingSpinner from "@/components/LoadingSpinner";
 

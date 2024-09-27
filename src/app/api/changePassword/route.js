@@ -1,12 +1,11 @@
-import { getServerSession } from "next-auth/next";
-import { NextResponse } from "next/server";
-import { authOptions } from "@/lib/auth";
+import {getServerSession} from "next-auth/next";
+import {NextResponse} from "next/server";
+import {authOptions} from "@/lib/auth";
 import bcrypt from "bcryptjs";
 import prisma from "@/lib/prisma";
 
 export async function POST(req) {
   try {
-    // console.log(req);
     const session = await getServerSession(authOptions);
     if (!session) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });

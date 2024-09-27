@@ -1,8 +1,8 @@
-import React, { useState, useRef, useCallback, useMemo } from "react";
-import { Modal, Box, Typography, Grid, IconButton } from "@mui/material";
+import React, {useCallback, useMemo, useRef, useState} from "react";
+import {Box, Grid, IconButton, Modal} from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import CustomPdf from "../../createUserMaps/components/exportedDoc";
-import { haversineDistance } from "@/lib/data";
+import {haversineDistance} from "@/lib/data";
 import GoogleMapsLoader from "@/lib/GoogleMapsLoader";
 
 const style = {
@@ -10,13 +10,10 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: "80%",
   height: "80%",
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
-  p: 4,
-  borderRadius: "10px",
   display: "flex",
   flexDirection: "column",
   width: "100%",

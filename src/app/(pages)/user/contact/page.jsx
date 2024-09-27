@@ -1,11 +1,9 @@
 "use client";
-import React, { useState, useContext } from "react";
-import { Box, Container, Typography } from "@mui/material";
-import { useTheme } from "@mui/material";
-import dynamic from "next/dynamic";
-import { ThemeContext } from "@/context/ThemeContext";
+import React, {useContext} from "react";
+import {Box, Container, useTheme} from "@mui/material";
+import {ThemeContext} from "@/context/ThemeContext";
 import Form from "./components/Form";
-import { Map, Marker } from "pigeon-maps";
+import {Map, Marker} from "pigeon-maps";
 
 export default function CarouselSection() {
   const { darkMode } = useContext(ThemeContext);
@@ -50,7 +48,6 @@ export default function CarouselSection() {
             justifyContent: "center",
             overflow: "hidden",
             flex: 1,
-            padding: 0,
           }}
         >
           <Box
