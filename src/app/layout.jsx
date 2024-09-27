@@ -6,7 +6,6 @@ import {getServerSession} from 'next-auth';
 import DarkModeToggle from '@/components/DarkModeToggle';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
-import {SnackbarProvider} from '@/components/snackbar-hook/SnackBarContext';
 import ThemeContextProvider from '@/context/ThemeContext';
 import AuthProvider from '@/lib/SessionProvider';
 
@@ -27,22 +26,23 @@ export default async function RootLayout({ children }) {
                 style={{ backgroundImage: 'var(--primary-bg)' }}
             >
                 <AuthProvider session={session}>
-                    <SnackbarProvider >
-                        <ThemeContextProvider>
-                            <CssBaseline />
-                            <Navbar />
-                            <div
-                                style={{
-                                    padding: '1rem 0',
-                                    position: 'relative',
-                                }}
-                            >
-                                {children}
-                                <DarkModeToggle />
-                            </div>
-                            <Footer />
-                        </ThemeContextProvider>
-                    </SnackbarProvider>
+                    <ThemeContextProvider>
+                        <CssBaseline />
+                        <Navbar />
+                        <div
+                            style={{
+                                // minHeight: "100vh",
+                                padding: '1rem 0',
+                                // backgroundColor: "red",
+                                // backgroundImage: "primary.main.pageBg1",
+                                position: 'relative',
+                            }}
+                        >
+                            {children}
+                            <DarkModeToggle />
+                        </div>
+                        <Footer />
+                    </ThemeContextProvider>
                 </AuthProvider>
             </body>
         </html>
