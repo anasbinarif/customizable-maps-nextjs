@@ -26,7 +26,7 @@ export default function CustomPdf({ data, customRef }) {
   );
 
   const safeHTML = DOMPurify.sanitize(data?.helperHtml, {
-    ALLOWED_TAGS: ["h1", "h2", "p"],
+    ALLOWED_TAGS: ["h1", "h2", "p", "ul", "li"],
     ALLOWED_ATTR: [],
   });
   // console.log(data);

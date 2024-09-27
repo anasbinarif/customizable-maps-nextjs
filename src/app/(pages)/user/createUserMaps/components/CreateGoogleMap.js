@@ -242,6 +242,7 @@ export default function CreateGoogleMap({ mapData = null }) {
         setUploadedFiles([]);
         setOldImgs([]);
         setLogoFile({});
+        setHelperHtml("");
       } else {
         alert("Failed to save the map.");
         handleOpenAlert("error", "Failed to save the map.");
