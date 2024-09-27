@@ -1,5 +1,6 @@
-import React from 'react';
 import { Box, Typography } from '@mui/material';
+import React from 'react';
+
 import UserMapsCard from '../../user/displayUserMap/components/UserMapsCard';
 
 const UserMapWithInfo = ({ map, onOpenDetails, onDelete }) => {

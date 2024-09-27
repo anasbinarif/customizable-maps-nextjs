@@ -1,5 +1,5 @@
-import React from 'react';
 import { Snackbar, Alert } from '@mui/material';
+import React from 'react';
 
 export default function CustomSnackbar({ open, message, severity = 'error', handleClose }) {
     return (

@@ -1,8 +1,9 @@
-import CredentialsProvider from "next-auth/providers/credentials";
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-import { NextResponse } from "next/server";
-import prisma from "@/lib/prisma";
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import { NextResponse } from 'next/server';
+import CredentialsProvider from 'next-auth/providers/credentials';
+
+import prisma from '@/lib/prisma';
 
 const login = async (credentials) => {
     try {
@@ -10,14 +11,14 @@ const login = async (credentials) => {
             where: { email: credentials.email.toLowerCase() },
         });
 
-        if (!user) throw new Error("Wrong email!");
+        if (!user) throw new Error('Wrong email!');
 
         const isPasswordCorrect = await bcrypt.compare(
             credentials.password,
             user.password
         );
 
-        if (!isPasswordCorrect) throw new Error("Wrong password!");
+        if (!isPasswordCorrect) throw new Error('Wrong password!');
 
         return user;
     } catch (err) {
@@ -26,15 +27,13 @@ const login = async (credentials) => {
     }
 };
 
-
-
 export const authOptions = {
     pages: {
-        signIn: "/",
+        signIn: '/',
     },
     providers: [
         CredentialsProvider({
-            name: "credentials",
+            name: 'credentials',
             credentials: {},
             async authorize(credentials) {
                 try {
@@ -43,7 +42,7 @@ export const authOptions = {
                         const accessToken = await jwt.sign(
                             { userId: user.id, email: user.email },
                             process.env.JWT_SECRET,
-                            { expiresIn: "2h" }
+                            { expiresIn: '2h' }
                         );
 
                         return { ...user, accessToken };
@@ -57,7 +56,7 @@ export const authOptions = {
         }),
     ],
     session: {
-        strategy: "jwt",
+        strategy: 'jwt',
         maxAge: 2 * 60 * 60,
     },
     jwt: {
@@ -66,9 +65,9 @@ export const authOptions = {
     },
     callbacks: {
         async signIn({ user, account, profile, email, credentials }) {
-            if (account.provider === "credentials") {
+            if (account.provider === 'credentials') {
                 return true;
-            } else if (account.provider === "email") {
+            } else if (account.provider === 'email') {
                 return true;
             }
             return false;
@@ -99,12 +98,12 @@ export const authOptions = {
 };
 
 export const verifyToken = async (req) => {
-    const authHeader = req.headers.get("authorization");
-    const token = authHeader && authHeader.split(" ")[1];
+    const authHeader = req.headers.get('authorization');
+    const token = authHeader && authHeader.split(' ')[1];
 
     if (!token) {
         return new NextResponse(
-            JSON.stringify({ message: "Access Token Required" }),
+            JSON.stringify({ message: 'Access Token Required' }),
             { status: 401 }
         );
     }
@@ -113,7 +112,7 @@ export const verifyToken = async (req) => {
         req.user = jwt.verify(token, process.env.JWT_SECRET);
         return null;
     } catch (err) {
-        return new NextResponse(JSON.stringify({ message: "Invalid Token" }), {
+        return new NextResponse(JSON.stringify({ message: 'Invalid Token' }), {
             status: 403,
         });
     }

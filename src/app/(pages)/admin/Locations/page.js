@@ -1,8 +1,9 @@
-"use client";
-import React, { useEffect, useState } from 'react';
+'use client';
 import { Box, Grid, Typography } from '@mui/material';
-import MapDetailsModal from '../../user/displayUserMap/components/MapDetailsModal';
+import React, { useEffect, useState } from 'react';
+
 import ConfirmDeleteModal from './ConfirmDeleteModal';
+import MapDetailsModal from '../../user/displayUserMap/components/MapDetailsModal';
 import UserMapsCard from '../../user/displayUserMap/components/UserMapsCard';
 
 const Locations = () => {
@@ -28,7 +29,7 @@ const Locations = () => {
 
                 setGroupedMaps(grouped);
             } catch (error) {
-                console.error("Failed to fetch maps:", error);
+                console.error('Failed to fetch maps:', error);
             }
         };
 

@@ -1,16 +1,16 @@
-"use client";
-import React, { useEffect, useState } from 'react';
-import { Box, Typography, Button, List, ListItem, ListItemText, TextField, IconButton, Dialog, DialogActions, DialogContent, DialogTitle, MenuItem } from '@mui/material';
+'use client';
+import CancelIcon from '@mui/icons-material/Cancel';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
-import CancelIcon from '@mui/icons-material/Cancel';
+import { Box, Typography, Button, List, ListItem, ListItemText, TextField, IconButton, Dialog, DialogActions, DialogContent, DialogTitle, MenuItem } from '@mui/material';
+import React, { useEffect, useState } from 'react';
 
 const Users = () => {
     const [users, setUsers] = useState([]);
     const [editUserId, setEditUserId] = useState(null);
-    const [editData, setEditData] = useState({ name: "", email: "", isAdmin: false });
-    const [newUserData, setNewUserData] = useState({ name: "", email: "", password: "", isAdmin: false });
+    const [editData, setEditData] = useState({ name: '', email: '', isAdmin: false });
+    const [newUserData, setNewUserData] = useState({ name: '', email: '', password: '', isAdmin: false });
     const [isAddUserDialogOpen, setAddUserDialogOpen] = useState(false);
     const [isDeleteConfirmDialogOpen, setDeleteConfirmDialogOpen] = useState(false);
     const [userToDelete, setUserToDelete] = useState(null);
@@ -22,7 +22,7 @@ const Users = () => {
                 const data = await response.json();
                 setUsers(data.users);
             } catch (error) {
-                console.error("Failed to fetch users:", error);
+                console.error('Failed to fetch users:', error);
             }
         };
 
@@ -57,7 +57,7 @@ const Users = () => {
 
     const handleCancel = () => {
         setEditUserId(null);
-        setEditData({ name: "", email: "", isAdmin: false });  // Reset edit data
+        setEditData({ name: '', email: '', isAdmin: false });  // Reset edit data
     };
 
     const handleDelete = async () => {
@@ -79,7 +79,7 @@ const Users = () => {
 
     const handleCloseAddUserDialog = () => {
         setAddUserDialogOpen(false);
-        setNewUserData({ name: "", email: "", password: "", isAdmin: false });
+        setNewUserData({ name: '', email: '', password: '', isAdmin: false });
     };
 
     const handleOpenDeleteConfirmDialog = (userId) => {
@@ -94,10 +94,10 @@ const Users = () => {
 
     const handleAddUser = async () => {
         try {
-            const res = await fetch("/api/registerUser", {
-                method: "POST",
+            const res = await fetch('/api/registerUser', {
+                method: 'POST',
                 headers: {
-                    "Content-Type": "application/json",
+                    'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(newUserData),
             });
@@ -105,14 +105,14 @@ const Users = () => {
             if (res.ok) {
                 const newUser = await res.json();
                 setUsers([...users, newUser]);
-                setNewUserData({ name: "", email: "", password: "", isAdmin: false });
+                setNewUserData({ name: '', email: '', password: '', isAdmin: false });
                 setAddUserDialogOpen(false);
             } else {
                 const error = await res.json();
-                console.error("Failed to add user:", error.message);
+                console.error('Failed to add user:', error.message);
             }
         } catch (e) {
-            console.error("Failed to add user:", e);
+            console.error('Failed to add user:', e);
         }
     };
 

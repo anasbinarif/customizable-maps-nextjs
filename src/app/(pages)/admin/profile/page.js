@@ -1,10 +1,10 @@
-"use client";
-import React, { useState, useEffect } from 'react';
-import { Box, Typography, TextField, Button, Avatar, IconButton, CircularProgress, InputAdornment, Dialog, DialogActions, DialogContent, DialogTitle, MenuItem } from '@mui/material';
+'use client';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { Box, Typography, TextField, Button, Avatar, IconButton, CircularProgress, InputAdornment, Dialog, DialogActions, DialogContent, DialogTitle, MenuItem } from '@mui/material';
 import { useSession } from 'next-auth/react';
+import React, { useState, useEffect } from 'react';
 
 const Profile = ({ userId }) => {
     const { data: session } = useSession();
@@ -41,7 +41,7 @@ const Profile = ({ userId }) => {
                     mapsCount: data.user?.maps.length || 0,
                 });
             } catch (error) {
-                console.error("Failed to fetch profile data:", error);
+                console.error('Failed to fetch profile data:', error);
             }
         };
 

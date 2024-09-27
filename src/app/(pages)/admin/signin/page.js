@@ -1,9 +1,9 @@
-"use client"
+'use client';
 
+import { Box, Button, Container, TextField, Typography } from '@mui/material';
+import { useRouter } from 'next/navigation';
 import { getSession, signIn } from 'next-auth/react';
 import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { Box, Button, Container, TextField, Typography } from '@mui/material';
 
 export default function AdminSignIn() {
     const router = useRouter();

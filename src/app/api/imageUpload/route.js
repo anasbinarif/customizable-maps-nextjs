@@ -1,8 +1,8 @@
+import { NextResponse } from 'next/server';
+
 import { uploadImageToS3 } from '@/lib/aws-s3';
 import uploadMiddleware from '@/lib/middleware';
-import { NextResponse } from 'next/server';
-import prisma from "@/lib/prisma";
-
+import prisma from '@/lib/prisma';
 
 export async function POST(req) {
     return new Promise((resolve, reject) => {

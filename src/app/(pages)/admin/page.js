@@ -1,17 +1,19 @@
-"use client";
-import { useSession, signOut } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
-import { Box, Drawer, List, ListItem, ListItemIcon, ListItemText, IconButton, CssBaseline, AppBar, Toolbar, Typography, Divider, Button } from '@mui/material';
-import PeopleIcon from '@mui/icons-material/People';
+'use client';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import MenuIcon from '@mui/icons-material/Menu';
-import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import Users from './Users/page';
+import PeopleIcon from '@mui/icons-material/People';
+import { Box, Drawer, List, ListItem, ListItemIcon, ListItemText, IconButton, CssBaseline, AppBar, Toolbar, Typography, Divider, Button } from '@mui/material';
+import { useRouter } from 'next/navigation';
+import { useSession, signOut } from 'next-auth/react';
+import React, { useEffect, useState } from 'react';
+
 import Locations from './Locations/page';
 import Profile from './profile/page';
-import AlertSnackbar from "@/components/AlertSnackbar";
+import Users from './Users/page';
+
+import AlertSnackbar from '@/components/AlertSnackbar';
 
 export default function AdminDashboard() {
     const { data: session, status } = useSession();
@@ -39,7 +41,7 @@ export default function AdminDashboard() {
             router.push('/admin/signin');
         } else if (!session.user.isAdmin) {
             router.push('/admin/signin');
-            handleOpenAlert("error", "not an admin!")
+            handleOpenAlert('error', 'not an admin!');
         } else {
             setLoading(false);
         }
@@ -61,68 +63,68 @@ export default function AdminDashboard() {
 
     return (
         <>
-        <Box sx={{ display: 'flex' }}>
-            <CssBaseline />
-            <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
-                <Toolbar>
-                    <IconButton color="inherit" aria-label="open drawer" onClick={toggleDrawer} edge="start">
-                        <MenuIcon />
-                    </IconButton>
-                    <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
+            <Box sx={{ display: 'flex' }}>
+                <CssBaseline />
+                <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+                    <Toolbar>
+                        <IconButton color="inherit" aria-label="open drawer" onClick={toggleDrawer} edge="start">
+                            <MenuIcon />
+                        </IconButton>
+                        <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
                         Admin Dashboard
-                    </Typography>
-                    <Button color="inherit" onClick={handleSignOut} startIcon={<ExitToAppIcon />}>
+                        </Typography>
+                        <Button color="inherit" onClick={handleSignOut} startIcon={<ExitToAppIcon />}>
                         Sign Out
-                    </Button>
-                </Toolbar>
-            </AppBar>
+                        </Button>
+                    </Toolbar>
+                </AppBar>
 
-            <Drawer
-                variant="permanent"
-                open={drawerOpen}
-                sx={{
-                    width: drawerOpen ? 240 : 60,
-                    flexShrink: 0,
-                    '& .MuiDrawer-paper': {
+                <Drawer
+                    variant="permanent"
+                    open={drawerOpen}
+                    sx={{
                         width: drawerOpen ? 240 : 60,
-                        boxSizing: 'border-box',
-                        transition: 'width 0.3s',
-                    },
-                }}
-            >
-                <Toolbar />
-                <Box sx={{ overflow: 'auto' }}>
-                    <List>
-                        <ListItem button onClick={() => handleTabChange('users')}>
-                            <ListItemIcon><PeopleIcon /></ListItemIcon>
-                            {drawerOpen && <ListItemText primary="Users" />}
-                        </ListItem>
-                        <ListItem button onClick={() => handleTabChange('profile')}>
-                            <ListItemIcon><AccountCircleIcon /></ListItemIcon>
-                            {drawerOpen && <ListItemText primary="Profile" />}
-                        </ListItem>
-                        <ListItem button onClick={() => handleTabChange('locations')}>
-                            <ListItemIcon><LocationOnIcon /></ListItemIcon>
-                            {drawerOpen && <ListItemText primary="Locations" />}
-                        </ListItem>
-                    </List>
-                    <Divider />
-                    <List>
-                        <ListItem button onClick={handleSignOut}>
-                            <ListItemIcon><ExitToAppIcon /></ListItemIcon>
-                            {drawerOpen && <ListItemText primary="Sign Out" />}
-                        </ListItem>
-                    </List>
-                </Box>
-            </Drawer>
+                        flexShrink: 0,
+                        '& .MuiDrawer-paper': {
+                            width: drawerOpen ? 240 : 60,
+                            boxSizing: 'border-box',
+                            transition: 'width 0.3s',
+                        },
+                    }}
+                >
+                    <Toolbar />
+                    <Box sx={{ overflow: 'auto' }}>
+                        <List>
+                            <ListItem button onClick={() => handleTabChange('users')}>
+                                <ListItemIcon><PeopleIcon /></ListItemIcon>
+                                {drawerOpen && <ListItemText primary="Users" />}
+                            </ListItem>
+                            <ListItem button onClick={() => handleTabChange('profile')}>
+                                <ListItemIcon><AccountCircleIcon /></ListItemIcon>
+                                {drawerOpen && <ListItemText primary="Profile" />}
+                            </ListItem>
+                            <ListItem button onClick={() => handleTabChange('locations')}>
+                                <ListItemIcon><LocationOnIcon /></ListItemIcon>
+                                {drawerOpen && <ListItemText primary="Locations" />}
+                            </ListItem>
+                        </List>
+                        <Divider />
+                        <List>
+                            <ListItem button onClick={handleSignOut}>
+                                <ListItemIcon><ExitToAppIcon /></ListItemIcon>
+                                {drawerOpen && <ListItemText primary="Sign Out" />}
+                            </ListItem>
+                        </List>
+                    </Box>
+                </Drawer>
 
-            <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-                <Toolbar />
-                {selectedTab === 'users' && <Users />}
-                {selectedTab === 'locations' && <Locations />}
-                {selectedTab === 'profile' && <Profile />}
+                <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+                    <Toolbar />
+                    {selectedTab === 'users' && <Users />}
+                    {selectedTab === 'locations' && <Locations />}
+                    {selectedTab === 'profile' && <Profile />}
+                </Box>
             </Box>
-        </Box>
             <AlertSnackbar
                 open={alertOpen}
                 onClose={handleCloseAlert}

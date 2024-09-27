@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import {
     Dialog,
     DialogActions,
@@ -8,6 +7,7 @@ import {
     Button,
     CircularProgress
 } from '@mui/material';
+import React, { useState } from 'react';
 
 const ChangePasswordModal = ({ open, onClose, onSave }) => {
     const [currentPassword, setCurrentPassword] = useState('');
