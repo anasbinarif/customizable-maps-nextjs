@@ -12,6 +12,7 @@ export async function GET(req) {
         const data = await response.json();
         return NextResponse.json(data, { status: 200 });
     } catch (error) {
+        console.error('Error fetching places:', error);
         return NextResponse.json({ error: 'Failed to fetch places' }, { status: 500 });
     }
 }

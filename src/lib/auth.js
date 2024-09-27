@@ -1,37 +1,39 @@
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
-import {NextResponse} from 'next/server';
-import CredentialsProvider from 'next-auth/providers/credentials';
-
-import prisma from './prisma';
+import CredentialsProvider from "next-auth/providers/credentials";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import {NextResponse} from "next/server";
+import prisma from "@/lib/prisma";
 
 const login = async (credentials) => {
+    try {
+        const user = await prisma.user.findUnique({
+            where: { email: credentials.email.toLowerCase() },
+        });
 
-    const user = await prisma.user.findUnique({
-        where: { email: credentials.email.toLowerCase() },
-    });
+        if (!user) throw new Error("Wrong email!");
 
-    if (!user) throw new Error('Wrong email!');
+        const isPasswordCorrect = await bcrypt.compare(
+            credentials.password,
+            user.password
+        );
 
-    const isPasswordCorrect = await bcrypt.compare(
-        credentials.password,
-        user.password
-    );
+        if (!isPasswordCorrect) throw new Error("Wrong password!");
 
-    if (!isPasswordCorrect) throw new Error('Wrong password!');
-
-    return user;
-    
+        return user;
+    } catch (err) {
+        console.log(err);
+        throw err;
+    }
 };
 
 export const authOptions = {
     secret: process.env.NEXTAUTH_SECRET,
     pages: {
-        signIn: '/',
+        signIn: "/",
     },
     providers: [
         CredentialsProvider({
-            name: 'credentials',
+            name: "credentials",
             credentials: {},
             async authorize(credentials) {
                 try {
@@ -46,7 +48,7 @@ export const authOptions = {
                         const accessToken = await jwt.sign(
                             { userId: userWithSubscription.id, email: userWithSubscription.email },
                             process.env.JWT_SECRET,
-                            { expiresIn: '2h' }
+                            { expiresIn: "2h" }
                         );
 
                         return {
@@ -57,13 +59,14 @@ export const authOptions = {
                     }
                     return null;
                 } catch (err) {
+                    console.log(err);
                     throw new Error(err.message);
                 }
             },
         }),
     ],
     session: {
-        strategy: 'jwt',
+        strategy: "jwt",
         maxAge: 2 * 60 * 60,
     },
     jwt: {
@@ -71,8 +74,8 @@ export const authOptions = {
         maxAge: 2 * 60 * 60,
     },
     callbacks: {
-        async signIn({account}) {
-            if (account.provider === 'credentials') {
+        async signIn({ user, account, profile, email, credentials }) {
+            if (account.provider === "credentials") {
                 return true;
             }
             return false;
@@ -103,12 +106,12 @@ export const authOptions = {
 };
 
 export const verifyToken = async (req) => {
-    const authHeader = req.headers.get('authorization');
-    const token = authHeader && authHeader.split(' ')[1];
+    const authHeader = req.headers.get("authorization");
+    const token = authHeader && authHeader.split(" ")[1];
 
     if (!token) {
         return new NextResponse(
-            JSON.stringify({ message: 'Access Token Required' }),
+            JSON.stringify({ message: "Access Token Required" }),
             { status: 401 }
         );
     }
@@ -117,7 +120,7 @@ export const verifyToken = async (req) => {
         req.user = jwt.verify(token, process.env.JWT_SECRET);
         return null;
     } catch (err) {
-        return new NextResponse(JSON.stringify({ message: 'Invalid Token' }), {
+        return new NextResponse(JSON.stringify({ message: "Invalid Token" }), {
             status: 403,
         });
     }

@@ -1,11 +1,11 @@
-import {NextResponse} from 'next/server';
-
 import {uploadImageToS3} from '@/lib/aws-s3';
 import uploadMiddleware from '@/lib/middleware';
-import prisma from '@/lib/prisma';
+import {NextResponse} from 'next/server';
+import prisma from "@/lib/prisma";
+
 
 export async function POST(req) {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
         uploadMiddleware(req, {}, async (err) => {
             if (err) {
                 resolve(
@@ -44,6 +44,7 @@ export async function POST(req) {
                     )
                 );
             } catch (error) {
+                console.error('Error uploading images:', error);
                 resolve(
                     NextResponse.json(
                         { message: 'Error uploading images' },

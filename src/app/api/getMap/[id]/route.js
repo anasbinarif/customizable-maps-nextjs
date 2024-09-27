@@ -1,37 +1,40 @@
-import {NextResponse} from 'next/server';
-import {getServerSession} from 'next-auth';
-
-import {authOptions} from '@/lib/auth';
-import prisma from '@/lib/prisma';
+import prisma from "@/lib/prisma";
+import {getServerSession} from "next-auth";
+import {authOptions} from "@/lib/auth";
+import {NextResponse} from "next/server";
 
 // import { runMiddleware } from "@/lib/cors";
 
 export async function GET(req, { params }) {
-    const { id } = params;
+  const { id } = params;
 
-    // console.log(id);
-    try {
+  // console.log(id);
+  try {
     // await runMiddleware(req, NextResponse.next());
-        const session = await getServerSession(authOptions);
+    const session = await getServerSession(authOptions);
+    console.log(session);
 
-        if (!session)
-            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    if (!session)
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-        const map = await prisma.map.findUnique({
-            where: {
-                id: parseInt(id),
-                userId: session.user.id,
-            },
-            include: {
-                locations: true,
-                images: true,
-            },
-        });
-        if (!map)
-            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const map = await prisma.map.findUnique({
+      where: {
+        id: parseInt(id),
+        userId: session.user.id,
+      },
+      include: {
+        locations: true,
+        images: true,
+      },
+    });
+    console.log(map);
 
-        return NextResponse.json({ map: map }, { status: 200 });
-    } catch (e) {
-        return NextResponse.json({ error: 'Error saving map' }, { status: 500 });
-    }
+    if (!map)
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+    return NextResponse.json({ map: map }, { status: 200 });
+  } catch (e) {
+    console.error("Error saving map:", e);
+    return NextResponse.json({ error: "Error saving map" }, { status: 500 });
+  }
 }

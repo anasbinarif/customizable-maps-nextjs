@@ -1,6 +1,6 @@
-import LocationSearchingIcon from '@mui/icons-material/LocationSearching';
-import {Box, List, ListItem, ListItemText, Typography} from '@mui/material';
 import React from 'react';
+import {Box, List, ListItem, ListItemText, Typography} from '@mui/material';
+import LocationSearchingIcon from '@mui/icons-material/LocationSearching';
 
 const LocationListByFilter = ({ locations, filters, onLocationClick }) => {
     const locationsByTag = filters.reduce((acc, filter) => {
@@ -14,12 +14,12 @@ const LocationListByFilter = ({ locations, filters, onLocationClick }) => {
                 locations.length > 0 && (
                     <Box key={tag} sx={{ mb: 2 }}>
                         <Box sx={{
-                            display: 'flex',
-                            alignItems: 'center'
+                            display: "flex",
+                            alignItems: "center"
                         }}>
-                            <LocationSearchingIcon style={{ color: `${filters.find(f => f.name === tag)?.selectedColor || 'textPrimary'}` }} />
+                            <LocationSearchingIcon style={{ color: `${filters.find(f => f.name === tag)?.selectedColor || 'textPrimary'}` }}/>
                             <Typography variant="h6" sx={{
-                                fontWeight: 'bold'
+                                fontWeight: "bold"
                             }}>
                                 {tag}
                             </Typography>

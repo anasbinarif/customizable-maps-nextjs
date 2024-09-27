@@ -1,5 +1,4 @@
 import {NextResponse} from 'next/server';
-
 import prisma from '@/lib/prisma';
 
 export async function GET(req, { params }) {
@@ -21,6 +20,7 @@ export async function GET(req, { params }) {
 
         return NextResponse.json({ user });
     } catch (error) {
+        console.error('Error fetching user by ID:', error);
         return NextResponse.json({ error: 'Error fetching user' }, { status: 500 });
     }
 }
