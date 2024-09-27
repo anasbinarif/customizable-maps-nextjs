@@ -1,5 +1,5 @@
 import React from 'react';
-import {Box, List, ListItem, ListItemText, Typography} from '@mui/material';
+import { Typography, List, ListItem, ListItemText, Box } from '@mui/material';
 import LocationSearchingIcon from '@mui/icons-material/LocationSearching';
 
 const LocationListByFilter = ({ locations, filters, onLocationClick }) => {

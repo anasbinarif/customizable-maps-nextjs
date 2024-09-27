@@ -1,6 +1,6 @@
 "use client";
-import React, {useEffect, useState} from 'react';
-import {Box, Grid, Typography} from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { Box, Grid, Typography } from '@mui/material';
 import MapDetailsModal from '../../user/displayUserMap/components/MapDetailsModal';
 import ConfirmDeleteModal from './ConfirmDeleteModal';
 import UserMapsCard from '../../user/displayUserMap/components/UserMapsCard';

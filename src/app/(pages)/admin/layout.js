@@ -1,6 +1,8 @@
-import {Inter} from "next/font/google";
+import { Inter } from "next/font/google";
 // import { ThemeProvider } from "@/context/ThemeContext";
-import {getServerSession} from "next-auth";
+import { getServerSession } from "next-auth";
+import AuthProvider from "@/lib/SessionProvider";
+import CssBaseline from "@mui/material/CssBaseline";
 
 const inter = Inter({ subsets: ["latin"] });
 

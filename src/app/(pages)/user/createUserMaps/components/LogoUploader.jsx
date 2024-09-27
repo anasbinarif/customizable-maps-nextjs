@@ -1,7 +1,7 @@
-import React, {useContext} from "react";
-import {Box, Button, Grid, IconButton, Typography} from "@mui/material";
-import {Close as ClearIcon} from "@mui/icons-material";
-import {ThemeContext} from "@/context/ThemeContext";
+import React, { useContext, useEffect, useState } from "react";
+import { Box, Button, Grid, IconButton, Typography } from "@mui/material";
+import { Upload as UploadIcon, Close as ClearIcon } from "@mui/icons-material";
+import { ThemeContext } from "@/context/ThemeContext";
 import Image from "next/image";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
@@ -118,6 +118,7 @@ const LogoUploader = ({ setLogoFile, logoFile }) => {
               <Box
                 sx={{
                   position: "relative",
+                  width: "100%",
                   width: "100%",
                   height: "13rem",
                 }}

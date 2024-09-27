@@ -1,9 +1,17 @@
 "use client";
-import {useSearchParams} from "next/navigation";
-import {useState} from "react";
-import {Box, Button, Typography,} from "@mui/material";
+import { useSearchParams } from "next/navigation";
+import { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  Box,
+  Button,
+  TextField,
+  Typography,
+  Slide,
+} from "@mui/material";
 import CustomSnackbar from "@/components/CustomSnackbar";
-import {StyledTextField} from "@/components/CustomTextFields";
+import { StyledTextField } from "@/components/CustomTextFields";
 
 export default function ResetPassword() {
   const searchParams = useSearchParams();

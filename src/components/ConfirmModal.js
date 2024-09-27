@@ -1,6 +1,18 @@
-import React, {useContext} from "react";
-import {Box, Button, Dialog, DialogContent, Slide, Typography,} from "@mui/material";
-import {ThemeContext} from "@/context/ThemeContext";
+import React, { useState, useEffect, useContext } from "react";
+import {
+  Dialog,
+  DialogContent,
+  Box,
+  Button,
+  TextField,
+  Typography,
+  Slide,
+} from "@mui/material";
+import CustomSnackbar from "./CustomSnackbar";
+import { signIn } from "next-auth/react";
+import LoadingSpinner from "@/components/LoadingSpinner";
+import { ThemeContext } from "@/context/ThemeContext";
+import { StyledTextField } from "./CustomTextFields";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;

@@ -1,4 +1,4 @@
-import {Box} from "@mui/material";
+import { Box } from "@mui/material";
 import DiaplayUserMaps from "./components/DiaplayUserMaps";
 
 export default function displayUserMap() {

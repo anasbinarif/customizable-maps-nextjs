@@ -1,24 +1,10 @@
 "use client";
-import React, {useEffect, useState} from 'react';
-import {
-    Avatar,
-    Box,
-    Button,
-    CircularProgress,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogTitle,
-    IconButton,
-    InputAdornment,
-    MenuItem,
-    TextField,
-    Typography
-} from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { Box, Typography, TextField, Button, Avatar, IconButton, CircularProgress, InputAdornment, Dialog, DialogActions, DialogContent, DialogTitle, MenuItem } from '@mui/material';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import {useSession} from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 
 const Profile = ({ userId }) => {
     const { data: session } = useSession();

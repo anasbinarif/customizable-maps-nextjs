@@ -1,39 +1,50 @@
 "use client";
 
-import React, {useCallback, useEffect, useMemo, useRef, useState,} from "react";
+import React, {
+  useEffect,
+  useRef,
+  useState,
+  useCallback,
+  useMemo,
+} from "react";
 import ReactDOM from "react-dom/client";
-import {Autocomplete, GoogleMap, InfoWindow, Marker,} from "@react-google-maps/api";
-import {Box, Button, Grid, Typography} from "@mui/material";
+import {
+  Autocomplete,
+  GoogleMap,
+  Marker,
+  InfoWindow,
+} from "@react-google-maps/api";
+import { Box, Button, Typography, Grid } from "@mui/material";
 import Image from "next/image";
 import LocationList from "./LocationList";
 import {
-  FaBus,
-  FaCamera,
-  FaFilm,
-  FaHotel,
-  FaLandmark,
-  FaMoneyBillAlt,
-  FaPrescriptionBottle,
-  FaSchool,
   FaUtensils,
+  FaHotel,
+  FaCamera,
+  FaLandmark,
+  FaBus,
+  FaPrescriptionBottle,
+  FaMoneyBillAlt,
+  FaSchool,
+  FaFilm,
 } from "react-icons/fa";
 import LoadingSpinner from "@/components/LoadingSpinner";
-import {useSession} from "next-auth/react";
+import { useSession } from "next-auth/react";
 import AlertSnackbar from "@/components/AlertSnackbar";
 import TextArea from "./TextArea";
 import LogoUploader from "./LogoUploader";
 import LoginSignupModal from "@/components/LoginSignupModal";
 import ImageUploader from "./ImageUploader";
-import {StyledTextField} from "@/components/CustomTextFields";
+import { StyledTextField } from "@/components/CustomTextFields";
 import ConfirmModal from "@/components/ConfirmModal";
-import {generateTextColor} from "@/lib/generateTextColor";
+import { generateTextColor } from "@/lib/generateTextColor";
 import GoogleMapsLoader from "@/lib/GoogleMapsLoader";
-import {uploadFileToS3} from "@/lib/uploadFileToS3";
-import {usePathname} from "next/navigation";
-import {jsPDF} from "jspdf";
+import { uploadFileToS3 } from "@/lib/uploadFileToS3";
+import { usePathname, useRouter } from "next/navigation";
+import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
 import CustomPdf from "./exportedDoc";
-import {getMarkerIcon, haversineDistance} from "@/lib/data";
+import { haversineDistance, getMarkerIcon } from "@/lib/data";
 
 const iconStyle = {
   marginRight: "8px",
@@ -621,6 +632,43 @@ export default function CreateGoogleMap({ mapData = null }) {
   return (
     <GoogleMapsLoader>
       <Grid container spacing={3} sx={{ marginTop: "1rem" }}>
+        {/* Map section */}
+        {/* <Grid item xs={12}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              margin: "10px 4.5rem",
+              flexWrap: "wrap",
+            }}
+          >
+            <StyledTextField
+              id="standard-basic"
+              placeholder="Title"
+              variant="outlined"
+              error={titleError}
+              value={title}
+              required
+              onChange={(e) => setTitle(e.target.value)}
+              helperText="Please enter title"
+              sx={{
+                width: "20%",
+              }}
+            />
+            <Box mt="10px">
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={saveMap}
+                sx={{
+                  width: "100%",
+                }}
+              >
+                Save Map
+              </Button>
+            </Box>
+          </Box>
+        </Grid> */}
         <Grid item xs={12} sm={12} md={8} lg={9}>
           <Box
             sx={{
@@ -647,6 +695,18 @@ export default function CreateGoogleMap({ mapData = null }) {
                 },
               }}
             />
+            {/* <Box mt="10px">
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={saveMap}
+                sx={{
+                  width: "100%",
+                }}
+              >
+                Save Map
+              </Button>
+            </Box> */}
           </Box>
           <Box
             sx={{
@@ -843,7 +903,49 @@ export default function CreateGoogleMap({ mapData = null }) {
             oldImgs={oldImgs}
             setOldImgs={setOldImgs}
           />
+          {/* <TextArea />
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <Box mt="10px">
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={exportMap}
+                sx={{
+                  width: "100%",
+                  backgroundColor: "transparent",
+                  color: "primary.main",
+                  boxShadow: "none",
+
+                  "&:hover": {
+                    fontWeight: "bold",
+                    backgroundColor: "transparent",
+                    boxShadow: "none",
+                  },
+                }}
+              >
+                Export
+              </Button>
+            </Box>
+            <Box mt="10px">
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={saveMap}
+                sx={{
+                  width: "100%",
+                }}
+              >
+                {mapData ? "Update Map" : "Save Map"}
+              </Button>
+            </Box>
+          </Box> */}
         </Grid>
+        {/* Location List section */}
         <Grid item xs={12} sm={12} md={4} lg={3}>
           <LocationList
             locationsByTag={locationsByTag}
@@ -912,6 +1014,18 @@ export default function CreateGoogleMap({ mapData = null }) {
           </Grid>
         </Grid>
       </Grid>
+      {/* <CustomPdf
+        customRef={contentRef}
+        data={{
+          title: title,
+          oldImgs: oldImgs,
+          newImgFiles: uploadedFiles,
+          logoFile: logoFile,
+          locationsByTag: locationsByTag,
+          currentLocation: currentLocation,
+          helperHtml: helperHtml,
+        }}
+      /> */}
       <AlertSnackbar
         open={alertOpen}
         onClose={handleCloseAlert}

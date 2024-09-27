@@ -2,7 +2,9 @@ import Hero from "@/components/Hero";
 import CarouselSection from "@/components/CarouselSection";
 import Testimonials from "@/components/Testimonials";
 import CTA from "@/components/CTA";
-import {Box} from "@mui/material";
+import { Box } from "@mui/material";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 export default function Home() {
   return (

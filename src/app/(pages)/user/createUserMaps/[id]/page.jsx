@@ -1,6 +1,6 @@
 "use client";
-import {useEffect, useState} from "react";
-import {Box} from "@mui/material";
+import { useEffect, useState } from "react";
+import { Box } from "@mui/material";
 import CreateGoogleMap from "../components/CreateGoogleMap";
 import Cookies from "js-cookie"; // to handle cookies on client-side
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import {useJsApiLoader} from '@react-google-maps/api';
+import { useJsApiLoader } from '@react-google-maps/api';
 import LoadingSpinner from "../components/LoadingSpinner";
 
 const GoogleMapsLoader = ({ children }) => {

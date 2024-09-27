@@ -1,9 +1,14 @@
-import React, {useMemo} from "react";
+import React, { useMemo } from "react";
 import Image from "next/image";
-import {Box, Typography} from "@mui/material";
-import {GoogleMap, Marker,} from "@react-google-maps/api";
+import { Box, Typography } from "@mui/material";
+import {
+  Autocomplete,
+  GoogleMap,
+  Marker,
+  InfoWindow,
+} from "@react-google-maps/api";
 import GoogleMapsLoader from "@/lib/GoogleMapsLoader";
-import {getMarkerIcon} from "@/lib/data";
+import { getMarkerIcon } from "@/lib/data";
 import DOMPurify from "dompurify";
 
 export default function CustomPdf({ data, customRef }) {
@@ -42,6 +47,8 @@ export default function CustomPdf({ data, customRef }) {
           display: "flex",
           flexDirection: "column",
           height: maxHeightPx,
+          display: "flex",
+          flexDirection: "column",
           justifyContent: "space-between",
           padding: "50px",
           // visibility: "hidden",
