@@ -22,7 +22,6 @@ export const uploadImageToS3 = async (file) => {
         await s3Client.send(new PutObjectCommand(uploadParams));
         return `https://${process.env.AWS_S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileName}`;
     } catch (error) {
-        console.error('Error uploading file:', error);
         throw new Error('Error uploading file');
     }
 };

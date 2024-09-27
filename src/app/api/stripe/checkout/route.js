@@ -1,12 +1,13 @@
+import {NextResponse} from 'next/server';
+
 import {stripe} from '@/lib/stripe';
-import {NextResponse} from "next/server";
 
 export async function POST(req) {
 
     const {userId, userEmail} = await req.json();
 
     if (!userId || !userEmail) {
-        return NextResponse.json({ error: "user id and email are required" }, { status: 400 });
+        return NextResponse.json({ error: 'user id and email are required' }, { status: 400 });
     }
 
     const subscriptionType = 'PRO';

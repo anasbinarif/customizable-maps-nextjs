@@ -1,5 +1,6 @@
-import prisma from "@/lib/prisma";
 import {NextResponse} from 'next/server';
+
+import prisma from '@/lib/prisma';
 
 export async function DELETE(req, { params }) {
     const { id } = params;
@@ -16,7 +17,6 @@ export async function DELETE(req, { params }) {
 
         return NextResponse.json({ map }, { status: 200 });
     } catch (e) {
-        console.error('Error deleting map:', e);
         return NextResponse.json({ error: 'Error deleting map' }, { status: 500 });
     }
 }

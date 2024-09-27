@@ -6,8 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.637.0",
@@ -55,8 +56,12 @@
     "uuid": "^10.0.0"
   },
   "devDependencies": {
+    "@babel/eslint-parser": "^7.25.1",
     "eslint": "^8",
     "eslint-config-next": "14.2.5",
+    "eslint-plugin-import": "^2.30.0",
+    "eslint-plugin-react": "^7.37.0",
+    "eslint-plugin-react-hooks": "^4.6.2",
     "prisma": "^5.18.0"
   }
 }
