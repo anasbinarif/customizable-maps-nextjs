@@ -1,11 +1,11 @@
 "use client";
 
 import React, {
+  useCallback,
   useEffect,
+  useMemo,
   useRef,
   useState,
-  useCallback,
-  useMemo,
 } from "react";
 import ReactDOM from "react-dom/client";
 import {
@@ -87,6 +87,7 @@ export default function CreateGoogleMap({ mapData = null }) {
 
   const [isGoogleMapsLoaded, setIsGoogleMapsLoaded] = useState(false);
   console.log("sarim", mapData);
+  console.log(session);
 
   const handleConfirmClose = () => {
     setLatLangTmp({ lat: "", lng: "" });
@@ -254,22 +255,10 @@ export default function CreateGoogleMap({ mapData = null }) {
     }
   };
 
-  // const exportMap = async () => {
-  //   const canvas = await html2canvas(contentRef.current, {
-  //     useCORS: true,
-  //     scale: 2,
-  //   });
-
-  //   const imgData = canvas.toDataURL("image/png");
-  //   const pdf = new jsPDF("p", "mm", "a4");
-  //   const imgWidth = 210;
-  //   const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-  //   pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
-  //   pdf.save(`${title}.pdf`);
-  // };
   const exportMap = async () => {
     const pdfContent = document.createElement("div");
+    pdfContent.style.width = "1920px";
+    pdfContent.style.position = "absolute";
     document.body.appendChild(pdfContent);
 
     const root = ReactDOM.createRoot(pdfContent);
@@ -290,7 +279,7 @@ export default function CreateGoogleMap({ mapData = null }) {
     );
 
     await new Promise((resolve) => {
-      setTimeout(resolve, 2000);
+      setTimeout(resolve, 3000);
     });
 
     const canvas = await html2canvas(pdfContent, {
@@ -371,7 +360,17 @@ export default function CreateGoogleMap({ mapData = null }) {
   }, []);
 
   const handleLocationClick = (location) => {
-    console.log(location);
+    // console.log(location);
+    const totalLocs = Object.values(locationsByTag).reduce(
+      (total, category) => {
+        return total + category.locations.length;
+      },
+      0
+    );
+    if (totalLocs >= 40) {
+      handleOpenAlert("error", "Max locations saved.");
+      return;
+    }
     setLocationsByTag((prevTags) => {
       const updatedTag = {
         ...prevTags[location.tag],
@@ -763,9 +762,13 @@ export default function CreateGoogleMap({ mapData = null }) {
             mapContainerStyle={{ width: "100%", height: "70vh" }}
             center={currentLocation}
             zoom={zoom}
-            onClick={onMapClick}
+            onDblClick={onMapClick}
             onLoad={onLoad}
-            onUnmount={onUnmount}
+            // onUnmount={onUnmount}
+            options={{
+              gestureHandling: "greedy",
+              disableDoubleClickZoom: true,
+            }}
           >
             <Marker position={currentLocation} />
             {markers.map((marker, index) => (
@@ -797,9 +800,9 @@ export default function CreateGoogleMap({ mapData = null }) {
                         setInfoWindowHovered(false);
                         handleMarkerMouseOut();
                       }}
-                      options={{
-                        pixelOffset: new window.google.maps.Size(0, -30),
-                      }}
+                      // options={{
+                      //   pixelOffset: new window.google.maps.Size(0, -30),
+                      // }}
                     >
                       <Box
                         sx={{
@@ -1015,7 +1018,7 @@ export default function CreateGoogleMap({ mapData = null }) {
         </Grid>
       </Grid>
       {/* <CustomPdf
-        customRef={contentRef}
+        customRef={null}
         data={{
           title: title,
           oldImgs: oldImgs,

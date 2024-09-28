@@ -1,10 +1,17 @@
 "use client";
+<<<<<<< HEAD
 import React, { useState, useEffect, useContext } from "react";
 import { CardTravelSharp } from "@mui/icons-material";
 import { Box, Typography, Button, Container, Grid } from "@mui/material";
 import Image from "next/image";
 import { ThemeContext } from "@/context/ThemeContext";
 import { useTheme } from "@mui/material";
+=======
+import React, { useContext, useEffect, useState } from "react";
+import { Box, Button, Container, Typography, useTheme } from "@mui/material";
+import { ThemeContext } from "@/context/ThemeContext";
+import Link from "next/link";
+>>>>>>> 0c6caf2 (Ui updates, pdf complete)
 
 function getTransitionStyles(index, curIndex, len) {
   return index === curIndex
@@ -23,7 +30,8 @@ function getTransitionStyles(index, curIndex, len) {
           position: "absolute",
           top: "20%",
           left: "100px",
-          width: "450px",
+          right: "100px",
+          // width: "450px",
           textAlign: "left",
           padding: 0,
           color: "#eee",
@@ -177,11 +185,11 @@ export default function CarouselSection() {
                   <div className="cardContent">
                     <Typography
                       sx={{
-                        fontSize: "2rem",
+                        fontSize: "2.4rem",
                         fontWeight: "bold",
                         opacity: 0,
                         animation: "showContent 1s ease-in-out forwards",
-                        color: "primary.main",
+                        color: "primary.main2",
                         marginBottom: "2rem",
                       }}
                     >
@@ -203,7 +211,7 @@ export default function CarouselSection() {
                         <Typography
                           sx={{
                             textAlign: "left",
-                            fontSize: "1rem",
+                            fontSize: "1.4rem",
                             fontWeight: "600",
                           }}
                         >
@@ -211,29 +219,32 @@ export default function CarouselSection() {
                         </Typography>
                       </Box>
                     ))}
-                    <Button
-                      sx={{
-                        marginTop: "2rem",
-                        fontWeight: "700",
-                        opacity: 0,
-                        animation: "showContent 1s ease-in-out 0.6s 1 forwards",
+                    <Link href="/user/createUserMaps">
+                      <Button
+                        sx={{
+                          marginTop: "2rem",
+                          fontWeight: "700",
+                          opacity: 0,
+                          animation:
+                            "showContent 1s ease-in-out 0.6s 1 forwards",
 
-                        padding: "0.4rem 1rem",
-                        borderRadius: "200px",
-                        backgroundColor: "transparent",
-                        border: `1px solid white`,
-                        color: "white",
-                        "&:hover": {
-                          backgroundColor: "white",
-                          color: "primary.main",
-                          // border: "none",
-                        },
-                        // color: theme.palette.primary.accent,
-                        fontSize: "1rem",
-                      }}
-                    >
-                      Learn More
-                    </Button>
+                          padding: "0.4rem 1rem",
+                          borderRadius: "200px",
+                          backgroundColor: "transparent",
+                          border: `1px solid white`,
+                          color: "white",
+                          "&:hover": {
+                            backgroundColor: "white",
+                            color: "primary.main",
+                            // border: "none",
+                          },
+                          // color: theme.palette.primary.accent,
+                          fontSize: "1rem",
+                        }}
+                      >
+                        Create map
+                      </Button>
+                    </Link>
                   </div>
                 </Box>
               );

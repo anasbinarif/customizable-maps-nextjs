@@ -1,5 +1,6 @@
 import { Box, Typography, Button, Container, Grid } from "@mui/material";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Hero() {
   const imageUrls = [
@@ -17,7 +18,7 @@ export default function Hero() {
       sx={{
         display: "flex",
         alignItems: "center",
-        minHeight: "80vh",
+        minHeight: "90vh",
         backgroundSize: "cover",
         backgroundPosition: "center",
         padding: "2rem",
@@ -28,20 +29,25 @@ export default function Hero() {
       }}
     >
       <Container
-        maxWidth="lg"
+        maxWidth="xl"
         sx={{
           "@media only screen and (max-width: 600px)": {
             padding: "0",
           },
         }}
       >
-        <Grid container spacing={2} alignItems="center">
+        <Grid container spacing={6} alignItems="center">
           {/* Left Content */}
-          <Grid item xs={12} md={6}>
+          <Grid
+            item
+            xs={12}
+            md={6}
+            sx={{ display: "flex", justifyContent: "center" }}
+          >
             <Box
               sx={{
                 backgroundColor: "primary.bgHero",
-                padding: "2rem",
+                padding: "3rem",
                 borderRadius: "10px",
                 maxWidth: "500px",
                 boxShadow: "var(--heroShadow)",
@@ -82,25 +88,29 @@ export default function Hero() {
                 descriptions, and export your final design to PDF for printing.
               </Typography>
               <Box sx={{ display: "flex", gap: "1rem" }}>
-                <Button
-                  variant="contained"
-                  sx={{
-                    backgroundColor: "primary.main",
-                    borderRadius: "20px",
-                  }}
-                >
-                  Get Started
-                </Button>
-                <Button
-                  variant="outlined"
-                  sx={{
-                    borderColor: "secondary.main",
-                    color: "secondary.main",
-                    borderRadius: "20px",
-                  }}
-                >
-                  Read More
-                </Button>
+                <Link href="/user/createUserMaps">
+                  <Button
+                    variant="contained"
+                    sx={{
+                      backgroundColor: "primary.main",
+                      borderRadius: "20px",
+                    }}
+                  >
+                    Create Map
+                  </Button>
+                </Link>
+                <Link href={"/user/subscriptions"}>
+                  <Button
+                    variant="outlined"
+                    sx={{
+                      borderColor: "secondary.main",
+                      color: "secondary.main",
+                      borderRadius: "20px",
+                    }}
+                  >
+                    Subscribe Now
+                  </Button>
+                </Link>
               </Box>
             </Box>
           </Grid>
