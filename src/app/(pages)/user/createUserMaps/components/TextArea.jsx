@@ -10,7 +10,9 @@ export default function TextArea({ helperHtml, setHelperHtml }) {
   const { darkMode } = useContext(ThemeContext);
 
   const handleChange = (html) => {
-    setHelperHtml(html);
+    const lineCount = html.split("\n").length;
+
+    if (lineCount <= 13) setHelperHtml(html);
   };
 
   // console.log(editorHtml);
