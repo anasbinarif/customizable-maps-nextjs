@@ -112,13 +112,6 @@ export default function Footer() {
               >
                 Contact
               </Link>
-              {/* <Link
-                href="#"
-                color="inherit"
-                sx={{ textDecoration: "none", color: "primary.main" }}
-              >
-                Blog
-              </Link> */}
             </Box>
           </Grid>
         </Grid>
