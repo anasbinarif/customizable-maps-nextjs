@@ -1,15 +1,11 @@
-import React, { useMemo } from "react";
-import Image from "next/image";
 import { Box, Typography } from "@mui/material";
-import {
-  Autocomplete,
-  GoogleMap,
-  Marker,
-  InfoWindow,
-} from "@react-google-maps/api";
-import GoogleMapsLoader from "@/lib/GoogleMapsLoader";
-import { getMarkerIcon } from "@/lib/data";
+import { GoogleMap, Marker } from "@react-google-maps/api";
 import DOMPurify from "dompurify";
+import Image from "next/image";
+import React, { useMemo } from "react";
+
+import { getMarkerIcon } from "@/lib/data";
+import GoogleMapsLoader from "@/lib/GoogleMapsLoader";
 
 export default function CustomPdf({ data, customRef }) {
   const categories = useMemo(
@@ -20,7 +16,7 @@ export default function CustomPdf({ data, customRef }) {
   const allLocations = useMemo(
     () =>
       Object.entries(data?.locationsByTag)
-        .map(([key, value]) => value.locations)
+        .map(([, value]) => value.locations)
         .flat(),
     [data]
   );
@@ -49,14 +45,11 @@ export default function CustomPdf({ data, customRef }) {
     <GoogleMapsLoader>
       <Box
         sx={{
-          display: "flex",
-          flexDirection: "column",
           height: maxHeightPx,
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
           padding: "50px",
-          // visibility: "hidden",
         }}
         ref={customRef}
       >
@@ -329,10 +322,10 @@ export default function CustomPdf({ data, customRef }) {
           </Box>
           {/* <Box
             sx={{
-              padding: "1rem 2rem",
-              borderTop: "3px solid #000",
-              display: "flex",
-              m: "1rem 0 3rem",
+              padding: '1rem 2rem',
+              borderTop: '3px solid #000',
+              display: 'flex',
+              m: '1rem 0 3rem',
             }}
           >
             Footer

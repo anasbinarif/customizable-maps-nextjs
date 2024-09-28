@@ -1,20 +1,24 @@
-"use client";
-import React, { useEffect, useMemo, useState } from "react";
-import { useSession } from "next-auth/react";
-import AlertSnackbar from "@/components/AlertSnackbar";
-import { Container, Grid, Typography, Box, Button } from "@mui/material";
-import MapDetailsModal from "./MapDetailsModal";
-import UserMapsCard, { CreateMapCard } from "./UserMapsCard";
-import Link from "next/link";
-import LoadingSpinner from "@/components/LoadingSpinner";
+'use client';
+import {Box, Button, Container, Grid, Typography} from '@mui/material';
+import Link from 'next/link';
+import {useSession} from 'next-auth/react';
+import React, {useEffect, useState} from 'react';
+
+import MapDetailsModal from './MapDetailsModal';
+import UserMapsCard, {CreateMapCard} from './UserMapsCard';
+
+import AlertSnackbar from '@/components/AlertSnackbar';
+import LoadingSpinner from '@/components/LoadingSpinner';
+import useCustomSnackbar from '@/components/snackbar-hook/useCustomSnackbar';
 
 const DisplayUserMaps = () => {
   const { data: session, status } = useSession();
   const [maps, setMaps] = useState(null);
   const [alertOpen, setAlertOpen] = useState(false);
-  const [alertSeverity, setAlertSeverity] = useState("success");
-  const [alertMessage, setAlertMessage] = useState("");
+  const [alertSeverity, setAlertSeverity] = useState('success');
+  const [alertMessage, setAlertMessage] = useState('');
   const [selectedMap, setSelectedMap] = useState(null);
+  const { openSnackbar } = useCustomSnackbar();
 
   const handleCloseAlert = () => {
     setAlertOpen(false);
@@ -34,51 +38,49 @@ const DisplayUserMaps = () => {
     setSelectedMap(null);
   };
 
-  console.log(maps);
-
   useEffect(() => {
     const fetchUserMaps = async () => {
-      if (status === "authenticated") {
+      if (status === 'authenticated') {
         try {
           const response = await fetch(
             `/api/getUserMaps?email=${session.user.email}`
           );
+
           if (response.ok) {
             const data = await response.json();
+
             setMaps(data.maps);
           } else {
-            console.error("Failed to fetch user maps.");
+            openSnackbar('Failed to fetch user maps.');
           }
         } catch (error) {
-          console.error("Error fetching user maps:", error);
+          openSnackbar(`An error occurred while fetching user maps. ${error}`);
         }
       } else setMaps([]);
     };
+
     fetchUserMaps();
   }, [status, session?.user]);
 
   const handleDeleteMap = async (mapId) => {
     try {
       const response = await fetch(`/api/deleteUserMap?id=${mapId}`, {
-        method: "DELETE",
+        method: 'DELETE',
       });
 
       if (response.ok) {
         setMaps(maps.filter((map) => map.id !== mapId));
-        handleOpenAlert("success", "Map deleted successfully.");
+        handleOpenAlert('success', 'Map deleted successfully.');
       } else {
-        handleOpenAlert("error", "Failed to delete the map.");
+        handleOpenAlert('error', 'Failed to delete the map.');
       }
     } catch (error) {
-      console.error("Error deleting map:", error);
-      handleOpenAlert("error", "An error occurred while deleting the map.");
+      handleOpenAlert('error', 'An error occurred while deleting the map.');
     }
   };
 
-  console.log(maps);
-
   return (
-    <Container sx={{ mt: 4, minHeight: "100vh" }}>
+    <Container sx={{ mt: 4, minHeight: '100vh' }}>
       {maps?.length > 0 ? (
         <Grid container spacing={3}>
           {maps.map((map) => (
@@ -101,12 +103,12 @@ const DisplayUserMaps = () => {
       ) : (
         <Box
           sx={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "50vh",
-            textAlign: "center",
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '50vh',
+            textAlign: 'center',
           }}
         >
           <Typography variant="h6" gutterBottom>

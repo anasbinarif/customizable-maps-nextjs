@@ -1,18 +1,13 @@
-import React, { useState, useEffect, useContext } from "react";
-import {
-  Dialog,
-  DialogContent,
-  Box,
-  Button,
-  TextField,
-  Typography,
-  Slide,
-} from "@mui/material";
-import CustomSnackbar from "./CustomSnackbar";
-import { signIn } from "next-auth/react";
-import LoadingSpinner from "@/components/LoadingSpinner";
-import { ThemeContext } from "@/context/ThemeContext";
-import { StyledTextField } from "./CustomTextFields";
+import {Box, Button, Dialog, DialogContent, Slide, Typography,} from '@mui/material';
+import {signIn} from 'next-auth/react';
+import React, {useContext, useEffect, useState} from 'react';
+
+import CustomSnackbar from './CustomSnackbar';
+import {StyledTextField} from './CustomTextFields';
+
+import LoadingSpinner from '@/components/LoadingSpinner';
+import useCustomSnackbar from '@/components/snackbar-hook/useCustomSnackbar';
+import {ThemeContext} from '@/context/ThemeContext';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -21,68 +16,70 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 export default function LoginSignupModal({ open, handleClose, mode }) {
   const [isLogin, setIsLogin] = useState(true);
   const [showForgetPw, setShowForgetPw] = useState(false);
-  const [loading, setLoading] = useState(false); // State to manage loading spinner
+  const [loading, setLoading] = useState(false);
+  const { openSnackbar } = useCustomSnackbar();
   const [loginData, setLoginData] = useState({
-    email: "",
-    password: "",
+    email: '',
+    password: '',
   });
   const [signupData, setSignupData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
   });
-  const [forgetEmail, setForgetEmail] = useState("");
+  const [forgetEmail, setForgetEmail] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState("");
-  const [snackbarSeverity, setSnackbarSeverity] = useState("error");
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState('error');
   const { darkMode } = useContext(ThemeContext);
 
   useEffect(() => {
-    setIsLogin(mode === "login");
+    setIsLogin(mode === 'login');
     setShowForgetPw(false);
-    setLoginData({ email: "", password: "" });
-    setSignupData({ name: "", email: "", password: "", confirmPassword: "" });
+    setLoginData({ email: '', password: '' });
+    setSignupData({ name: '', email: '', password: '', confirmPassword: '' });
     setSnackbarOpen(false);
   }, [mode]);
 
   const validate = () => {
     let isValid = true;
-    let message = "";
+
+    let message = '';
 
     if (isLogin) {
       if (!loginData.email) {
-        message = "Email is required";
+        message = 'Email is required';
         isValid = false;
       } else if (!/\S+@\S+\.\S+/.test(loginData.email)) {
-        message = "Email is not valid";
+        message = 'Email is not valid';
         isValid = false;
       } else if (!loginData.password) {
-        message = "Password is required";
+        message = 'Password is required';
         isValid = false;
       }
     } else {
       if (!signupData.name) {
-        message = "Name is required";
+        message = 'Name is required';
         isValid = false;
       } else if (!signupData.email) {
-        message = "Email is required";
+        message = 'Email is required';
         isValid = false;
       } else if (!/\S+@\S+\.\S+/.test(signupData.email)) {
-        message = "Email is not valid";
+        message = 'Email is not valid';
         isValid = false;
       } else if (!signupData.password) {
-        message = "Password is required";
+        message = 'Password is required';
         isValid = false;
       } else if (signupData.password !== signupData.confirmPassword) {
-        message = "Passwords do not match";
+        message = 'Passwords do not match';
         isValid = false;
       }
     }
 
     if (!isValid) {
       setSnackbarMessage(message);
-      setSnackbarSeverity("error");
+      setSnackbarSeverity('error');
       setSnackbarOpen(true);
     }
 
@@ -94,51 +91,53 @@ export default function LoginSignupModal({ open, handleClose, mode }) {
       setLoading(true);
       if (isLogin) {
         // Logging in the user
-        const result = await signIn("credentials", {
+        const result = await signIn('credentials', {
           redirect: false,
           email: loginData.email,
           password: loginData.password,
         });
+
         if (result.error) {
           setSnackbarMessage(result.error);
-          setSnackbarSeverity("error");
+          setSnackbarSeverity('error');
           setSnackbarOpen(true);
           setLoading(false);
         } else {
           // Successful login
-          setSnackbarMessage("Login successful!");
-          setSnackbarSeverity("success");
+          setSnackbarMessage('Login successful!');
+          setSnackbarSeverity('success');
           setSnackbarOpen(true);
           handleClose();
           setLoading(false);
         }
       } else {
         try {
-          const res = await fetch("/api/registerUser", {
-            method: "POST",
+          const res = await fetch('/api/registerUser', {
+            method: 'POST',
             headers: {
-              "Content-Type": "application/json",
+              'Content-Type': 'application/json',
             },
             body: JSON.stringify(signupData),
           });
 
           if (res.ok) {
-            setSnackbarMessage("Signup successful!");
-            setSnackbarSeverity("success");
+            setSnackbarMessage('Signup successful!');
+            setSnackbarSeverity('success');
             setSnackbarOpen(true);
             handleClose();
             setIsLogin(true);
             setLoading(false);
           } else {
             const data = await res.json();
-            setSnackbarMessage(data.message || "Signup failed");
-            setSnackbarSeverity("error");
+
+            setSnackbarMessage(data.message || 'Signup failed');
+            setSnackbarSeverity('error');
             setSnackbarOpen(true);
             setLoading(false);
           }
         } catch (error) {
-          setSnackbarMessage("Signup failed. Please try again.");
-          setSnackbarSeverity("error");
+          setSnackbarMessage('Signup failed. Please try again.');
+          setSnackbarSeverity('error');
           setSnackbarOpen(true);
           setLoading(false);
         }
@@ -151,26 +150,26 @@ export default function LoginSignupModal({ open, handleClose, mode }) {
     const email = forgetEmail;
 
     try {
-      const res = await fetch("/api/sendResetPassword", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const res = await fetch('/api/sendResetPassword', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),
       });
       const data = await res.json();
 
       if (res.ok) {
         setSnackbarMessage(data.message);
-        setSnackbarSeverity("success");
+        setSnackbarSeverity('success');
         setSnackbarOpen(true);
       } else {
         setSnackbarMessage(data.message);
-        setSnackbarSeverity("error");
+        setSnackbarSeverity('error');
         setSnackbarOpen(true);
       }
     } catch (err) {
-      console.log(err);
-      setSnackbarMessage("We ran into an issue, please try again later..");
-      setSnackbarSeverity("error");
+      openSnackbar(err);
+      setSnackbarMessage('We ran into an issue, please try again later..');
+      setSnackbarSeverity('error');
       setSnackbarOpen(true);
     }
 
@@ -195,42 +194,42 @@ export default function LoginSignupModal({ open, handleClose, mode }) {
         open={open}
         TransitionComponent={Transition}
         keepMounted
-        onClose={(e) => {
+        onClose={() => {
           setShowForgetPw(false);
           handleClose();
         }}
         sx={{
-          "& .MuiDialog-paper": {
+          '& .MuiDialog-paper': {
             backgroundColor: !darkMode
-              ? "rgba(255, 255, 255, 0.5)"
-              : "rgba(0, 0, 0, 0.5)", // Transparent background
-            backdropFilter: "blur(10px)", // Blurred background
-            borderRadius: "20px",
-            padding: "2rem",
-            boxShadow: "none",
+              ? 'rgba(255, 255, 255, 0.5)'
+              : 'rgba(0, 0, 0, 0.5)', // Transparent background
+            backdropFilter: 'blur(10px)', // Blurred background
+            borderRadius: '20px',
+            padding: '2rem',
+            boxShadow: 'none',
             // backgroundColor: "red",
           },
         }}
       >
         <DialogContent>
-          <Box sx={{ textAlign: "center" }}>
+          <Box sx={{ textAlign: 'center' }}>
             <Typography
               variant="h5"
-              sx={{ marginBottom: "2rem", fontWeight: "bold" }}
+              sx={{ marginBottom: '2rem', fontWeight: 'bold' }}
             >
-              {isLogin ? "Login" : "Sign Up"}
+              {isLogin ? 'Login' : 'Sign Up'}
             </Typography>
             <Box
               component="form"
               sx={{
-                display: "flex",
-                flexDirection: "column",
-                width: "300px",
-                margin: "0 auto",
-                transition: "all 0.5s ease-in-out",
+                display: 'flex',
+                flexDirection: 'column',
+                width: '300px',
+                margin: '0 auto',
+                transition: 'all 0.5s ease-in-out',
 
-                "& > *:not(:last-child)": {
-                  marginBottom: "1.5rem",
+                '& > *:not(:last-child)': {
+                  marginBottom: '1.5rem',
                 },
               }}
             >
@@ -269,9 +268,9 @@ export default function LoginSignupModal({ open, handleClose, mode }) {
                       isLogin
                         ? setLoginData({ ...loginData, email: e.target.value })
                         : setSignupData({
-                            ...signupData,
-                            email: e.target.value,
-                          })
+                          ...signupData,
+                          email: e.target.value,
+                        })
                     }
                   />
                   <StyledTextField
@@ -284,13 +283,13 @@ export default function LoginSignupModal({ open, handleClose, mode }) {
                     onChange={(e) =>
                       isLogin
                         ? setLoginData({
-                            ...loginData,
-                            password: e.target.value,
-                          })
+                          ...loginData,
+                          password: e.target.value,
+                        })
                         : setSignupData({
-                            ...signupData,
-                            password: e.target.value,
-                          })
+                          ...signupData,
+                          password: e.target.value,
+                        })
                     }
                   />
                 </>
@@ -327,7 +326,7 @@ export default function LoginSignupModal({ open, handleClose, mode }) {
                   fullWidth
                   onClick={handleLoginSignup}
                 >
-                  {isLogin ? "Login" : "Sign Up"}
+                  {isLogin ? 'Login' : 'Sign Up'}
                 </Button>
               )}
               {isLogin && (
@@ -336,12 +335,12 @@ export default function LoginSignupModal({ open, handleClose, mode }) {
                   color="secondary"
                   onClick={toggleForgetPw}
                   style={{
-                    textTransform: "none",
+                    textTransform: 'none',
                     // backgroundColor: "red",
-                    marginBottom: "0",
+                    marginBottom: '0',
                   }}
                 >
-                  {showForgetPw ? "Login?" : "Forgot Password?"}
+                  {showForgetPw ? 'Login?' : 'Forgot Password?'}
                 </Button>
               )}
               {!showForgetPw && (
@@ -349,11 +348,11 @@ export default function LoginSignupModal({ open, handleClose, mode }) {
                   variant="text"
                   color="secondary"
                   onClick={toggleForm}
-                  sx={{ textTransform: "none" }}
+                  sx={{ textTransform: 'none' }}
                 >
                   {isLogin
                     ? "Don't have an account? Sign Up"
-                    : "Already have an account? Login"}
+                    : 'Already have an account? Login'}
                 </Button>
               )}
             </Box>
@@ -367,7 +366,7 @@ export default function LoginSignupModal({ open, handleClose, mode }) {
         message={snackbarMessage}
         severity={snackbarSeverity}
         handleClose={handleSnackbarClose}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }} // Show snackbar in top right corner
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }} // Show snackbar in top right corner
       />
       {loading && <LoadingSpinner />}
     </>

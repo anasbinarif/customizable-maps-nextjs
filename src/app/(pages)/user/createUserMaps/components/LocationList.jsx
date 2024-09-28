@@ -1,29 +1,30 @@
-import React from "react";
-import { Box, Chip, Typography } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { generateTextColor } from "@/lib/generateTextColor";
+import DeleteIcon from '@mui/icons-material/Delete';
+import {Box, Chip, Typography} from '@mui/material';
+import React from 'react';
+
+import {generateTextColor} from '@/lib/generateTextColor';
 
 export default function LocationList({ locationsByTag, handleDelete }) {
-  console.log(locationsByTag);
+
   return (
     <Box
       sx={{
-        width: "100%",
+        width: '100%',
         padding: 2,
-        backgroundColor: "primary.bgHero",
-        margin: "0 2",
-        borderRadius: "16px",
-        height: "100%",
+        backgroundColor: 'primary.bgHero',
+        margin: '0 2',
+        borderRadius: '16px',
+        height: '100%',
       }}
     >
-      <Typography variant="h5" gutterBottom sx={{ marginBottom: "1.5rem" }}>
+      <Typography variant="h5" gutterBottom sx={{ marginBottom: '1.5rem' }}>
         Points of Interest
       </Typography>
       {Object.keys(locationsByTag).map((tag, tagIndex) => (
         <Box key={tagIndex} sx={{ marginBottom: 2 }}>
           <Typography
             variant="subtitle1"
-            sx={{ color: "primary.main", fontWeight: "bold" }}
+            sx={{ color: 'primary.main', fontWeight: 'bold' }}
           >
             {tag}
           </Typography>
@@ -39,14 +40,14 @@ export default function LocationList({ locationsByTag, handleDelete }) {
                 deleteIcon={<DeleteIcon />}
                 variant="outlined"
                 sx={{
-                  margin: "4px",
+                  margin: '4px',
                   borderColor: locationsByTag[tag].color,
                   color: generateTextColor(locationsByTag[tag].color),
                   backgroundColor: locationsByTag[tag].color,
                 }}
                 label={
                   <Box
-                    sx={{ display: "flex", gap: "5px", alignItems: "flex-end" }}
+                    sx={{ display: 'flex', gap: '5px', alignItems: 'flex-end' }}
                   >
                     <Typography variant="body2">{location.name}</Typography>
                     <Typography

@@ -1,7 +1,8 @@
 "use client";
-import React, { useContext, useState } from "react";
-import { Box, Chip, Typography } from "@mui/material";
+import { Box } from "@mui/material";
+import React, { useContext } from "react";
 import ReactQuill from "react-quill";
+
 import "react-quill/dist/quill.snow.css";
 import { ThemeContext } from "@/context/ThemeContext";
 

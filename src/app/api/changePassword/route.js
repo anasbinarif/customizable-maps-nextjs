@@ -1,15 +1,17 @@
-import { getServerSession } from "next-auth/next";
-import { NextResponse } from "next/server";
-import { authOptions } from "@/lib/auth";
-import bcrypt from "bcryptjs";
-import prisma from "@/lib/prisma";
+import bcrypt from 'bcryptjs';
+import {NextResponse} from 'next/server';
+import {getServerSession} from 'next-auth/next';
+
+import {authOptions} from '@/lib/auth';
+import prisma from '@/lib/prisma';
 
 export async function POST(req) {
   try {
     // console.log(req);
     const session = await getServerSession(authOptions);
+
     if (!session) {
-      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
     }
 
     // console.log(session);
@@ -25,9 +27,10 @@ export async function POST(req) {
     // console.log(user);
 
     const isMatch = await bcrypt.compare(currentPassword, user.password);
+
     if (!isMatch) {
       return NextResponse.json(
-        { message: "Current password is incorrect" },
+        { message: 'Current password is incorrect' },
         { status: 400 }
       );
     }
@@ -41,13 +44,12 @@ export async function POST(req) {
     });
 
     return NextResponse.json(
-      { message: "Password updated successfully" },
+      { message: 'Password updated successfully' },
       { status: 200 }
     );
   } catch (error) {
-    console.error("Error updating password:", error);
     return NextResponse.json(
-      { message: "Internal Server Error" },
+      { message: 'Internal Server Error' },
       { status: 500 }
     );
   }

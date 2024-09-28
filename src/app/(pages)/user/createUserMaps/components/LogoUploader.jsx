@@ -1,9 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Box, Button, Grid, IconButton, Typography } from "@mui/material";
-import { Upload as UploadIcon, Close as ClearIcon } from "@mui/icons-material";
-import { ThemeContext } from "@/context/ThemeContext";
-import Image from "next/image";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import {Close as ClearIcon} from '@mui/icons-material';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import {Box, Button, Grid, IconButton, Typography} from '@mui/material';
+import Image from 'next/image';
+import React, {useContext} from 'react';
+
+import {ThemeContext} from '@/context/ThemeContext';
 
 const LogoUploader = ({ setLogoFile, logoFile }) => {
   const { darkMode } = useContext(ThemeContext);
@@ -11,48 +12,40 @@ const LogoUploader = ({ setLogoFile, logoFile }) => {
   // console.log(uploadedFiles);
 
   const handleImageUpload = (event) => {
-    console.log(event.target.files);
     const files = Array.from(event.target.files);
     const logo = files[0];
-    console.log(logo);
+
     setLogoFile(logo);
-    // const newImages = files.map((file) => URL.createObjectURL(file));
-    // setImages((prevImages) => [...prevImages, ...newImages]);
-    // setUploadedFiles((prevFiles) => [...prevFiles, ...files]);
   };
 
-  const handleRemoveImage = (index) => {
+  const handleRemoveImage = () => {
     setLogoFile({});
-    // setImages((prevImages) => prevImages.filter((_, i) => i !== index));
-    // setUploadedFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
   };
-
-  // console.log(logoFile);
 
   return (
     <Box
       sx={{
-        width: "100%",
+        width: '100%',
         p: 2,
-        border: `2px dashed ${darkMode ? "#333" : "#333"}`,
-        borderRadius: "8px",
+        border: `2px dashed ${darkMode ? '#333' : '#333'}`,
+        borderRadius: '8px',
         // minHeight: "400px",
-        backgroundColor: "transparent",
+        backgroundColor: 'transparent',
         // mt: "20px",
-        height: "100%",
+        height: '100%',
       }}
     >
       {!logoFile.name && !logoFile.url ? (
         <Box
           sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            height: "100%",
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: '100%',
           }}
         >
-          <CloudUploadIcon sx={{ fontSize: 50, color: "grey" }} />
+          <CloudUploadIcon sx={{ fontSize: 50, color: 'grey' }} />
           <Typography variant="body1" color="grey">
             Drag & drop to upload
           </Typography>
@@ -64,10 +57,10 @@ const LogoUploader = ({ setLogoFile, logoFile }) => {
             component="label"
             sx={{
               mt: 2,
-              backgroundColor: "grey",
-              color: "white",
-              "&:hover": {
-                backgroundColor: "#555",
+              backgroundColor: 'grey',
+              color: 'white',
+              '&:hover': {
+                backgroundColor: '#555',
               },
             }}
           >
@@ -117,10 +110,9 @@ const LogoUploader = ({ setLogoFile, logoFile }) => {
             <Grid item xs={12} sm={12} md={12}>
               <Box
                 sx={{
-                  position: "relative",
-                  width: "100%",
-                  width: "100%",
-                  height: "13rem",
+                  position: 'relative',
+                  width: '100%',
+                  height: '13rem',
                 }}
               >
                 <Image
@@ -130,26 +122,25 @@ const LogoUploader = ({ setLogoFile, logoFile }) => {
                       : logoFile?.url
                   }
                   alt="Uploaded logo"
-                  // layout="responsive"
                   width={150}
                   height={150}
                   objectFit="contain"
                   style={{
-                    borderRadius: "8px",
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "contain",
+                    borderRadius: '8px',
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'contain',
                   }}
                 />
                 <IconButton
                   sx={{
-                    position: "absolute",
-                    top: "8px",
-                    right: "8px",
-                    color: "black",
-                    backgroundColor: "rgba(255, 255, 255, 0.8)",
-                    "&:hover": {
-                      backgroundColor: "rgba(255, 255, 255, 1)",
+                    position: 'absolute',
+                    top: '8px',
+                    right: '8px',
+                    color: 'black',
+                    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                    '&:hover': {
+                      backgroundColor: 'rgba(255, 255, 255, 1)',
                     },
                   }}
                   onClick={() => handleRemoveImage()}

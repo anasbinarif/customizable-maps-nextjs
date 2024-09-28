@@ -45,8 +45,6 @@ function getTransitionStyles(index, curIndex, len) {
 }
 
 export default function CarouselSection() {
-  const { darkMode } = useContext(ThemeContext);
-  const theme = useTheme();
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const cardData = [
@@ -86,16 +84,6 @@ export default function CarouselSection() {
       clearTimeout(timer);
     };
   }, [currentIndex, cardData.length]);
-
-  const handleNext = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % cardData.length);
-  };
-
-  const handlePrev = () => {
-    setCurrentIndex(
-      (prevIndex) => (prevIndex - 1 + cardData.length) % cardData.length
-    );
-  };
 
   const handleIndexChange = (index) => {
     if (index !== currentIndex) setCurrentIndex(index);
@@ -189,7 +177,7 @@ export default function CarouselSection() {
                     >
                       {card.name}
                     </Typography>
-                    {card.pkgs.map((pkg, index) => (
+                    {card.pkgs.map((pkg) => (
                       <Box
                         key={pkg}
                         sx={{
