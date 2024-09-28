@@ -1,8 +1,9 @@
-import CredentialsProvider from "next-auth/providers/credentials";
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-import {NextResponse} from "next/server";
-import prisma from "@/lib/prisma";
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import {NextResponse} from 'next/server';
+import CredentialsProvider from 'next-auth/providers/credentials';
+
+import prisma from '@/lib/prisma';
 
 const login = async (credentials) => {
 
