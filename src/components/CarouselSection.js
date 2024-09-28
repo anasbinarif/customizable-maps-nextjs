@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect, useContext } from "react";
+import Link from "next/link";
 import { CardTravelSharp } from "@mui/icons-material";
 import Image from "next/image";
 import {
@@ -12,6 +13,8 @@ import {
 } from "@mui/material";
 import { ThemeContext } from "@/context/ThemeContext";
 import Link from "next/link";
+import { ThemeContext } from "@/context/ThemeContext";
+import { useTheme } from "@mui/material";
 
 function getTransitionStyles(index, curIndex, len) {
   return index === curIndex
