@@ -1,9 +1,5 @@
 "use client";
-<<<<<<< HEAD
 import React, { createContext, useState, useMemo } from "react";
-=======
-import React, { createContext, useMemo, useState } from "react";
->>>>>>> 0c6caf2 (Ui updates, pdf complete)
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { Quicksand } from "next/font/google";
