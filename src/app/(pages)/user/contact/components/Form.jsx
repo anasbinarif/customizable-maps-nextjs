@@ -50,7 +50,7 @@ export default function Form({ onSubmit }) {
     >
       <Typography variant="h2">Contact Us</Typography>
       <StyledTextField
-        label="Name"
+        placeholder="Name"
         name="name"
         value={formData.name}
         onChange={handleChange}
@@ -58,7 +58,7 @@ export default function Form({ onSubmit }) {
         required
       />
       <StyledTextField
-        label="Email"
+        placeholder="Email"
         name="email"
         type="email"
         value={formData.email}
@@ -67,7 +67,7 @@ export default function Form({ onSubmit }) {
         required
       />
       <StyledTextField
-        label="Message"
+        placeholder="Message"
         name="message"
         value={formData.message}
         onChange={handleChange}
@@ -76,7 +76,26 @@ export default function Form({ onSubmit }) {
         rows={4}
         required
       />
-      <Button type="submit" fullWidth>
+      <Button
+        type="submit"
+        fullWidth
+        sx={{
+          width: "100%",
+          backgroundColor: "transparent",
+          color: "primary.main",
+          border: `1px solid`,
+          borderColor: (theme) => theme.palette.primary.main,
+          boxShadow: "none",
+          borderRadius: "20px",
+
+          "&:hover": {
+            // fontWeight: "bold",
+            backgroundColor: "primary.main",
+            color: "white",
+            boxShadow: "none",
+          },
+        }}
+      >
         Submit
       </Button>
     </FormControl>

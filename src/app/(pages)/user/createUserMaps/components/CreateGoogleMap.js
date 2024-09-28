@@ -685,7 +685,7 @@ export default function CreateGoogleMap({ mapData = null }) {
               value={title}
               required
               onChange={(e) => setTitle(e.target.value)}
-              helperText="Please enter title"
+              // helperText="Please enter title"
               sx={{
                 width: "40%",
 
@@ -973,10 +973,10 @@ export default function CreateGoogleMap({ mapData = null }) {
               <Box
                 sx={{
                   display: "flex",
-                  justifyContent: "space-between",
+                  justifyContent: "flex-end",
                 }}
               >
-                <Box mt="10px">
+                <Box mt="10px" sx={{ marginRight: "1rem" }}>
                   <Button
                     variant="contained"
                     color="primary"
@@ -985,11 +985,14 @@ export default function CreateGoogleMap({ mapData = null }) {
                       width: "100%",
                       backgroundColor: "transparent",
                       color: "primary.main",
+                      border: `1px solid`,
+                      borderColor: (theme) => theme.palette.primary.main,
                       boxShadow: "none",
 
                       "&:hover": {
-                        fontWeight: "bold",
-                        backgroundColor: "transparent",
+                        // fontWeight: "bold",
+                        backgroundColor: "primary.main",
+                        color: "white",
                         boxShadow: "none",
                       },
                     }}
