@@ -78,7 +78,7 @@ export default function Form({ onSubmit }) {
           width: "100%",
           backgroundColor: "transparent",
           color: "primary.main",
-          border: "1px solid",
+          border: `1px solid`,
           borderColor: (theme) => theme.palette.primary.main,
           boxShadow: "none",
           borderRadius: "20px",
