@@ -32,29 +32,13 @@ import { generateTextColor } from "@/lib/generateTextColor";
 import GoogleMapsLoader from "@/lib/GoogleMapsLoader";
 import { uploadFileToS3 } from "@/lib/uploadFileToS3";
 import { usePathname, useRouter } from "next/navigation";
+import LocationList from "./LocationList";
 import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
 import CustomPdf from "./exportedDoc";
 import { haversineDistance, getMarkerIcon } from "@/lib/data";
-} from "react-icons/fa";
 
-import CustomPdf from "./exportedDoc";
-import ImageUploader from "./ImageUploader";
-import LocationList from "./LocationList";
-import LogoUploader from "./LogoUploader";
-import TextArea from "./TextArea";
-
-import AlertSnackbar from "@/components/AlertSnackbar";
-import ConfirmModal from "@/components/ConfirmModal";
-import { StyledTextField } from "@/components/CustomTextFields";
-import LoadingSpinner from "@/components/LoadingSpinner";
-import LoginSignupModal from "@/components/LoginSignupModal";
 import useCustomSnackbar from "@/components/snackbar-hook/useCustomSnackbar";
-import { getMarkerIcon, haversineDistance } from "@/lib/data";
-import { generateTextColor } from "@/lib/generateTextColor";
-import GoogleMapsLoader from "@/lib/GoogleMapsLoader";
-import { uploadFileToS3 } from "@/lib/uploadFileToS3";
-import { useSession } from "next-auth/react";
 
 import {
   Autocomplete,
@@ -64,9 +48,6 @@ import {
 } from "@react-google-maps/api";
 import { Box, Button, Typography, Grid } from "@mui/material";
 import Image from "next/image";
-import { usePathname, useRouter } from "next/navigation";
-import { jsPDF } from "jspdf";
-import html2canvas from "html2canvas";
 
 const iconStyle = {
   marginRight: "8px",
