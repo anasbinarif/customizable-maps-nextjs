@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+// "use server";
+>>>>>>> 0c6caf2 (Ui updates, pdf complete)
 export const haversineDistance = (loc1, loc2) => {
   const R = 3958.8; // Radius of Earth in miles
   const toRadians = (degrees) => degrees * (Math.PI / 180);
@@ -26,6 +30,6 @@ export const getMarkerIcon = (color, scale) => {
     strokeColor: '#000',
     strokeWeight: 1,
     scale: scale,
-    anchor: new window.google.maps.Point(12, 24),
+    // anchor: new window.google.maps.Point(12, 24),
   };
 };
