@@ -1,9 +1,9 @@
-'use client';
-import {Box, Container, useTheme} from '@mui/material';
-import {Map, Marker} from 'pigeon-maps';
-import React from 'react';
+"use client";
+import { Box, Container, useTheme } from "@mui/material";
+import { Map, Marker } from "pigeon-maps";
+import React from "react";
 
-import Form from './components/Form';
+import Form from "./components/Form";
 
 export default function CarouselSection() {
   const theme = useTheme();
@@ -16,14 +16,14 @@ export default function CarouselSection() {
   return (
     <Box
       sx={{
-        display: 'flex',
-        alignItems: 'center',
-        minHeight: '80vh',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        padding: '2rem',
-        '@media only screen and (max-width: 600px)': {
-          padding: '1rem',
+        display: "flex",
+        alignItems: "center",
+        minHeight: "80vh",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        padding: "2rem",
+        "@media only screen and (max-width: 600px)": {
+          padding: "1rem",
         },
       }}
     >
@@ -32,30 +32,30 @@ export default function CarouselSection() {
           padding: 0,
         }}
         sx={{
-          display: 'flex',
-          backgroundColor: 'primary.bgHero',
-          borderRadius: '16px',
-          overflow: 'hidden',
-          boxShadow: 'var(--heroShadow)',
+          display: "flex",
+          backgroundColor: "primary.bgHero",
+          borderRadius: "16px",
+          overflow: "hidden",
+          boxShadow: "var(--heroShadow)",
         }}
       >
         <Box
           sx={{
             padding: theme.spacing(2),
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            overflow: 'hidden',
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            overflow: "hidden",
             flex: 1,
           }}
         >
           <Box
             sx={{
-              position: 'relative',
-              width: '100%',
-              height: '100%',
-              overflow: 'hidden',
-              clipPath: 'polygon(0 0, 100% 0%, 93% 100%, 0% 100%)',
+              position: "relative",
+              width: "100%",
+              height: "100%",
+              overflow: "hidden",
+              clipPath: "polygon(0 0, 100% 0%, 93% 100%, 0% 100%)",
             }}
           >
             <Map
@@ -63,7 +63,7 @@ export default function CarouselSection() {
               zoom={15}
               height={600}
               width={600}
-              style={{ height: '100%' }}
+              style={{ height: "100%" }}
             >
               <Marker anchor={position} payload={1} />
             </Map>
@@ -72,16 +72,16 @@ export default function CarouselSection() {
         <Box
           sx={{
             padding: theme.spacing(2),
-            display: 'flex',
-            overflow: 'hidden',
+            display: "flex",
+            overflow: "hidden",
             flex: 1,
           }}
         >
           <Box
             sx={{
-              height: '100%',
-              padding: '2rem 1rem',
-              width: '100%',
+              height: "100%",
+              padding: "2rem 1rem",
+              width: "100%",
             }}
           >
             <Form onSubmit={handleFormSubmit} />

@@ -1,13 +1,14 @@
 import React, { useState, useContext } from "react";
 import {
+  Button,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
   TextField,
-  Button,
-  CircularProgress,
 } from "@mui/material";
+import React, { useState, useContext } from "react";
 import { ThemeContext } from "@/context/ThemeContext";
 import { StyledTextField } from "./CustomTextFields";
 
@@ -50,7 +51,7 @@ const ChangePasswordModal = ({ open, onClose, onSave }) => {
             : "rgba(0, 0, 0, 0.5)", // Transparent background
           backdropFilter: "blur(10px)", // Blurred background
           borderRadius: "20px",
-          padding: "2rem",
+          //   padding: "2rem",
           boxShadow: "none",
           // backgroundColor: "red",
         },

@@ -1,7 +1,8 @@
 "use client";
+
 import React, { createContext, useMemo, useState } from "react";
-import CssBaseline from "@mui/material/CssBaseline";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
 import { Quicksand } from "next/font/google";
 
 const quicksand = Quicksand({

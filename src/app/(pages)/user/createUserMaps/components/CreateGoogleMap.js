@@ -21,6 +21,13 @@ import React, {
 } from "react";
 import ReactDOM from "react-dom/client";
 import {
+<<<<<<< HEAD
+=======
+  FaUtensils,
+  FaHotel,
+  FaCamera,
+  FaLandmark,
+>>>>>>> 011bf8b (changed UI display maps, home, finished export)
   FaBus,
   FaCamera,
   FaFilm,
@@ -48,6 +55,45 @@ import { getMarkerIcon, haversineDistance } from "@/lib/data";
 import { generateTextColor } from "@/lib/generateTextColor";
 import GoogleMapsLoader from "@/lib/GoogleMapsLoader";
 import { uploadFileToS3 } from "@/lib/uploadFileToS3";
+<<<<<<< HEAD
+=======
+import { usePathname, useRouter } from "next/navigation";
+import { jsPDF } from "jspdf";
+import html2canvas from "html2canvas";
+import CustomPdf from "./exportedDoc";
+import { haversineDistance, getMarkerIcon } from "@/lib/data";
+} from "react-icons/fa";
+
+import CustomPdf from "./exportedDoc";
+import ImageUploader from "./ImageUploader";
+import LocationList from "./LocationList";
+import LogoUploader from "./LogoUploader";
+import TextArea from "./TextArea";
+
+import AlertSnackbar from "@/components/AlertSnackbar";
+import ConfirmModal from "@/components/ConfirmModal";
+import { StyledTextField } from "@/components/CustomTextFields";
+import LoadingSpinner from "@/components/LoadingSpinner";
+import LoginSignupModal from "@/components/LoginSignupModal";
+import useCustomSnackbar from "@/components/snackbar-hook/useCustomSnackbar";
+import { getMarkerIcon, haversineDistance } from "@/lib/data";
+import { generateTextColor } from "@/lib/generateTextColor";
+import GoogleMapsLoader from "@/lib/GoogleMapsLoader";
+import { uploadFileToS3 } from "@/lib/uploadFileToS3";
+import { useSession } from "next-auth/react";
+
+import {
+  Autocomplete,
+  GoogleMap,
+  Marker,
+  InfoWindow,
+} from "@react-google-maps/api";
+import { Box, Button, Typography, Grid } from "@mui/material";
+import Image from "next/image";
+import { usePathname, useRouter } from "next/navigation";
+import { jsPDF } from "jspdf";
+import html2canvas from "html2canvas";
+>>>>>>> 011bf8b (changed UI display maps, home, finished export)
 
 const iconStyle = {
   marginRight: "8px",
@@ -990,7 +1036,7 @@ export default function CreateGoogleMap({ mapData = null }) {
                   justifyContent: "flex-end",
                 }}
               >
-                <Box mt="10px" sx={{ marginRight: "1rem" }}>
+                <Box mt="10px" sx={{ mr: "1rem" }}>
                   <Button
                     variant="contained"
                     color="primary"
@@ -999,7 +1045,7 @@ export default function CreateGoogleMap({ mapData = null }) {
                       width: "100%",
                       backgroundColor: "transparent",
                       color: "primary.main",
-                      border: `1px solid`,
+                      border: "1px solid",
                       borderColor: (theme) => theme.palette.primary.main,
                       boxShadow: "none",
 
