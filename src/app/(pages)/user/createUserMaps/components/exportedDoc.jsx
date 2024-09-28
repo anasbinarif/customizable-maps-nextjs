@@ -1,15 +1,11 @@
-import React, { useMemo } from "react";
-import Image from "next/image";
-import { Box, Typography } from "@mui/material";
-import {
-  Autocomplete,
-  GoogleMap,
-  Marker,
-  InfoWindow,
-} from "@react-google-maps/api";
-import GoogleMapsLoader from "@/lib/GoogleMapsLoader";
-import { getMarkerIcon } from "@/lib/data";
-import DOMPurify from "dompurify";
+import {Box, Typography} from '@mui/material';
+import {GoogleMap, Marker,} from '@react-google-maps/api';
+import DOMPurify from 'dompurify';
+import Image from 'next/image';
+import React, {useMemo} from 'react';
+
+import {getMarkerIcon} from '@/lib/data';
+import GoogleMapsLoader from '@/lib/GoogleMapsLoader';
 
 export default function CustomPdf({ data, customRef }) {
   const categories = useMemo(
@@ -20,13 +16,13 @@ export default function CustomPdf({ data, customRef }) {
   const allLocations = useMemo(
     () =>
       Object.entries(data?.locationsByTag)
-        .map(([key, value]) => value.locations)
+        .map(([, value]) => value.locations)
         .flat(),
     [data]
   );
 
   const safeHTML = DOMPurify.sanitize(data?.helperHtml, {
-    ALLOWED_TAGS: ["h1", "h2", "p", "ul", "li"],
+    ALLOWED_TAGS: ['h1', 'h2', 'p', 'ul', 'li'],
     ALLOWED_ATTR: [],
   });
   // console.log(data);
@@ -44,43 +40,40 @@ export default function CustomPdf({ data, customRef }) {
     <GoogleMapsLoader>
       <Box
         sx={{
-          display: "flex",
-          flexDirection: "column",
           height: maxHeightPx,
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-          padding: "50px",
-          // visibility: "hidden",
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+          padding: '50px',
         }}
         ref={customRef}
       >
         <Box>
           <Box
             sx={{
-              padding: "1rem 2rem",
-              borderBottom: "3px solid #000",
-              display: "flex",
-              m: "1rem 0 3rem",
+              padding: '1rem 2rem',
+              borderBottom: '3px solid #000',
+              display: 'flex',
+              m: '1rem 0 3rem',
             }}
           >
             <Typography
               variant="h2"
               sx={{
                 // border: "5px dotted #000",
-                padding: "0.5rem 1rem",
+                padding: '0.5rem 1rem',
               }}
             >
               {data?.title}
             </Typography>
           </Box>
           <Box
-            sx={{ display: "flex", gap: "1rem", m: "4rem 0", height: "1200px" }}
+            sx={{ display: 'flex', gap: '1rem', m: '4rem 0', height: '1200px' }}
           >
-            <Box sx={{ flexBasis: "60%" }}>
+            <Box sx={{ flexBasis: '60%' }}>
               <GoogleMap
                 id="search-box-example"
-                mapContainerStyle={{ width: "100%", height: "100%" }}
+                mapContainerStyle={{ width: '100%', height: '100%' }}
                 center={data?.currentLocation}
                 zoom={15}
                 options={{
@@ -106,10 +99,10 @@ export default function CustomPdf({ data, customRef }) {
               sx={{
                 //   mt: "1rem",
                 //   backgroundColor: "blue",
-                flexBasis: "40%",
-                display: "flex",
-                flexDirection: "column",
-                flexWrap: "wrap",
+                flexBasis: '40%',
+                display: 'flex',
+                flexDirection: 'column',
+                flexWrap: 'wrap',
               }}
             >
               {categories.map((cat) => {
@@ -120,29 +113,29 @@ export default function CustomPdf({ data, customRef }) {
                   <Box
                     key={cat}
                     sx={{
-                      width: "33%",
-                      borderTop: "2px solid #b0b0b0",
-                      p: "1rem",
-                      display: "flex",
-                      flexDirection: "column",
-                      flexWrap: "wrap",
+                      width: '33%',
+                      borderTop: '2px solid #b0b0b0',
+                      p: '1rem',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      flexWrap: 'wrap',
                     }}
                   >
                     <Typography
                       sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        fontWeight: "bold",
-                        textTransform: "uppercase",
-                        fontSize: "0.9rem",
+                        display: 'flex',
+                        alignItems: 'center',
+                        fontWeight: 'bold',
+                        textTransform: 'uppercase',
+                        fontSize: '0.9rem',
 
-                        "& span": {
-                          display: "block",
-                          height: "10px",
-                          width: "20px",
+                        '& span': {
+                          display: 'block',
+                          height: '10px',
+                          width: '20px',
                           backgroundColor: color,
-                          borderRadius: "6px",
-                          mr: "15px",
+                          borderRadius: '6px',
+                          mr: '15px',
                         },
                       }}
                     >
@@ -154,20 +147,20 @@ export default function CustomPdf({ data, customRef }) {
                         <Box
                           key={index}
                           sx={{
-                            mt: "1rem",
-                            display: "flex",
-                            alignItems: "flex-end",
-                            gap: "0.5rem",
-                            flexWrap: "wrap",
+                            mt: '1rem',
+                            display: 'flex',
+                            alignItems: 'flex-end',
+                            gap: '0.5rem',
+                            flexWrap: 'wrap',
 
-                            "& .MuiTypography-root": {
-                              textWrap: "wrap",
+                            '& .MuiTypography-root': {
+                              textWrap: 'wrap',
                             },
                           }}
                         >
                           <Typography
                             sx={{
-                              "& span": { fontSize: "0.8rem", ml: "0.6rem" },
+                              '& span': { fontSize: '0.8rem', ml: '0.6rem' },
                             }}
                           >
                             {loc?.name}
@@ -185,8 +178,8 @@ export default function CustomPdf({ data, customRef }) {
           </Box>
           <Box
             sx={{
-              display: "flex",
-              gap: "1rem",
+              display: 'flex',
+              gap: '1rem',
               // height: "300px",
               // width: "300px",
             }}
@@ -195,12 +188,12 @@ export default function CustomPdf({ data, customRef }) {
               <Box
                 key={index}
                 sx={{
-                  position: "relative",
-                  height: "300px",
-                  width: "300px",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
+                  position: 'relative',
+                  height: '300px',
+                  width: '300px',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
                 }}
               >
                 <Image
@@ -211,11 +204,11 @@ export default function CustomPdf({ data, customRef }) {
                   height={300}
                   // objectFit="cover"
                   style={{
-                    borderRadius: "8px",
-                    height: "100%",
-                    width: "100%",
+                    borderRadius: '8px',
+                    height: '100%',
+                    width: '100%',
                     // objectFit: "cover",
-                    objectFit: "contain",
+                    objectFit: 'contain',
                   }}
                 />
               </Box>
@@ -224,12 +217,12 @@ export default function CustomPdf({ data, customRef }) {
               <Box
                 key={index}
                 sx={{
-                  position: "relative",
-                  height: "300px",
-                  width: "300px",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
+                  position: 'relative',
+                  height: '300px',
+                  width: '300px',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
                 }}
               >
                 <Image
@@ -240,10 +233,10 @@ export default function CustomPdf({ data, customRef }) {
                   height={150}
                   objectFit="cover"
                   style={{
-                    borderRadius: "8px",
-                    height: "100%",
-                    width: "100%",
-                    objectFit: "contain",
+                    borderRadius: '8px',
+                    height: '100%',
+                    width: '100%',
+                    objectFit: 'contain',
                   }}
                 />
               </Box>
@@ -256,21 +249,21 @@ export default function CustomPdf({ data, customRef }) {
             ></Box>
           )}
         </Box>
-        <Box sx={{ mt: "5rem" }}>
+        <Box sx={{ mt: '5rem' }}>
           <Box
             sx={{
-              display: "flex",
-              gap: "1rem",
-              justifyContent: "flex-start",
-              m: "2rem",
+              display: 'flex',
+              gap: '1rem',
+              justifyContent: 'flex-start',
+              m: '2rem',
             }}
           >
             {(data?.logoFile?.name || data?.logoFile?.url) && (
               <Box
                 sx={{
-                  position: "relative",
-                  width: "12rem",
-                  height: "10rem",
+                  position: 'relative',
+                  width: '12rem',
+                  height: '10rem',
                 }}
               >
                 <Image
@@ -285,10 +278,10 @@ export default function CustomPdf({ data, customRef }) {
                   height={150}
                   objectFit="contain"
                   style={{
-                    borderRadius: "8px",
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "contain",
+                    borderRadius: '8px',
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'contain',
                   }}
                 />
               </Box>
@@ -296,10 +289,10 @@ export default function CustomPdf({ data, customRef }) {
           </Box>
           <Box
             sx={{
-              padding: "1rem 2rem",
-              borderTop: "3px solid #000",
-              display: "flex",
-              m: "1rem 0 3rem",
+              padding: '1rem 2rem',
+              borderTop: '3px solid #000',
+              display: 'flex',
+              m: '1rem 0 3rem',
             }}
           >
             Footer

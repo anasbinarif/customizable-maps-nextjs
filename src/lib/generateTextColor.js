@@ -1,6 +1,7 @@
 function hexToRgb(hex) {
-  hex = hex.replace(/^#/, "");
+  hex = hex.replace(/^#/, '');
   const bigint = parseInt(hex, 16);
+
   return {
     r: (bigint >> 16) & 255,
     g: (bigint >> 8) & 255,
@@ -19,10 +20,10 @@ function rgbToHsl(r, g, b) {
     max === min
       ? 0
       : max === r
-      ? (60 * ((g - b) / (max - min)) + 360) % 360
-      : max === g
-      ? 60 * ((b - r) / (max - min)) + 120
-      : 60 * ((r - g) / (max - min)) + 240;
+        ? (60 * ((g - b) / (max - min)) + 360) % 360
+        : max === g
+          ? 60 * ((b - r) / (max - min)) + 120
+          : 60 * ((r - g) / (max - min)) + 240;
   const l = (max + min) / 2;
   const s =
     max === min ? 0 : (max - min) / (l > 0.5 ? 2 - max - min : max + min);
@@ -38,6 +39,7 @@ function hslToRgb(h, s, l) {
   const m = l - c / 2;
 
   let r, g, b;
+
   if (0 <= h && h < 60) {
     r = c;
     g = x;
@@ -80,7 +82,7 @@ function adjustToNeon(r, g, b) {
 }
 
 function rgbToHex(r, g, b) {
-  return "#" + [r, g, b].map((x) => x.toString(16).padStart(2, "0")).join("");
+  return '#' + [r, g, b].map((x) => x.toString(16).padStart(2, '0')).join('');
 }
 
 export function generateTextColor(pastelColor) {

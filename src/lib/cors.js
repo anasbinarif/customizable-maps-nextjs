@@ -1,8 +1,8 @@
-import Cors from "cors";
+import Cors from 'cors';
 
 const cors = Cors({
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  origin: "*",
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  origin: '*',
   credentials: true,
 });
 
@@ -12,6 +12,7 @@ export const runMiddleware = (req, res) => {
       if (result instanceof Error) {
         return reject(result);
       }
+
       return resolve(result);
     });
   });

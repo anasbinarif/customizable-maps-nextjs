@@ -1,25 +1,20 @@
-"use client";
-import React, { useState, useContext } from "react";
-import { TextField, Button, Typography, FormControl } from "@mui/material";
-import { StyledTextField } from "@/components/CustomTextFields";
-import { ThemeContext } from "@/context/ThemeContext";
-import { useTheme } from "@mui/material";
-// import { FormContainer } from "../../components/mui/FleetPkgs";
-// import { ServiceSubheading } from "../../components/mui/HomePkgs";
-// import HeadingLinesAnimation from "../../components/Home/HeadingLinesAnimation/HeadingLinesAnimation";
-// import { CustomFormButton, CustomFormTextField } from "../../components/mui/FormPkgs";
+'use client';
+import {Button, FormControl, Typography, useTheme} from '@mui/material';
+import React, { useState} from 'react';
+
+import {StyledTextField} from '@/components/CustomTextFields';
 
 export default function Form({ onSubmit }) {
-  const { darkMode } = useContext(ThemeContext);
   const theme = useTheme();
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    message: "",
+    name: '',
+    email: '',
+    message: '',
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+
     setFormData({
       ...formData,
       [name]: value,
@@ -38,14 +33,14 @@ export default function Form({ onSubmit }) {
       component="form"
       onSubmit={handleSubmit}
       sx={{
-        display: "flex",
-        flexDirection: "column",
+        display: 'flex',
+        flexDirection: 'column',
         gap: theme.spacing(4),
-        width: "100%",
+        width: '100%',
         // maxWidth: "500px",
         // margin: "0 auto",
         // padding: theme.spacing(3),
-        boxSizing: "border-box",
+        boxSizing: 'border-box',
       }}
     >
       <Typography variant="h2">Contact Us</Typography>

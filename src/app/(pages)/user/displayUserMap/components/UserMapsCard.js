@@ -1,38 +1,30 @@
-import React from "react";
-import {
-  Card,
-  CardContent,
-  Typography,
-  Grid,
-  IconButton,
-  Box,
-  CardMedia,
-} from "@mui/material";
-import FullscreenIcon from "@mui/icons-material/Fullscreen";
-import DeleteIcon from "@mui/icons-material/Delete";
-import AddRounded from "@mui/icons-material/AddRounded";
-import EditIcon from "@mui/icons-material/Edit";
-import Link from "next/link";
+import AddRounded from '@mui/icons-material/AddRounded';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import FullscreenIcon from '@mui/icons-material/Fullscreen';
+import {Box, Card, CardContent, CardMedia, Grid, IconButton, Typography,} from '@mui/material';
+import Link from 'next/link';
+import React from 'react';
 
 const UserMapsCard = ({ map, onOpenDetails, onDelete }) => {
-  console.log(map);
+
   return (
     <Card
       sx={{
         mb: 2,
-        borderRadius: "10px",
-        position: "relative",
-        boxShadow: "var(--heroShadow)",
+        borderRadius: '10px',
+        position: 'relative',
+        boxShadow: 'var(--heroShadow)',
         // height: "300px",
       }}
     >
       <IconButton
         onClick={() => onOpenDetails(map)}
         sx={{
-          position: "absolute",
-          top: "8px",
-          right: "48px",
-          color: "white",
+          position: 'absolute',
+          top: '8px',
+          right: '48px',
+          color: 'white',
           zIndex: 8,
         }}
       >
@@ -41,10 +33,10 @@ const UserMapsCard = ({ map, onOpenDetails, onDelete }) => {
       <IconButton
         onClick={() => onDelete(map.id)}
         sx={{
-          position: "absolute",
-          top: "8px",
-          right: "90px",
-          color: "white",
+          position: 'absolute',
+          top: '8px',
+          right: '90px',
+          color: 'white',
           zIndex: 8,
         }}
       >
@@ -53,14 +45,14 @@ const UserMapsCard = ({ map, onOpenDetails, onDelete }) => {
       <Link
         href={`/user/createUserMaps/${map?.id}`}
         style={{
-          position: "absolute",
-          top: "8px",
-          right: "8px",
-          color: "white",
+          position: 'absolute',
+          top: '8px',
+          right: '8px',
+          color: 'white',
           zIndex: 8,
         }}
       >
-        <IconButton sx={{ color: "white" }}>
+        <IconButton sx={{ color: 'white' }}>
           <EditIcon />
         </IconButton>
       </Link>
@@ -77,7 +69,7 @@ const UserMapsCard = ({ map, onOpenDetails, onDelete }) => {
           backgroundRepeat: "no-repeat",
         }}
       ></Box> */}
-      <Box sx={{ position: "relative", zIndex: 7 }}>
+      <Box sx={{ position: 'relative', zIndex: 7 }}>
         <CardMedia
           component="img"
           height="140"
@@ -86,43 +78,43 @@ const UserMapsCard = ({ map, onOpenDetails, onDelete }) => {
         />
         <Box
           sx={{
-            position: "absolute",
+            position: 'absolute',
             top: 0,
             left: 0,
             right: 0,
             bottom: 0,
             background:
-              "linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.55))",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            color: "white",
-            fontSize: "1.5rem",
-            fontWeight: "bold",
-            textAlign: "center",
+              'linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.55))',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: 'white',
+            fontSize: '1.5rem',
+            fontWeight: 'bold',
+            textAlign: 'center',
           }}
         ></Box>
       </Box>
       <CardContent>
         <Grid container justifyContent="space-between" alignItems="center">
-          <Box sx={{ width: "100%" }}>
+          <Box sx={{ width: '100%' }}>
             <Typography
               variant="h4"
               component="div"
-              sx={{ marginBottom: "0.5rem", color: "primary.main" }}
+              sx={{ marginBottom: '0.5rem', color: 'primary.main' }}
             >
               {map.title}
             </Typography>
             <Box
               sx={{
-                width: "100%",
-                display: "flex",
-                justifyContent: "space-between",
+                width: '100%',
+                display: 'flex',
+                justifyContent: 'space-between',
               }}
             >
               <Box
                 sx={{
-                  width: "100%",
+                  width: '100%',
                   // marginBottom: "1rem",
                 }}
               >
@@ -135,18 +127,18 @@ const UserMapsCard = ({ map, onOpenDetails, onDelete }) => {
                 </Typography> */}
                 <Box
                   sx={{
-                    width: "100%",
-                    display: "flex",
-                    justifyContent: "space-between",
+                    width: '100%',
+                    display: 'flex',
+                    justifyContent: 'space-between',
                     // paddingLeft: "0.5rem",
 
-                    "& .MuiTypography-root": { fontSize: "0.9rem" },
+                    '& .MuiTypography-root': { fontSize: '0.9rem' },
                   }}
                 >
                   <Typography
                     variant="body2"
                     color="textSecondary"
-                    sx={{ fontSize: "1rem" }}
+                    sx={{ fontSize: '1rem' }}
                   >
                     Latitude
                   </Typography>
@@ -156,18 +148,18 @@ const UserMapsCard = ({ map, onOpenDetails, onDelete }) => {
                 </Box>
                 <Box
                   sx={{
-                    width: "100%",
-                    display: "flex",
-                    justifyContent: "space-between",
+                    width: '100%',
+                    display: 'flex',
+                    justifyContent: 'space-between',
                     // paddingLeft: "0.5rem",
 
-                    "& .MuiTypography-root": { fontSize: "0.9rem" },
+                    '& .MuiTypography-root': { fontSize: '0.9rem' },
                   }}
                 >
                   <Typography
                     variant="body2"
                     color="textSecondary"
-                    sx={{ fontSize: "1rem" }}
+                    sx={{ fontSize: '1rem' }}
                   >
                     Longitude
                   </Typography>
@@ -179,9 +171,9 @@ const UserMapsCard = ({ map, onOpenDetails, onDelete }) => {
             </Box>
             <Box
               sx={{
-                width: "100%",
-                display: "flex",
-                justifyContent: "space-between",
+                width: '100%',
+                display: 'flex',
+                justifyContent: 'space-between',
               }}
             >
               <Typography
@@ -201,9 +193,9 @@ const UserMapsCard = ({ map, onOpenDetails, onDelete }) => {
             </Box>
             <Box
               sx={{
-                width: "100%",
-                display: "flex",
-                justifyContent: "space-between",
+                width: '100%',
+                display: 'flex',
+                justifyContent: 'space-between',
               }}
             >
               <Typography
@@ -233,16 +225,16 @@ export const CreateMapCard = () => {
     <Card
       sx={{
         mb: 2,
-        borderRadius: "10px",
-        position: "relative",
-        height: "300px",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: "transparent",
-        backgroundImage: "none",
-        boxShadow: "none",
+        borderRadius: '10px',
+        position: 'relative',
+        height: '300px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'transparent',
+        backgroundImage: 'none',
+        boxShadow: 'none',
       }}
     >
       {/* <CardMedia
@@ -254,19 +246,19 @@ export const CreateMapCard = () => {
       <CardContent>
         <Box
           sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
           }}
         >
           <Link
             href="/user/createUserMaps"
             sx={{
-              color: "black",
+              color: 'black',
             }}
           >
-            <AddRounded sx={{ fontSize: 200, color: "#aaa" }} />
+            <AddRounded sx={{ fontSize: 200, color: '#aaa' }} />
           </Link>
           {/* <Typography variant="h6" component="div" textAlign="center">
             Create More Personalized Maps
