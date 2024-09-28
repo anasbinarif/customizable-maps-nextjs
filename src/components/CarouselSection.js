@@ -12,9 +12,6 @@ import {
   Grid,
 } from "@mui/material";
 import { ThemeContext } from "@/context/ThemeContext";
-import Link from "next/link";
-import { ThemeContext } from "@/context/ThemeContext";
-import { useTheme } from "@mui/material";
 
 function getTransitionStyles(index, curIndex, len) {
   return index === curIndex
