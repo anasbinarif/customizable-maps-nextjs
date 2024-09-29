@@ -1,10 +1,10 @@
 'use client';
-import {Box, Container, useTheme} from '@mui/material';
+import { Box, Container, useTheme } from '@mui/material';
 import React from 'react';
 
 import SubscriptionTab from '@/app/(pages)/user/subscriptions/components/subscription-tab/SubscriptionTab';
 
-const CarouselSection = ({packages}) => {
+const CarouselSection = ({ packages }) => {
   const theme = useTheme();
   const color = theme.palette.primary.main;
 

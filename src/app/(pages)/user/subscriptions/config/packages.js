@@ -1,7 +1,7 @@
 export const packages = [
   {
     id: 1,
-    name: 'Basic (Free)',
+    name: 'Basic',
     features: [
       'Create & Edit a Map',
       'Export Map PDF',
@@ -16,7 +16,7 @@ export const packages = [
   },
   {
     id: 2,
-    name: 'Pro ($5 / month)',
+    name: 'Pro',
     features: [
       'Create & Edit a Map',
       'Export Map PDF',
@@ -33,7 +33,7 @@ export const packages = [
   },
   {
     id: 3,
-    name: 'Enterprise (Coming Soon)',
+    name: 'Enterprise',
     features: [
       'Create & Edit a Map',
       'Export Map PDF',

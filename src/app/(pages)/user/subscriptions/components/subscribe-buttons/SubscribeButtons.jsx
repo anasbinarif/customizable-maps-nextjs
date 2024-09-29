@@ -18,6 +18,12 @@ const SubscribeButtons = ({pkgId}) => {
     const userEmail = session?.user.email;
     const userId = session?.user.id;
 
+    if (!userId) {
+      openSnackbar(`Kindly login or signup`);
+      setLoading(false);
+      return null;
+    }
+
     try {
       const response = await fetch('/api/stripe/checkout', {
         method: 'POST',
@@ -40,7 +46,7 @@ const SubscribeButtons = ({pkgId}) => {
         openSnackbar(`Error creating Stripe checkout session: ${error}`);
       }
     } catch (error) {
-      openSnackbar(`Error creating Stripe checkout session: ${error}`);
+      openSnackbar(`Error creating Stripe checkout session: ${error.message}`);
     }
 
     setLoading(false);
@@ -57,7 +63,7 @@ const SubscribeButtons = ({pkgId}) => {
           backgroundColor: 'primary.main',
           borderRadius: '20px',
         }}
-        onClick={handleCheckout}
+        // onClick={handleCheckout}
       >
               Subscribe
       </Button>
