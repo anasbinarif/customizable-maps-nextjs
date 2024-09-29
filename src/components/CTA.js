@@ -1,35 +1,35 @@
-import { Box, Button, Container, Typography } from "@mui/material";
+import { Box, Button, Container, Typography } from '@mui/material';
 
 export default function CTA() {
   return (
     <Box
       sx={{
-        display: "flex",
-        alignItems: "center",
+        display: 'flex',
+        alignItems: 'center',
         // minHeight: "80vh",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        padding: "2rem",
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        padding: '2rem',
 
-        "@media only screen and (max-width: 600px)": {
-          padding: "1rem",
+        '@media only screen and (max-width: 600px)': {
+          padding: '1rem',
         },
       }}
     >
       <Container
-        sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+        sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
       >
         <Typography
           variant="h3"
           sx={{
-            textAlign: "center",
-            marginBottom: "2rem",
-            "& span": {
-              display: "block",
+            textAlign: 'center',
+            marginBottom: '2rem',
+            '& span': {
+              display: 'block',
             },
           }}
         >
-          Create, Customize and Print{" "}
+          Create, Customize and Print{' '}
           <span>Your Map Now - with our flexible pricing plans</span>
         </Typography>
         {/* <Typography variant="body1">
@@ -41,10 +41,10 @@ export default function CTA() {
           variant="contained"
           color="primary"
           sx={{
-            borderRadius: "10px",
-            textTransform: "none",
-            marginTop: "2rem",
-            fontSize: "1.5rem",
+            borderRadius: '10px',
+            textTransform: 'none',
+            marginTop: '2rem',
+            fontSize: '1.5rem',
           }}
         >
           Get Started

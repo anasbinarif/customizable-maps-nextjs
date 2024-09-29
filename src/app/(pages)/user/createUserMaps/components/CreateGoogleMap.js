@@ -1,24 +1,24 @@
-"use client";
+'use client';
 
-import { Box, Button, Grid, Typography } from "@mui/material";
+import { Box, Button, Grid, Typography } from '@mui/material';
 import {
   Autocomplete,
   GoogleMap,
   InfoWindow,
   Marker,
-} from "@react-google-maps/api";
-import html2canvas from "html2canvas";
-import { jsPDF } from "jspdf";
-import Image from "next/image";
-import { useSession } from "next-auth/react";
-import ReactDOM from "react-dom/client";
+} from '@react-google-maps/api';
+import html2canvas from 'html2canvas';
+import { jsPDF } from 'jspdf';
+import Image from 'next/image';
+import { useSession } from 'next-auth/react';
 import React, {
   useCallback,
   useEffect,
   useMemo,
   useRef,
   useState,
-} from "react";
+} from 'react';
+import ReactDOM from 'react-dom/client';
 import {
   FaUtensils,
   FaCamera,
@@ -29,31 +29,31 @@ import {
   FaMoneyBillAlt,
   FaPrescriptionBottle,
   FaSchool,
-} from "react-icons/fa";
+} from 'react-icons/fa';
 
-import CustomPdf from "./exportedDoc";
-import ImageUploader from "./ImageUploader";
-import LocationList from "./LocationList";
-import LogoUploader from "./LogoUploader";
-import TextArea from "./TextArea";
+import CustomPdf from './exportedDoc';
+import ImageUploader from './ImageUploader';
+import LocationList from './LocationList';
+import LogoUploader from './LogoUploader';
+import TextArea from './TextArea';
 
-import AlertSnackbar from "@/components/AlertSnackbar";
-import ConfirmModal from "@/components/ConfirmModal";
-import { StyledTextField } from "@/components/CustomTextFields";
-import LoadingSpinner from "@/components/LoadingSpinner";
-import LoginSignupModal from "@/components/LoginSignupModal";
-import useCustomSnackbar from "@/components/snackbar-hook/useCustomSnackbar";
-import { getMarkerIcon, haversineDistance } from "@/lib/data";
-import { generateTextColor } from "@/lib/generateTextColor";
-import GoogleMapsLoader from "@/lib/GoogleMapsLoader";
-import { uploadFileToS3 } from "@/lib/uploadFileToS3";
+import AlertSnackbar from '@/components/AlertSnackbar';
+import ConfirmModal from '@/components/ConfirmModal';
+import { StyledTextField } from '@/components/CustomTextFields';
+import LoadingSpinner from '@/components/LoadingSpinner';
+import LoginSignupModal from '@/components/LoginSignupModal';
+import useCustomSnackbar from '@/components/snackbar-hook/useCustomSnackbar';
+import { getMarkerIcon, haversineDistance } from '@/lib/data';
+import { generateTextColor } from '@/lib/generateTextColor';
+import GoogleMapsLoader from '@/lib/GoogleMapsLoader';
+import { uploadFileToS3 } from '@/lib/uploadFileToS3';
 
 const iconStyle = {
-  marginRight: "8px",
+  marginRight: '8px',
 };
 
 const buttonHoverStyle = {
-  backgroundColor: "#f0f0f0",
+  backgroundColor: '#f0f0f0',
 };
 
 export default function CreateGoogleMap({ mapData = null }) {
@@ -61,7 +61,7 @@ export default function CreateGoogleMap({ mapData = null }) {
   const [currentLocation, setCurrentLocation] = useState({
     lat: 0,
     lng: 0,
-    name: "",
+    name: '',
   });
   const [markers, setMarkers] = useState([]);
   const [selectedFilters, setSelectedFilters] = useState([]);
@@ -70,28 +70,29 @@ export default function CreateGoogleMap({ mapData = null }) {
   const [zoom, setZoom] = useState(8);
   const [infoWindowHovered, setInfoWindowHovered] = useState(false);
   const [alertOpen, setAlertOpen] = useState(false);
-  const [alertSeverity, setAlertSeverity] = useState("success");
-  const [alertMessage, setAlertMessage] = useState("");
+  const [alertSeverity, setAlertSeverity] = useState('success');
+  const [alertMessage, setAlertMessage] = useState('');
   const [openModal, setOpenModal] = useState(false);
-  const [modalMode, setModalMode] = useState("login");
-  const [title, setTitle] = useState("");
+  const [modalMode, setModalMode] = useState('login');
+  const [title, setTitle] = useState('');
   const [titleError, settitleError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [openConfirm, setOpenConfirm] = useState(false);
-  const [latLangTmp, setLatLangTmp] = useState({ lat: "", lng: "" });
+  const [latLangTmp, setLatLangTmp] = useState({ lat: '', lng: '' });
   const mapRef = useRef(null);
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [oldImgs, setOldImgs] = useState([]);
   const [logoFile, setLogoFile] = useState({});
-  const [helperHtml, setHelperHtml] = useState("");
+  const [helperHtml, setHelperHtml] = useState('');
   const { openSnackbar } = useCustomSnackbar();
 
   const [isGoogleMapsLoaded, setIsGoogleMapsLoaded] = useState(false);
-  console.log("sarim", mapData);
-  console.log(session);
+
+  // console.log('sarim', mapData);
+  // console.log(session);
 
   const handleConfirmClose = () => {
-    setLatLangTmp({ lat: "", lng: "" });
+    setLatLangTmp({ lat: '', lng: '' });
     setOpenConfirm(false);
   };
 
@@ -99,9 +100,9 @@ export default function CreateGoogleMap({ mapData = null }) {
     mapRef.current = mapInstance;
   }, []);
 
-  const onUnmount = useCallback(() => {
-    mapRef.current = null;
-  }, []);
+  // const onUnmount = useCallback(() => {
+  //   mapRef.current = null;
+  // }, []);
 
   const handleOpenModal = (mode) => {
     setModalMode(mode);
@@ -123,15 +124,15 @@ export default function CreateGoogleMap({ mapData = null }) {
   };
 
   const [locationsByTag, setLocationsByTag] = useState({
-    Restaurants: { color: "#FF9A8B", locations: [] },
-    Hotels: { color: "#6AB2FF", locations: [] },
-    "Things to do": { color: "#9CFF9C", locations: [] },
-    Museums: { color: "#FDF5A0", locations: [] },
-    Transit: { color: "#B5EAF2", locations: [] },
-    Pharmacies: { color: "#B99DFF", locations: [] },
-    ATMs: { color: "#66D0C9", locations: [] },
-    Schools: { color: "#FF9EC4", locations: [] },
-    Entertainment: { color: "#FFB46F", locations: [] },
+    Restaurants: { color: '#FF9A8B', locations: [] },
+    Hotels: { color: '#6AB2FF', locations: [] },
+    'Things to do': { color: '#9CFF9C', locations: [] },
+    Museums: { color: '#FDF5A0', locations: [] },
+    Transit: { color: '#B5EAF2', locations: [] },
+    Pharmacies: { color: '#B99DFF', locations: [] },
+    ATMs: { color: '#66D0C9', locations: [] },
+    Schools: { color: '#FF9EC4', locations: [] },
+    Entertainment: { color: '#FFB46F', locations: [] },
   });
 
   const getStaticMapImageUrl = (
@@ -149,13 +150,13 @@ export default function CreateGoogleMap({ mapData = null }) {
   const saveMap = async () => {
     if (!session) {
       handleOpenModal(modalMode);
-      handleOpenAlert("info", "Login before saving a map!");
+      handleOpenAlert('info', 'Login before saving a map!');
 
       return;
     }
     if (!title) {
       settitleError(true);
-      handleOpenAlert("warning", "Map title is required!");
+      handleOpenAlert('warning', 'Map title is required!');
 
       return;
     }
@@ -167,7 +168,7 @@ export default function CreateGoogleMap({ mapData = null }) {
     const newFileUrls = await Promise.all(fileUploadPromises);
     const fileUrls = [...oldImgs.map((img) => img.url), ...newFileUrls];
 
-    let logo = logoFile?.url || "";
+    let logo = logoFile?.url || '';
 
     if (logoFile.name) {
       logo = await uploadFileToS3(logoFile);
@@ -207,60 +208,61 @@ export default function CreateGoogleMap({ mapData = null }) {
       let response;
 
       if (!mapData) {
-        response = await fetch("/api/saveUserMap", {
-          method: "POST",
+        response = await fetch('/api/saveUserMap', {
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify(dataToSave),
         });
       } else {
-        response = await fetch("/api/updateUserMap", {
-          method: "POST",
+        response = await fetch('/api/updateUserMap', {
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify(dataToSave),
         });
       }
 
       if (response.ok) {
-        handleOpenAlert("success", "Map saved successfully!");
+        handleOpenAlert('success', 'Map saved successfully!');
         setLoading(false);
-        setTitle("");
+        setTitle('');
         setSelectedFilters([]);
         setMarkers([]);
         setActiveMarker(null);
         setLocationsByTag({
-          Restaurants: { color: "#FF9A8B", locations: [] },
-          Hotels: { color: "#6AB2FF", locations: [] },
-          "Things to do": { color: "#9CFF9C", locations: [] },
-          Museums: { color: "#FDF5A0", locations: [] },
-          Transit: { color: "#B5EAF2", locations: [] },
-          Pharmacies: { color: "#B99DFF", locations: [] },
-          ATMs: { color: "#66D0C9", locations: [] },
-          Schools: { color: "#FF9EC4", locations: [] },
-          Entertainment: { color: "#FFB46F", locations: [] },
+          Restaurants: { color: '#FF9A8B', locations: [] },
+          Hotels: { color: '#6AB2FF', locations: [] },
+          'Things to do': { color: '#9CFF9C', locations: [] },
+          Museums: { color: '#FDF5A0', locations: [] },
+          Transit: { color: '#B5EAF2', locations: [] },
+          Pharmacies: { color: '#B99DFF', locations: [] },
+          ATMs: { color: '#66D0C9', locations: [] },
+          Schools: { color: '#FF9EC4', locations: [] },
+          Entertainment: { color: '#FFB46F', locations: [] },
         });
         setUploadedFiles([]);
         setOldImgs([]);
         setLogoFile({});
-        setHelperHtml("");
+        setHelperHtml('');
       } else {
-        alert("Failed to save the map.");
-        handleOpenAlert("error", "Failed to save the map.");
+        alert('Failed to save the map.');
+        handleOpenAlert('error', 'Failed to save the map.');
         setLoading(false);
       }
     } catch (error) {
-      handleOpenAlert("error", error);
+      handleOpenAlert('error', error);
       setLoading(false);
     }
   };
 
   const exportMap = async () => {
-    const pdfContent = document.createElement("div");
-    pdfContent.style.width = "1920px";
-    pdfContent.style.position = "absolute";
+    const pdfContent = document.createElement('div');
+
+    pdfContent.style.width = '1920px';
+    pdfContent.style.position = 'absolute';
     document.body.appendChild(pdfContent);
 
     const root = ReactDOM.createRoot(pdfContent);
@@ -289,12 +291,12 @@ export default function CreateGoogleMap({ mapData = null }) {
       scale: 2,
     });
 
-    const imgData = canvas.toDataURL("image/png");
-    const pdf = new jsPDF("p", "mm", "a4");
+    const imgData = canvas.toDataURL('image/png');
+    const pdf = new jsPDF('p', 'mm', 'a4');
     const imgWidth = 210;
     const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-    pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+    pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
     pdf.save(`${title}.pdf`);
 
     root.unmount();
@@ -304,58 +306,58 @@ export default function CreateGoogleMap({ mapData = null }) {
   const filters = useMemo(() => {
     return [
       {
-        name: "Restaurants",
-        type: "restaurant",
+        name: 'Restaurants',
+        type: 'restaurant',
         icon: <FaUtensils style={iconStyle} />,
-        selectedColor: "#FF9A8B",
+        selectedColor: '#FF9A8B',
       },
       {
-        name: "Hotels",
-        type: "lodging",
+        name: 'Hotels',
+        type: 'lodging',
         icon: <FaHotel style={iconStyle} />,
-        selectedColor: "#6AB2FF",
+        selectedColor: '#6AB2FF',
       },
       {
-        name: "Things to do",
-        type: "tourist_attraction",
+        name: 'Things to do',
+        type: 'tourist_attraction',
         icon: <FaCamera style={iconStyle} />,
-        selectedColor: "#9CFF9C",
+        selectedColor: '#9CFF9C',
       },
       {
-        name: "Museums",
-        type: "museum",
+        name: 'Museums',
+        type: 'museum',
         icon: <FaLandmark style={iconStyle} />,
-        selectedColor: "#FDF5A0",
+        selectedColor: '#FDF5A0',
       },
       {
-        name: "Transit",
-        type: "transit_station",
+        name: 'Transit',
+        type: 'transit_station',
         icon: <FaBus style={iconStyle} />,
-        selectedColor: "#B5EAF2",
+        selectedColor: '#B5EAF2',
       },
       {
-        name: "Pharmacies",
-        type: "pharmacy",
+        name: 'Pharmacies',
+        type: 'pharmacy',
         icon: <FaPrescriptionBottle style={iconStyle} />,
-        selectedColor: "#B99DFF",
+        selectedColor: '#B99DFF',
       },
       {
-        name: "ATMs",
-        type: "atm",
+        name: 'ATMs',
+        type: 'atm',
         icon: <FaMoneyBillAlt style={iconStyle} />,
-        selectedColor: "#66D0C9",
+        selectedColor: '#66D0C9',
       },
       {
-        name: "Schools",
-        type: "school",
+        name: 'Schools',
+        type: 'school',
         icon: <FaSchool style={iconStyle} />,
-        selectedColor: "#FF9EC4",
+        selectedColor: '#FF9EC4',
       },
       {
-        name: "Entertainment",
-        type: "movie_theater",
+        name: 'Entertainment',
+        type: 'movie_theater',
         icon: <FaFilm style={iconStyle} />,
-        selectedColor: "#FFB46F",
+        selectedColor: '#FFB46F',
       },
     ];
   }, []);
@@ -368,8 +370,10 @@ export default function CreateGoogleMap({ mapData = null }) {
       },
       0
     );
+
     if (totalLocs >= 40) {
-      handleOpenAlert("error", "Max locations saved.");
+      handleOpenAlert('error', 'Max locations saved.');
+
       return;
     }
     setLocationsByTag((prevTags) => {
@@ -404,20 +408,20 @@ export default function CreateGoogleMap({ mapData = null }) {
       setCurrentLocation({ lat, lng, name: place.name });
       setZoom(14);
       setLocationsByTag({
-        Restaurants: { color: "#FF9A8B", locations: [] },
-        Hotels: { color: "#6AB2FF", locations: [] },
-        "Things to do": { color: "#9CFF9C", locations: [] },
-        Museums: { color: "#FDF5A0", locations: [] },
-        Transit: { color: "#B5EAF2", locations: [] },
-        Pharmacies: { color: "#B99DFF", locations: [] },
-        ATMs: { color: "#66D0C9", locations: [] },
-        Schools: { color: "#FF9EC4", locations: [] },
-        Entertainment: { color: "#FFB46F", locations: [] },
+        Restaurants: { color: '#FF9A8B', locations: [] },
+        Hotels: { color: '#6AB2FF', locations: [] },
+        'Things to do': { color: '#9CFF9C', locations: [] },
+        Museums: { color: '#FDF5A0', locations: [] },
+        Transit: { color: '#B5EAF2', locations: [] },
+        Pharmacies: { color: '#B99DFF', locations: [] },
+        ATMs: { color: '#66D0C9', locations: [] },
+        Schools: { color: '#FF9EC4', locations: [] },
+        Entertainment: { color: '#FFB46F', locations: [] },
       });
       setMarkers([{ lat, lng, name: place.name }]);
-      setTitle(place.formatted_address || "");
+      setTitle(place.formatted_address || '');
     } else {
-      openSnackbar("Autocomplete is not loaded yet!");
+      openSnackbar('Autocomplete is not loaded yet!');
     }
   };
 
@@ -430,20 +434,20 @@ export default function CreateGoogleMap({ mapData = null }) {
     const lat = latLangTmp?.lat;
     const lng = latLangTmp?.lng;
 
-    setCurrentLocation({ lat, lng, name: "Selected Location" });
+    setCurrentLocation({ lat, lng, name: 'Selected Location' });
     setZoom(14);
-    setLatLangTmp({ lat: "", lng: "" });
-    setMarkers([{ lat, lng, name: "Selected Location" }]);
+    setLatLangTmp({ lat: '', lng: '' });
+    setMarkers([{ lat, lng, name: 'Selected Location' }]);
     setLocationsByTag({
-      Restaurants: { color: "#FF9A8B", locations: [] },
-      Hotels: { color: "#6AB2FF", locations: [] },
-      "Things to do": { color: "#9CFF9C", locations: [] },
-      Museums: { color: "#FDF5A0", locations: [] },
-      Transit: { color: "#B5EAF2", locations: [] },
-      Pharmacies: { color: "#B99DFF", locations: [] },
-      ATMs: { color: "#66D0C9", locations: [] },
-      Schools: { color: "#FF9EC4", locations: [] },
-      Entertainment: { color: "#FFB46F", locations: [] },
+      Restaurants: { color: '#FF9A8B', locations: [] },
+      Hotels: { color: '#6AB2FF', locations: [] },
+      'Things to do': { color: '#9CFF9C', locations: [] },
+      Museums: { color: '#FDF5A0', locations: [] },
+      Transit: { color: '#B5EAF2', locations: [] },
+      Pharmacies: { color: '#B99DFF', locations: [] },
+      ATMs: { color: '#66D0C9', locations: [] },
+      Schools: { color: '#FF9EC4', locations: [] },
+      Entertainment: { color: '#FFB46F', locations: [] },
     });
     setOpenConfirm(false);
     setSelectedFilters([]);
@@ -452,7 +456,7 @@ export default function CreateGoogleMap({ mapData = null }) {
   const searchNearbyPlaces = useCallback(
     (filters, loc) => {
       const service = new window.google.maps.places.PlacesService(
-        document.createElement("div")
+        document.createElement('div')
       );
 
       let accumulatedMarkers = [];
@@ -643,7 +647,7 @@ export default function CreateGoogleMap({ mapData = null }) {
 
   return (
     <GoogleMapsLoader>
-      <Grid container spacing={3} sx={{ marginTop: "1rem" }}>
+      <Grid container spacing={3} sx={{ marginTop: '1rem' }}>
         {/* Map section */}
         {/* <Grid item xs={12}>
           <Box
@@ -684,10 +688,10 @@ export default function CreateGoogleMap({ mapData = null }) {
         <Grid item xs={12} sm={12} md={8} lg={9}>
           <Box
             sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              margin: "10px 0.5rem",
-              flexWrap: "wrap",
+              display: 'flex',
+              justifyContent: 'space-between',
+              margin: '10px 0.5rem',
+              flexWrap: 'wrap',
             }}
           >
             <StyledTextField
@@ -700,10 +704,10 @@ export default function CreateGoogleMap({ mapData = null }) {
               onChange={(e) => setTitle(e.target.value)}
               // helperText="Please enter title"
               sx={{
-                width: "40%",
+                width: '40%',
 
-                "@media only screen and (max-width: 1200px)": {
-                  width: "100%",
+                '@media only screen and (max-width: 1200px)': {
+                  width: '100%',
                 },
               }}
             />
@@ -722,10 +726,10 @@ export default function CreateGoogleMap({ mapData = null }) {
           </Box>
           <Box
             sx={{
-              display: "flex",
-              justifyContent: "center",
-              margin: "10px 0",
-              flexWrap: "wrap",
+              display: 'flex',
+              justifyContent: 'center',
+              margin: '10px 0',
+              flexWrap: 'wrap',
             }}
           >
             {filters.map((filter) => {
@@ -736,28 +740,28 @@ export default function CreateGoogleMap({ mapData = null }) {
               return (
                 <Button
                   key={filter.type}
-                  variant={isSelected ? "contained" : "outlined"}
+                  variant={isSelected ? 'contained' : 'outlined'}
                   color="primary"
                   startIcon={filter.icon}
                   sx={{
-                    margin: "5px",
-                    borderRadius: "50px",
+                    margin: '5px',
+                    borderRadius: '50px',
                     backgroundColor: isSelected
                       ? filter.selectedColor
-                      : "primary.bgHero",
+                      : 'primary.bgHero',
                     color: isSelected
                       ? generateTextColor(filter.selectedColor)
-                      : "primary.main",
-                    width: "calc(33% - 0.5rem)",
+                      : 'primary.main',
+                    width: 'calc(33% - 0.5rem)',
 
-                    "@media only screen and (max-width: 900px)": {
-                      width: "calc(50% - 0.7rem)",
+                    '@media only screen and (max-width: 900px)': {
+                      width: 'calc(50% - 0.7rem)',
                     },
-                    "@media only screen and (max-width: 600px)": {
-                      width: "calc(100% - 0.7rem)",
+                    '@media only screen and (max-width: 600px)': {
+                      width: 'calc(100% - 0.7rem)',
                     },
 
-                    "&:hover": {
+                    '&:hover': {
                       backgroundColor: isSelected
                         ? filter.selectedColor
                         : buttonHoverStyle.backgroundColor,
@@ -772,14 +776,14 @@ export default function CreateGoogleMap({ mapData = null }) {
           </Box>
           <GoogleMap
             id="search-box-example"
-            mapContainerStyle={{ width: "100%", height: "70vh" }}
+            mapContainerStyle={{ width: '100%', height: '70vh' }}
             center={currentLocation}
             zoom={zoom}
             onDblClick={onMapClick}
             onLoad={onLoad}
             // onUnmount={onUnmount}
             options={{
-              gestureHandling: "greedy",
+              gestureHandling: 'greedy',
               disableDoubleClickZoom: true,
             }}
           >
@@ -806,108 +810,108 @@ export default function CreateGoogleMap({ mapData = null }) {
                 {activeMarker &&
                   activeMarker.lat === marker.lat &&
                   activeMarker.lng === marker.lng && (
-                    <InfoWindow
-                      position={{ lat: marker.lat, lng: marker.lng }}
-                      onMouseOver={() => setInfoWindowHovered(true)}
-                      onMouseOut={() => {
-                        setInfoWindowHovered(false);
-                        handleMarkerMouseOut();
-                      }}
-                      options={{
-                        pixelOffset: new window.google.maps.Size(0, -30),
+                  <InfoWindow
+                    position={{ lat: marker.lat, lng: marker.lng }}
+                    onMouseOver={() => setInfoWindowHovered(true)}
+                    onMouseOut={() => {
+                      setInfoWindowHovered(false);
+                      handleMarkerMouseOut();
+                    }}
+                    options={{
+                      pixelOffset: new window.google.maps.Size(0, -30),
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        maxWidth: '250px',
+                        padding: 0,
+                        overflow: 'hidden',
+                        margin: 0,
+                        maxHeight: '200px',
                       }}
                     >
-                      <Box
-                        sx={{
-                          maxWidth: "250px",
-                          padding: 0,
-                          overflow: "hidden",
-                          margin: 0,
-                          maxHeight: "200px",
-                        }}
-                      >
-                        {marker.photo && (
-                          <Image
-                            src={marker.photo}
-                            alt={marker.name}
-                            width={250}
-                            height={70}
-                            style={{
-                              display: "block",
-                              width: "100%",
-                              borderRadius: "8px 8px 0 0",
-                            }}
-                          />
-                        )}
-                        <Box sx={{ padding: "8px" }}>
-                          <Typography
-                            variant="h6"
-                            component="div"
-                            sx={{ fontSize: "16px", fontWeight: "bold" }}
-                          >
-                            {marker.name}
-                          </Typography>
-                          <Typography
-                            variant="body2"
-                            color="textSecondary"
-                            sx={{ fontSize: "14px", marginTop: "4px" }}
-                          >
-                            {marker.vicinity}
-                          </Typography>
-                          <Typography
-                            variant="body2"
-                            color="textSecondary"
-                            sx={{ fontSize: "14px", marginTop: "4px" }}
-                          >
-                            Rating: {marker.rating} ({marker.userRatingsTotal}{" "}
+                      {marker.photo && (
+                        <Image
+                          src={marker.photo}
+                          alt={marker.name}
+                          width={250}
+                          height={70}
+                          style={{
+                            display: 'block',
+                            width: '100%',
+                            borderRadius: '8px 8px 0 0',
+                          }}
+                        />
+                      )}
+                      <Box sx={{ padding: '8px' }}>
+                        <Typography
+                          variant="h6"
+                          component="div"
+                          sx={{ fontSize: '16px', fontWeight: 'bold' }}
+                        >
+                          {marker.name}
+                        </Typography>
+                        <Typography
+                          variant="body2"
+                          color="textSecondary"
+                          sx={{ fontSize: '14px', marginTop: '4px' }}
+                        >
+                          {marker.vicinity}
+                        </Typography>
+                        <Typography
+                          variant="body2"
+                          color="textSecondary"
+                          sx={{ fontSize: '14px', marginTop: '4px' }}
+                        >
+                            Rating: {marker.rating} ({marker.userRatingsTotal}{' '}
                             reviews)
-                          </Typography>
+                        </Typography>
+                        <Typography
+                          variant="body2"
+                          sx={{
+                            fontSize: '14px',
+                            color: marker.isOpen ? 'green' : 'red',
+                            marginTop: '4px',
+                          }}
+                        >
+                          {marker.isOpen ? 'Open Now' : 'Closed'}
+                        </Typography>
+                        {marker.openingHours && (
                           <Typography
                             variant="body2"
-                            sx={{
-                              fontSize: "14px",
-                              color: marker.isOpen ? "green" : "red",
-                              marginTop: "4px",
-                            }}
+                            color="textSecondary"
+                            sx={{ fontSize: '14px', marginTop: '4px' }}
                           >
-                            {marker.isOpen ? "Open Now" : "Closed"}
+                            {marker.openingHours.map((hours, idx) => (
+                              <span key={idx}>
+                                {hours}
+                                <br />
+                              </span>
+                            ))}
                           </Typography>
-                          {marker.openingHours && (
-                            <Typography
-                              variant="body2"
-                              color="textSecondary"
-                              sx={{ fontSize: "14px", marginTop: "4px" }}
-                            >
-                              {marker.openingHours.map((hours, idx) => (
-                                <span key={idx}>
-                                  {hours}
-                                  <br />
-                                </span>
-                              ))}
-                            </Typography>
-                          )}
-                        </Box>
+                        )}
                       </Box>
-                    </InfoWindow>
-                  )}
+                    </Box>
+                  </InfoWindow>
+                )}
               </Marker>
             ))}
             <Autocomplete
               onLoad={onLoadSearch}
               onPlaceChanged={onPlaceChanged}
-              types={["geocode"]}
+              types={['geocode']}
             >
               <StyledTextField
                 placeholder="Search for a place"
                 sx={{
-                  boxSizing: "border-box",
-                  width: "240px",
-                  height: "32px",
-                  padding: "0 12px",
-                  position: "absolute",
-                  top: "0.5rem",
-                  left: "50%",
-                  transform: "translate(-50%, 0)",
+                  boxSizing: 'border-box',
+                  width: '240px',
+                  height: '32px',
+                  padding: '0 12px',
+                  position: 'absolute',
+                  top: '0.5rem',
+                  left: '50%',
+                  transform: 'translate(-50%, 0)',
                 }}
                 variant="outlined"
               />
@@ -975,8 +979,8 @@ export default function CreateGoogleMap({ mapData = null }) {
           md={12}
           lg={12}
           sx={{
-            "@media only screen and (max-width: 900px)": {
-              flexDirection: "row-reverse",
+            '@media only screen and (max-width: 900px)': {
+              flexDirection: 'row-reverse',
             },
           }}
         >
@@ -985,28 +989,28 @@ export default function CreateGoogleMap({ mapData = null }) {
               <TextArea helperHtml={helperHtml} setHelperHtml={setHelperHtml} />
               <Box
                 sx={{
-                  display: "flex",
-                  justifyContent: "flex-end",
+                  display: 'flex',
+                  justifyContent: 'flex-end',
                 }}
               >
-                <Box mt="10px" sx={{ mr: "1rem" }}>
+                <Box mt="10px" sx={{ mr: '1rem' }}>
                   <Button
                     variant="contained"
                     color="primary"
                     onClick={exportMap}
                     sx={{
-                      width: "100%",
-                      backgroundColor: "transparent",
-                      color: "primary.main",
-                      border: "1px solid",
+                      width: '100%',
+                      backgroundColor: 'transparent',
+                      color: 'primary.main',
+                      border: '1px solid',
                       borderColor: (theme) => theme.palette.primary.main,
-                      boxShadow: "none",
+                      boxShadow: 'none',
 
-                      "&:hover": {
+                      '&:hover': {
                         // fontWeight: "bold",
-                        backgroundColor: "primary.main",
-                        color: "white",
-                        boxShadow: "none",
+                        backgroundColor: 'primary.main',
+                        color: 'white',
+                        boxShadow: 'none',
                       },
                     }}
                   >
@@ -1019,10 +1023,10 @@ export default function CreateGoogleMap({ mapData = null }) {
                     color="primary"
                     onClick={saveMap}
                     sx={{
-                      width: "100%",
+                      width: '100%',
                     }}
                   >
-                    {mapData ? "Update Map" : "Save Map"}
+                    {mapData ? 'Update Map' : 'Save Map'}
                   </Button>
                 </Box>
               </Box>
