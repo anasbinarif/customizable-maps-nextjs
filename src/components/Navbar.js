@@ -1,6 +1,5 @@
 'use client';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-// import HomeIcon from '@mui/icons-material/Home';
 import MapIcon from '@mui/icons-material/Map';
 import MenuIcon from '@mui/icons-material/Menu';
 import PinDropIcon from '@mui/icons-material/PinDrop';
@@ -10,7 +9,7 @@ import {usePathname} from 'next/navigation';
 import {signOut, useSession} from 'next-auth/react';
 import React, {useContext, useEffect, useLayoutEffect, useRef, useState,} from 'react';
 
-import ChangePasswordModal from './ChangePasswordModal'; // Import the modal component
+import ChangePasswordModal from './ChangePasswordModal';
 import LoginSignupModal from './LoginSignupModal';
 
 import LoadingSpinner from '@/components/LoadingSpinner';

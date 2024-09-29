@@ -1,7 +1,8 @@
-import {NextResponse} from 'next/server';
+import { NextResponse } from 'next/server';
 
-import {prisma} from '@/lib/prisma';
-import {stripe} from '@/lib/stripe';
+import logger from '@/lib/logger';
+import prisma from '@/lib/prisma';
+import { stripe } from '@/lib/stripe';
 
 export async function POST(req) {
   const body = await req.text();
@@ -9,19 +10,23 @@ export async function POST(req) {
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
   if (!webhookSecret) {
+    logger.error('Missing Webhook Secret');
+
     return new NextResponse('Missing Webhook Secret', { status: 500 });
   }
 
   if (!signature) {
+    logger.error('Missing Stripe Signature');
+
     return new NextResponse('Missing Stripe Signature', { status: 400 });
   }
 
   let event = null;
 
   try {
-    // console.log('Verifying webhook signature...');
+    logger.info('Verifying webhook signature...');
     event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
-    // console.log('Webhook verified, event:', event);
+    logger.info(`Webhook verified, event: ${event.type}`);
 
     switch (event.type) {
     case 'checkout.session.completed': {
@@ -29,7 +34,7 @@ export async function POST(req) {
       const subscriptionId = session.subscription;
       const userId = session.metadata.userId;
 
-      // console.log(`Checkout session completed for user ${userId}, subscription ${subscriptionId}`);
+      logger.info(`Checkout session completed for user ${userId}, subscription ${subscriptionId}`);
 
       await prisma.subscription.create({
         data: {
@@ -69,11 +74,13 @@ export async function POST(req) {
     }
 
     default:
-      // console.log(`Unhandled event type ${event.type}`);
+      logger.warn(`Unhandled event type ${event.type}`);
     }
 
     return new NextResponse(null, { status: 200 });
   } catch (error) {
+    logger.error('Invalid Stripe Signature');
+
     return new NextResponse('Invalid Stripe Signature', { status: 400 });
   }
 }

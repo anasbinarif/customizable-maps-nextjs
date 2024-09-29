@@ -3,7 +3,7 @@ import {Box} from '@mui/material';
 import Cookies from 'js-cookie';
 import {useEffect, useState} from 'react';
 
-import CreateGoogleMap from '../components/CreateGoogleMap';
+import CreateGoogleMap from '../components/create-google-map/CreateGoogleMap';
 
 async function fetchData(id, sessionToken) {
   try {

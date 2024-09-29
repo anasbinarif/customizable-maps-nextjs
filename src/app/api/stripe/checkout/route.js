@@ -14,7 +14,7 @@ export async function POST(req) {
   const priceId = 'price_1Q41pa01CafFh2Wrl9QP2Hm0';
 
   const stripeSession = await stripe.checkout.sessions.create({
-    success_url: 'http://localhost:3000/checkout-success',
+    success_url: 'http://localhost:3000/user/checkout-success',
     cancel_url: 'http://localhost:3000/user/subscriptions',
     payment_method_types: ['card'],
     mode: 'subscription',
