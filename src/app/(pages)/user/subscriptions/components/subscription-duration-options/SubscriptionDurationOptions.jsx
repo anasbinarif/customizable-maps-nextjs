@@ -6,6 +6,7 @@ import React from 'react';
 const SubscriptionDurationOptions = ({setDuration, duration, durationOptions }) => {
 
   if (durationOptions.length === 0) return null;
+
   return (
     <Box
       sx={{

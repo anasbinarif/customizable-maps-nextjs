@@ -21,6 +21,7 @@ const SubscribeButtons = ({pkgId}) => {
     if (!userId) {
       openSnackbar(`Kindly login or signup`);
       setLoading(false);
+
       return null;
     }
 
