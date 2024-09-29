@@ -64,7 +64,7 @@ const SubscribeButtons = ({pkgId}) => {
           backgroundColor: 'primary.main',
           borderRadius: '20px',
         }}
-        // onClick={handleCheckout}
+        onClick={handleCheckout}
       >
               Subscribe
       </Button>

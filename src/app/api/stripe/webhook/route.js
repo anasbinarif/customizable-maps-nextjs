@@ -19,9 +19,9 @@ export async function POST(req) {
   let event = null;
 
   try {
-    console.log('Verifying webhook signature...');
+    // console.log('Verifying webhook signature...');
     event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
-    console.log('Webhook verified, event:', event);
+    // console.log('Webhook verified, event:', event);
 
     switch (event.type) {
     case 'checkout.session.completed': {
@@ -29,7 +29,7 @@ export async function POST(req) {
       const subscriptionId = session.subscription;
       const userId = session.metadata.userId;
 
-      console.log(`Checkout session completed for user ${userId}, subscription ${subscriptionId}`);
+      // console.log(`Checkout session completed for user ${userId}, subscription ${subscriptionId}`);
 
       await prisma.subscription.create({
         data: {
@@ -69,13 +69,11 @@ export async function POST(req) {
     }
 
     default:
-      console.log(`Unhandled event type ${event.type}`);
+      // console.log(`Unhandled event type ${event.type}`);
     }
 
     return new NextResponse(null, { status: 200 });
   } catch (error) {
-    console.error('Error verifying webhook:', error);
-
     return new NextResponse('Invalid Stripe Signature', { status: 400 });
   }
 }
