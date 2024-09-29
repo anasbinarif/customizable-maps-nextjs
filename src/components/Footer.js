@@ -1,7 +1,7 @@
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import TwitterIcon from '@mui/icons-material/Twitter';
-import {Box, Container, Grid, Link, Typography} from '@mui/material';
+import { Box, Container, Grid, Link, Typography } from '@mui/material';
 import React from 'react';
 
 export default function Footer() {
@@ -49,7 +49,7 @@ export default function Footer() {
               color="textSecondary"
               sx={{ marginTop: '0.5rem' }}
             >
-              © 2023 Company &nbsp;&nbsp;{' '}
+              © 2024 All Rights Reserved &nbsp;&nbsp;{' '}
               <Link href="#" sx={{ textDecoration: 'none', color: 'inherit' }}>
                 Terms
               </Link>{' '}
@@ -110,8 +110,29 @@ export default function Footer() {
                 color="inherit"
                 sx={{ textDecoration: 'none', color: 'primary.main' }}
               >
+                Map Editor
+              </Link>
+              <Link
+                href="/user/contact"
+                color="inherit"
+                sx={{ textDecoration: 'none', color: 'primary.main' }}
+              >
                 Contact
               </Link>
+              <Link
+                href="/user/subscriptions"
+                color="inherit"
+                sx={{ textDecoration: 'none', color: 'primary.main' }}
+              >
+                Get Started
+              </Link>
+              {/* <Link
+                href="#"
+                color="inherit"
+                sx={{ textDecoration: "none", color: "primary.main" }}
+              >
+                Blog
+              </Link> */}
             </Box>
           </Grid>
         </Grid>

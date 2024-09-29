@@ -1,4 +1,4 @@
-import {Box, Button, Container, Typography} from '@mui/material';
+import { Box, Button, Container, Typography } from '@mui/material';
 
 export default function CTA() {
   return (
@@ -20,18 +20,23 @@ export default function CTA() {
         sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
       >
         <Typography
-          variant="h2"
+          variant="h3"
           sx={{
+            textAlign: 'center',
             marginBottom: '2rem',
+            '& span': {
+              display: 'block',
+            },
           }}
         >
-            Create, Customize and Print Your Map Now
+          Create, Customize and Print{' '}
+          <span>Your Map Now - with our flexible pricing plans</span>
         </Typography>
-        <Typography variant="body1">
+        {/* <Typography variant="body1">
           We come to you at your location to service your vehicle
           <br />
           The specilaist in steam cleaning
-        </Typography>
+        </Typography> */}
         <Button
           variant="contained"
           color="primary"
@@ -42,7 +47,7 @@ export default function CTA() {
             fontSize: '1.5rem',
           }}
         >
-            Get Started
+          Get Started
         </Button>
       </Container>
     </Box>

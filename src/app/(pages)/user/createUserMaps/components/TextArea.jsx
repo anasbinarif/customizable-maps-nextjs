@@ -1,17 +1,19 @@
 'use client';
-import {Box} from '@mui/material';
-import React, {useContext} from 'react';
+import { Box } from '@mui/material';
+import React, { useContext } from 'react';
 import ReactQuill from 'react-quill';
 
 import 'react-quill/dist/quill.snow.css';
-import {ThemeContext} from '@/context/ThemeContext';
+import { ThemeContext } from '@/context/ThemeContext';
 
 export default function TextArea({ helperHtml, setHelperHtml }) {
   // const [editorHtml, setEditorHtml] = useState("");
   const { darkMode } = useContext(ThemeContext);
 
   const handleChange = (html) => {
-    setHelperHtml(html);
+    const lineCount = html.split('\n').length;
+
+    if (lineCount <= 13) setHelperHtml(html);
   };
 
   // console.log(editorHtml);
@@ -24,7 +26,7 @@ export default function TextArea({ helperHtml, setHelperHtml }) {
         backgroundColor: 'primary.bgHero',
         // margin: "0 2",
         borderRadius: '16px',
-        height: '200px',
+        minHeight: '200px',
         // marginTop: "2rem",
         '--txtClr': !darkMode ? '#000' : '#fff',
       }}

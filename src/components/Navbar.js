@@ -1,20 +1,37 @@
 'use client';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import HomeIcon from '@mui/icons-material/Home';
+// import HomeIcon from '@mui/icons-material/Home';
 import MapIcon from '@mui/icons-material/Map';
 import MenuIcon from '@mui/icons-material/Menu';
 import PinDropIcon from '@mui/icons-material/PinDrop';
-import {AppBar, Avatar, Box, Button, Container, IconButton, Menu, MenuItem, Toolbar, Typography,} from '@mui/material';
+import {
+  AppBar,
+  Avatar,
+  Box,
+  Button,
+  Container,
+  IconButton,
+  Menu,
+  MenuItem,
+  Toolbar,
+  Typography,
+} from '@mui/material';
 import Link from 'next/link';
-import {usePathname} from 'next/navigation';
-import {signOut, useSession} from 'next-auth/react';
-import React, {useContext, useEffect, useLayoutEffect, useRef, useState,} from 'react';
+import { usePathname } from 'next/navigation';
+import { signOut, useSession } from 'next-auth/react';
+import React, {
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react';
 
 import ChangePasswordModal from './ChangePasswordModal'; // Import the modal component
 import LoginSignupModal from './LoginSignupModal';
 
 import LoadingSpinner from '@/components/LoadingSpinner';
-import {ThemeContext} from '@/context/ThemeContext';
+import { ThemeContext } from '@/context/ThemeContext';
 
 const LinkStyles = {
   display: 'block',
@@ -64,11 +81,16 @@ export default function Navbar() {
   const [loading, setLoading] = useState(false);
   const [changePasswordOpen, setChangePasswordOpen] = useState(false);
   const router = usePathname();
-  const curPage = router.split('/')[router.split('/').length - 1];
+  const routeArr = router.split('/');
+  const curPage =
+    routeArr.length - 1 === 2
+      ? routeArr[router.split('/').length - 1]
+      : routeArr[router.split('/').length - 2];
   const linkRefs = useRef({});
   const [btnWidth, setBtnWidth] = useState(0);
   const { darkMode } = useContext(ThemeContext);
 
+  // console.log(router);
   // console.log(curPage);
 
   useEffect(() => {
@@ -182,13 +204,19 @@ export default function Navbar() {
             }}
           >
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <Typography
-                variant="h6"
-                component="div"
-                sx={{ color: 'secondary.main', fontWeight: 'bold' }}
-              >
-                Map Maven
-              </Typography>
+              <Link href="/" style={LinkStyles}>
+                <Typography
+                  variant="h6"
+                  component="div"
+                  sx={{
+                    color: 'secondary.main',
+                    fontWeight: 'bold',
+                    textDecoration: 'none',
+                  }}
+                >
+                  Map Mavens
+                </Typography>
+              </Link>
             </Box>
             <Box
               sx={{
@@ -221,37 +249,35 @@ export default function Navbar() {
                   top: '0.75rem',
                   bottom: '0.75rem',
                   left:
-                    curPage === ''
+                    curPage === 'displayUserMap' || curPage === ''
                       ? 0
-                      : curPage === 'displayUserMap'
-                        ? '26.4%'
-                        : curPage === 'createUserMaps'
-                          ? '48.5%'
-                          : curPage === 'subscriptions'
-                            ? '71%'
-                            : '91.5%',
-                  transform: curPage !== '' ? 'translate(-50%, 0)' : '',
+                      : curPage === 'createUserMaps'
+                        ? '37%'
+                        : curPage === 'contact'
+                          ? '62.5%'
+                          : '88%',
+                  transform:
+                    curPage !== 'displayUserMap' ? 'translate(-50%, 0)' : '',
                   width: btnWidth,
                   zIndex: 8,
                   borderRadius: '20px',
                   backgroundColor: 'primary.main',
                   transition: 'all 0.3s ease-out',
+                  opacity: curPage === '' ? '0' : '1',
 
                   '@media only screen and (max-width: 1440px)': {
                     left:
-                      curPage === ''
+                      curPage === 'displayUserMap' || curPage === ''
                         ? 0
-                        : curPage === 'displayUserMap'
-                          ? '27%'
-                          : curPage === 'createUserMaps'
-                            ? '48.5%'
-                            : curPage === 'subscriptions'
-                              ? '70.5%'
-                              : '90%',
+                        : curPage === 'createUserMaps'
+                          ? '37.5%'
+                          : curPage === 'contact'
+                            ? '62%'
+                            : '87%',
                   },
                 }}
               ></Box>
-              <Link
+              {/* <Link
                 href="/"
                 passHref
                 style={LinkStyles}
@@ -272,7 +298,7 @@ export default function Navbar() {
                   />
                   Home
                 </Button>
-              </Link>
+              </Link> */}
               <Link
                 href="/user/displayUserMap"
                 passHref
@@ -317,28 +343,7 @@ export default function Navbar() {
                   Map Editor
                 </Button>
               </Link>
-              <Link
-                href="/user/subscriptions"
-                passHref
-                style={LinkStyles}
-                ref={(el) => (linkRefs.current['subscriptions'] = el)}
-              >
-                <Button
-                  sx={LinkBtn}
-                  className={curPage === 'subscriptions' ? 'selected' : ''}
-                >
-                  <PinDropIcon
-                    sx={{
-                      marginRight: '0.5rem',
-                      color: '#000',
-                      width: curPage === 'subscriptions' ? 'auto' : '0',
-                      opacity: curPage === 'subscriptions' ? '1' : '0',
-                      transition: 'all 0.2s ease-out 0.1s',
-                    }}
-                  />
-                  Subscribe
-                </Button>
-              </Link>
+
               <Link
                 href="/user/contact"
                 passHref
@@ -359,6 +364,28 @@ export default function Navbar() {
                     }}
                   />
                   Contact
+                </Button>
+              </Link>
+              <Link
+                href="/user/subscriptions"
+                passHref
+                style={LinkStyles}
+                ref={(el) => (linkRefs.current['subscriptions'] = el)}
+              >
+                <Button
+                  sx={LinkBtn}
+                  className={curPage === 'subscriptions' ? 'selected' : ''}
+                >
+                  <PinDropIcon
+                    sx={{
+                      marginRight: '0.5rem',
+                      color: '#000',
+                      width: curPage === 'subscriptions' ? 'auto' : '0',
+                      opacity: curPage === 'subscriptions' ? '1' : '0',
+                      transition: 'all 0.2s ease-out 0.1s',
+                    }}
+                  />
+                  Get Started
                 </Button>
               </Link>
               {/* <Link href="/blogs" passHref style={LinkStyles}>

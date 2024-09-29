@@ -1,8 +1,8 @@
 'use client';
 import CssBaseline from '@mui/material/CssBaseline';
-import {createTheme, ThemeProvider} from '@mui/material/styles';
-import {Quicksand} from 'next/font/google';
-import React, {createContext, useMemo, useState} from 'react';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { Quicksand } from 'next/font/google';
+import React, { createContext, useState, useMemo } from 'react';
 
 const quicksand = Quicksand({
   subsets: ['latin'],
@@ -22,6 +22,7 @@ const ThemeContextProvider = ({ children }) => {
           primary: {
             // main: darkMode ? "#fff" : "#000",
             main: '#0092A2',
+            main2: '#00afc2',
             bgHero: darkMode ? '#333333' : '#ffffffd8',
             // btnShadow: darkMode
             //   ? "#32325d26 0px 50px 100px -20px, #00000033 0px 30px 60px -30px, #0a25403f 0px -2px 6px 0px inset"

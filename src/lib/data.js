@@ -26,6 +26,6 @@ export const getMarkerIcon = (color, scale) => {
     strokeColor: '#000',
     strokeWeight: 1,
     scale: scale,
-    anchor: new window.google.maps.Point(12, 24),
+    // anchor: new window.google.maps.Point(12, 24),
   };
 };

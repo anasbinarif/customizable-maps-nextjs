@@ -1,23 +1,34 @@
 'use client';
 
-import {Box, Button, Grid, Typography} from '@mui/material';
-import {Autocomplete, GoogleMap, InfoWindow, Marker,} from '@react-google-maps/api';
+import { Box, Button, Grid, Typography } from '@mui/material';
+import {
+  Autocomplete,
+  GoogleMap,
+  InfoWindow,
+  Marker,
+} from '@react-google-maps/api';
 import html2canvas from 'html2canvas';
-import {jsPDF} from 'jspdf';
+import { jsPDF } from 'jspdf';
 import Image from 'next/image';
-import {useSession} from 'next-auth/react';
-import React, {useCallback, useEffect, useMemo, useRef, useState,} from 'react';
+import { useSession } from 'next-auth/react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import ReactDOM from 'react-dom/client';
 import {
-  FaBus,
+  FaUtensils,
   FaCamera,
+  FaBus,
   FaFilm,
   FaHotel,
   FaLandmark,
   FaMoneyBillAlt,
   FaPrescriptionBottle,
   FaSchool,
-  FaUtensils,
 } from 'react-icons/fa';
 
 import CustomPdf from './exportedDoc';
@@ -28,14 +39,14 @@ import TextArea from './TextArea';
 
 import AlertSnackbar from '@/components/AlertSnackbar';
 import ConfirmModal from '@/components/ConfirmModal';
-import {StyledTextField} from '@/components/CustomTextFields';
+import { StyledTextField } from '@/components/CustomTextFields';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import LoginSignupModal from '@/components/LoginSignupModal';
 import useCustomSnackbar from '@/components/snackbar-hook/useCustomSnackbar';
-import {getMarkerIcon, haversineDistance} from '@/lib/data';
-import {generateTextColor} from '@/lib/generateTextColor';
+import { getMarkerIcon, haversineDistance } from '@/lib/data';
+import { generateTextColor } from '@/lib/generateTextColor';
 import GoogleMapsLoader from '@/lib/GoogleMapsLoader';
-import {uploadFileToS3} from '@/lib/uploadFileToS3';
+import { uploadFileToS3 } from '@/lib/uploadFileToS3';
 
 const iconStyle = {
   marginRight: '8px',
@@ -77,6 +88,9 @@ export default function CreateGoogleMap({ mapData = null }) {
 
   const [isGoogleMapsLoaded, setIsGoogleMapsLoaded] = useState(false);
 
+  // console.log('sarim', mapData);
+  // console.log(session);
+
   const handleConfirmClose = () => {
     setLatLangTmp({ lat: '', lng: '' });
     setOpenConfirm(false);
@@ -86,9 +100,9 @@ export default function CreateGoogleMap({ mapData = null }) {
     mapRef.current = mapInstance;
   }, []);
 
-  const onUnmount = useCallback(() => {
-    mapRef.current = null;
-  }, []);
+  // const onUnmount = useCallback(() => {
+  //   mapRef.current = null;
+  // }, []);
 
   const handleOpenModal = (mode) => {
     setModalMode(mode);
@@ -247,6 +261,8 @@ export default function CreateGoogleMap({ mapData = null }) {
   const exportMap = async () => {
     const pdfContent = document.createElement('div');
 
+    pdfContent.style.width = '1920px';
+    pdfContent.style.position = 'absolute';
     document.body.appendChild(pdfContent);
 
     const root = ReactDOM.createRoot(pdfContent);
@@ -267,7 +283,7 @@ export default function CreateGoogleMap({ mapData = null }) {
     );
 
     await new Promise((resolve) => {
-      setTimeout(resolve, 2000);
+      setTimeout(resolve, 3000);
     });
 
     const canvas = await html2canvas(pdfContent, {
@@ -347,6 +363,19 @@ export default function CreateGoogleMap({ mapData = null }) {
   }, []);
 
   const handleLocationClick = (location) => {
+    // console.log(location);
+    const totalLocs = Object.values(locationsByTag).reduce(
+      (total, category) => {
+        return total + category.locations.length;
+      },
+      0
+    );
+
+    if (totalLocs >= 40) {
+      handleOpenAlert('error', 'Max locations saved.');
+
+      return;
+    }
     setLocationsByTag((prevTags) => {
       const updatedTag = {
         ...prevTags[location.tag],
@@ -673,7 +702,7 @@ export default function CreateGoogleMap({ mapData = null }) {
               value={title}
               required
               onChange={(e) => setTitle(e.target.value)}
-              helperText="Please enter title"
+              // helperText="Please enter title"
               sx={{
                 width: '40%',
 
@@ -750,9 +779,13 @@ export default function CreateGoogleMap({ mapData = null }) {
             mapContainerStyle={{ width: '100%', height: '70vh' }}
             center={currentLocation}
             zoom={zoom}
-            onClick={onMapClick}
+            onDblClick={onMapClick}
             onLoad={onLoad}
-            onUnmount={onUnmount}
+            // onUnmount={onUnmount}
+            options={{
+              gestureHandling: 'greedy',
+              disableDoubleClickZoom: true,
+            }}
           >
             <Marker position={currentLocation} />
             {markers.map((marker, index) => (
@@ -957,10 +990,10 @@ export default function CreateGoogleMap({ mapData = null }) {
               <Box
                 sx={{
                   display: 'flex',
-                  justifyContent: 'space-between',
+                  justifyContent: 'flex-end',
                 }}
               >
-                <Box mt="10px">
+                <Box mt="10px" sx={{ mr: '1rem' }}>
                   <Button
                     variant="contained"
                     color="primary"
@@ -969,11 +1002,14 @@ export default function CreateGoogleMap({ mapData = null }) {
                       width: '100%',
                       backgroundColor: 'transparent',
                       color: 'primary.main',
+                      border: '1px solid',
+                      borderColor: (theme) => theme.palette.primary.main,
                       boxShadow: 'none',
 
                       '&:hover': {
-                        fontWeight: 'bold',
-                        backgroundColor: 'transparent',
+                        // fontWeight: "bold",
+                        backgroundColor: 'primary.main',
+                        color: 'white',
                         boxShadow: 'none',
                       },
                     }}
@@ -1002,7 +1038,7 @@ export default function CreateGoogleMap({ mapData = null }) {
         </Grid>
       </Grid>
       {/* <CustomPdf
-        customRef={contentRef}
+        customRef={null}
         data={{
           title: title,
           oldImgs: oldImgs,

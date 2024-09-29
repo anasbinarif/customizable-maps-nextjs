@@ -1,5 +1,16 @@
-import {Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, TextField} from '@mui/material';
-import React, {useState} from 'react';
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Button,
+  CircularProgress,
+} from '@mui/material';
+import React, { useState, useContext } from 'react';
+
+import { StyledTextField } from './CustomTextFields';
+
+import { ThemeContext } from '@/context/ThemeContext';
 
 const ChangePasswordModal = ({ open, onClose, onSave }) => {
   const [currentPassword, setCurrentPassword] = useState('');
@@ -7,6 +18,7 @@ const ChangePasswordModal = ({ open, onClose, onSave }) => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const { darkMode } = useContext(ThemeContext);
 
   const handleSave = async () => {
     if (newPassword !== confirmPassword) {
@@ -30,27 +42,45 @@ const ChangePasswordModal = ({ open, onClose, onSave }) => {
   };
 
   return (
-    <Dialog open={open} onClose={onClose}>
+    <Dialog
+      open={open}
+      onClose={onClose}
+      sx={{
+        '& .MuiDialog-paper': {
+          backgroundColor: !darkMode
+            ? 'rgba(255, 255, 255, 0.5)'
+            : 'rgba(0, 0, 0, 0.5)', // Transparent background
+          backdropFilter: 'blur(10px)', // Blurred background
+          borderRadius: '20px',
+          //   padding: "2rem",
+          boxShadow: 'none',
+          // backgroundColor: "red",
+        },
+      }}
+    >
       <DialogTitle>Change Password</DialogTitle>
       <DialogContent>
-        <TextField
-          label="Current Password"
+        <StyledTextField
+          placeholder="Current Password"
+          variant="outlined"
           type="password"
           fullWidth
           margin="normal"
           value={currentPassword}
           onChange={(e) => setCurrentPassword(e.target.value)}
         />
-        <TextField
-          label="New Password"
+        <StyledTextField
+          placeholder="New Password"
+          variant="outlined"
           type="password"
           fullWidth
           margin="normal"
           value={newPassword}
           onChange={(e) => setNewPassword(e.target.value)}
         />
-        <TextField
-          label="Confirm New Password"
+        <StyledTextField
+          placeholder="Confirm New Password"
+          variant="outlined"
           type="password"
           fullWidth
           margin="normal"
@@ -61,7 +91,7 @@ const ChangePasswordModal = ({ open, onClose, onSave }) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose} disabled={loading}>
-                    Cancel
+          Cancel
         </Button>
         <Button onClick={handleSave} disabled={loading}>
           {loading ? <CircularProgress size={24} /> : 'Save'}

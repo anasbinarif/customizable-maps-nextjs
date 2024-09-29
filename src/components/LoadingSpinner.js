@@ -1,4 +1,4 @@
-import {Box, CircularProgress} from '@mui/material';
+import { Box, CircularProgress } from '@mui/material';
 import React from 'react';
 
 const LoadingSpinner = () => {
@@ -8,8 +8,9 @@ const LoadingSpinner = () => {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        height: '100vh', // Full viewport height
-        width: '100%',   // Full width
+        height: '100%', // Full viewport height
+        minHeight: '100vh',
+        width: '100%', // Full width
         position: 'absolute', // Position it above all other content
         top: 0,
         left: 0,
