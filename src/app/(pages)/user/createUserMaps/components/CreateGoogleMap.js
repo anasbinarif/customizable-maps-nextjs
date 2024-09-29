@@ -19,21 +19,16 @@ import React, {
   useRef,
   useState,
 } from "react";
-import ReactDOM from "react-dom/client";
 import {
   FaUtensils,
-  FaHotel,
   FaCamera,
-  FaLandmark,
   FaBus,
-  FaCamera,
   FaFilm,
   FaHotel,
   FaLandmark,
   FaMoneyBillAlt,
   FaPrescriptionBottle,
   FaSchool,
-  FaUtensils,
 } from "react-icons/fa";
 
 import CustomPdf from "./exportedDoc";
