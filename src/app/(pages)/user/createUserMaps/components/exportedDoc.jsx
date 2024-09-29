@@ -1,10 +1,10 @@
-import { Box, Typography } from '@mui/material';
-import { GoogleMap, Marker } from '@react-google-maps/api';
+import {Box, Typography} from '@mui/material';
+import {GoogleMap, Marker} from '@react-google-maps/api';
 import DOMPurify from 'dompurify';
 import Image from 'next/image';
-import React, { useMemo } from 'react';
+import React, {useMemo} from 'react';
 
-import { getMarkerIcon } from '@/lib/data';
+import {getMarkerIcon} from '@/lib/data';
 import GoogleMapsLoader from '@/lib/GoogleMapsLoader';
 
 export default function CustomPdf({ data, customRef }) {

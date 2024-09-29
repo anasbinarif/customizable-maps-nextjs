@@ -1,7 +1,7 @@
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import TwitterIcon from '@mui/icons-material/Twitter';
-import { Box, Container, Grid, Link, Typography } from '@mui/material';
+import {Box, Container, Grid, Link, Typography} from '@mui/material';
 import React from 'react';
 
 export default function Footer() {

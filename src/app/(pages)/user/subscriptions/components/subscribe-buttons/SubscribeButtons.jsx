@@ -4,12 +4,14 @@ import {useSession} from 'next-auth/react';
 import React, {useState} from 'react';
 
 import LoadingSpinner from '@/components/LoadingSpinner';
+import useCustomSnackbar from '@/components/snackbar-hook/useCustomSnackbar';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
 
 const SubscribeButtons = ({pkgId}) => {
   const [loading, setLoading] = useState(false);
   const { data: session } = useSession();
+  const { openSnackbar } = useCustomSnackbar();
 
   const handleCheckout = async () => {
     setLoading(true);
@@ -29,18 +31,16 @@ const SubscribeButtons = ({pkgId}) => {
         }),
       });
 
-      console.log('Stripe Publishable Key:', process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
-
       const { sessionId } = await response.json();
 
       const stripe = await stripePromise;
       const { error } = await stripe.redirectToCheckout({ sessionId });
 
       if (error) {
-        console.error('Stripe Checkout error:', error);
+        openSnackbar(`Error creating Stripe checkout session: ${error}`);
       }
     } catch (error) {
-      console.error('Error creating Stripe checkout session:', error);
+      openSnackbar(`Error creating Stripe checkout session: ${error}`);
     }
 
     setLoading(false);

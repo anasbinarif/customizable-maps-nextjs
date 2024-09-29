@@ -1,8 +1,8 @@
 'use client';
-import { Button, FormControl, Typography, useTheme } from '@mui/material';
-import React, { useState } from 'react';
+import {Button, FormControl, Typography, useTheme} from '@mui/material';
+import React, {useState} from 'react';
 
-import { StyledTextField } from '@/components/CustomTextFields';
+import {StyledTextField} from '@/components/CustomTextFields';
 
 export default function Form({ onSubmit }) {
   const theme = useTheme();

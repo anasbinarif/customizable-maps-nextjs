@@ -82,7 +82,7 @@ const SubscriptionTab = ({ pkg, index, color }) => {
           }}
         >
           {pkg?.features &&
-                        pkg.features.map((item, index) => {
+                        pkg.features.map((item) => {
                           const isDisabled = item.includes('(disabled)');
 
                           return (

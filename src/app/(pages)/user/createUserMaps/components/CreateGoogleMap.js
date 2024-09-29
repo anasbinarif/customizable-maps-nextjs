@@ -1,34 +1,23 @@
 'use client';
 
-import { Box, Button, Grid, Typography } from '@mui/material';
-import {
-  Autocomplete,
-  GoogleMap,
-  InfoWindow,
-  Marker,
-} from '@react-google-maps/api';
+import {Box, Button, Grid, Typography} from '@mui/material';
+import {Autocomplete, GoogleMap, InfoWindow, Marker,} from '@react-google-maps/api';
 import html2canvas from 'html2canvas';
-import { jsPDF } from 'jspdf';
+import {jsPDF} from 'jspdf';
 import Image from 'next/image';
-import { useSession } from 'next-auth/react';
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import {useSession} from 'next-auth/react';
+import React, {useCallback, useEffect, useMemo, useRef, useState,} from 'react';
 import ReactDOM from 'react-dom/client';
 import {
-  FaUtensils,
-  FaCamera,
   FaBus,
+  FaCamera,
   FaFilm,
   FaHotel,
   FaLandmark,
   FaMoneyBillAlt,
   FaPrescriptionBottle,
   FaSchool,
+  FaUtensils,
 } from 'react-icons/fa';
 
 import CustomPdf from './exportedDoc';
@@ -39,14 +28,14 @@ import TextArea from './TextArea';
 
 import AlertSnackbar from '@/components/AlertSnackbar';
 import ConfirmModal from '@/components/ConfirmModal';
-import { StyledTextField } from '@/components/CustomTextFields';
+import {StyledTextField} from '@/components/CustomTextFields';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import LoginSignupModal from '@/components/LoginSignupModal';
 import useCustomSnackbar from '@/components/snackbar-hook/useCustomSnackbar';
-import { getMarkerIcon, haversineDistance } from '@/lib/data';
-import { generateTextColor } from '@/lib/generateTextColor';
+import {getMarkerIcon, haversineDistance} from '@/lib/data';
+import {generateTextColor} from '@/lib/generateTextColor';
 import GoogleMapsLoader from '@/lib/GoogleMapsLoader';
-import { uploadFileToS3 } from '@/lib/uploadFileToS3';
+import {uploadFileToS3} from '@/lib/uploadFileToS3';
 
 const iconStyle = {
   marginRight: '8px',

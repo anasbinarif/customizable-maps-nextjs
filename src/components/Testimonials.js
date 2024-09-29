@@ -1,19 +1,9 @@
 'use client';
-import {
-  faStar,
-  faChevronLeft,
-  faChevronRight,
-} from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Box, Container, Typography, Button } from '@mui/material';
+import {faChevronLeft, faChevronRight, faStar,} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {Box, Button, Container, Typography} from '@mui/material';
 // import MobileStepper from '@mui/material/MobileStepper';
-import React, {
-  // useContext,
-  // useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, {useLayoutEffect, useRef, useState,} from 'react';
 
 // import { ThemeContext } from "@/context/ThemeContext";
 

@@ -1,7 +1,7 @@
-"use client";
-import React, {useContext, useEffect, useState} from "react";
-import {Box, Button, Container, Typography, useTheme} from "@mui/material";
-import {ThemeContext} from "@/context/ThemeContext";
+'use client';
+import {Box, Button, Container, Typography} from '@mui/material';
+import Link from 'next/link';
+import React, {useEffect, useState} from 'react';
 
 function getTransitionStyles(index, curIndex, len) {
   return index === curIndex

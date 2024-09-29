@@ -1,12 +1,10 @@
 'use client';
 import {Box, Container, useTheme} from '@mui/material';
-import React, {useContext} from 'react';
+import React from 'react';
 
 import SubscriptionTab from '@/app/(pages)/user/subscriptions/components/subscription-tab/SubscriptionTab';
-import {ThemeContext} from '@/context/ThemeContext';
 
 const CarouselSection = ({packages}) => {
-  const { darkMode } = useContext(ThemeContext);
   const theme = useTheme();
   const color = theme.palette.primary.main;
 

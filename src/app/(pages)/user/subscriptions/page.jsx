@@ -2,7 +2,7 @@
 import {faCheckCircle, faChevronDown, faChevronUp,} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {Box, Container, List, Typography, useTheme} from '@mui/material';
-import React, { useState} from 'react';
+import React, {useState} from 'react';
 
 export const packages = [
   {
