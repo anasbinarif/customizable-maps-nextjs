@@ -6,12 +6,12 @@ export async function POST(req) {
 
   const {userId, userEmail} = await req.json();
 
-  if (!userId || !userEmail) {
-    return NextResponse.json({ error: 'user id and email are required' }, { status: 400 });
-  }
+  // if (!userId || !userEmail) {
+  //   return NextResponse.json({ error: 'user id and email are required' }, { status: 400 });
+  // }
 
   const subscriptionType = 'PRO';
-  const priceId = 'price_pro';
+  const priceId = 'price_1Q41pa01CafFh2Wrl9QP2Hm0';
 
   const stripeSession = await stripe.checkout.sessions.create({
     success_url: 'http://localhost:3000/checkout-success',

@@ -22,11 +22,14 @@ const SubscribeButtons = ({pkgId}) => {
         headers: {
           'Content-Type': 'application/json',
         },
+        cache: "no-store",
         body: JSON.stringify({
           userId: userId,
           userEmail: userEmail,
         }),
       });
+      console.log('Stripe Publishable Key:', process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
+
 
       const { sessionId } = await response.json();
 
