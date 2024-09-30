@@ -5,10 +5,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Box, List, Typography } from '@mui/material';
 import React, { useState } from 'react';
 
-import { useStyles } from '@/app/(pages)/user/subscriptions/components/carouser-section/CarouselSection.style';
-import SubscribeButtons from '@/app/(pages)/user/subscriptions/components/subscribe-buttons/SubscribeButtons';
-import SubscriptionDurationOptions
-  from '@/app/(pages)/user/subscriptions/components/subscription-duration-options/SubscriptionDurationOptions';
+import { useStyles } from '../carouser-section/CarouselSection.style';
+import SubscribeButtons from '../subscribe-buttons/SubscribeButtons';
+import SubscriptionDurationOptions from '../subscription-duration-options/SubscriptionDurationOptions';
 
 const SubscriptionTab = ({ pkg, index, color }) => {
   const [duration, setDuration] = useState(false);

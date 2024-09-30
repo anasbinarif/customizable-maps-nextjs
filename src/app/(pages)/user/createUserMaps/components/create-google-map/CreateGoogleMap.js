@@ -254,6 +254,7 @@ export default function CreateGoogleMap({ mapData = null }) {
   };
 
   const exportMap = async () => {
+    setLoading(true);
     const pdfContent = document.createElement('div');
 
     pdfContent.style.width = '1920px';
@@ -292,6 +293,7 @@ export default function CreateGoogleMap({ mapData = null }) {
     const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
     pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+    setLoading(false);
     pdf.save(`${title}.pdf`);
 
     root.unmount();
@@ -358,26 +360,33 @@ export default function CreateGoogleMap({ mapData = null }) {
   }, []);
 
   const handleLocationClick = (location) => {
-    // console.log(location);
     const totalLocs = Object.values(locationsByTag).reduce(
-      (total, category) => {
-        return total + category.locations.length;
-      },
+      (total, category) => total + category.locations.length,
       0
     );
 
-    if (totalLocs >= 40) {
+    if (totalLocs >= 40 && !locationsByTag[location.tag].locations.some(loc => loc.name === location.name)) {
       handleOpenAlert('error', 'Max locations saved.');
 
       return;
     }
-    setLocationsByTag((prevTags) => {
-      const updatedTag = {
-        ...prevTags[location.tag],
-        locations: [...(prevTags[location.tag]?.locations || []), location],
-      };
 
-      return { ...prevTags, [location.tag]: updatedTag };
+    setLocationsByTag((prevTags) => {
+      const currentTag = prevTags[location.tag];
+      const locationExists = currentTag.locations.some((loc) => loc.name === location.name);
+
+      let updatedLocations;
+
+      if (locationExists) {
+        updatedLocations = currentTag.locations.filter((loc) => loc.name !== location.name);
+      } else {
+        updatedLocations = [...currentTag.locations, location];
+      }
+
+      return {
+        ...prevTags,
+        [location.tag]: { ...currentTag, locations: updatedLocations }
+      };
     });
   };
 
@@ -923,7 +932,6 @@ export default function CreateGoogleMap({ mapData = null }) {
                       boxShadow: 'none',
 
                       '&:hover': {
-                        // fontWeight: "bold",
                         backgroundColor: 'primary.main',
                         color: 'white',
                         boxShadow: 'none',
