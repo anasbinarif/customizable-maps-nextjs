@@ -59,7 +59,7 @@ const SubscribeButtons = ({pkgId}) => {
     <Box sx={{ display: 'flex', justifyContent: 'center' }}>
       <Button
         variant="contained"
-        disabled={pkgId !== 2}
+        disabled={pkgId !== 5}
         sx={{
           backgroundColor: 'primary.main',
           borderRadius: '20px',
