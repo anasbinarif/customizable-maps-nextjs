@@ -8,16 +8,40 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  name      String?
-  password  String
-  isAdmin   Boolean  @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  maps      Map[]
-  resetToken           String?
-  resetTokenExpires    DateTime?
+  id                Int           @id @default(autoincrement())
+  email             String        @unique
+  name              String?
+  password          String
+  isAdmin           Boolean       @default(false)
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  maps              Map[]
+  resetToken        String?
+  resetTokenExpires DateTime?
+  subscription      Subscription?
+}
+
+model Subscription {
+  id                   Int                @id @default(autoincrement())
+  stripeSubscriptionId String             @unique
+  subscriptionType     SubscriptionType
+  status               SubscriptionStatus
+  user                 User               @relation(fields: [userId], references: [id])
+  userId               Int                @unique
+  createdAt            DateTime           @default(now())
+  updatedAt            DateTime           @updatedAt
+}
+
+enum SubscriptionType {
+  BASIC
+  PRO
+  PREMIUM
+}
+
+enum SubscriptionStatus {
+  canceled
+  pending
+  active
 }
 
 model Map {

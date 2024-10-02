@@ -1,18 +1,7 @@
 'use client';
-// import { CardTravelSharp } from '@mui/icons-material';
-import {
-  Box,
-  Button,
-  Container,
-  Typography,
-  // useTheme,
-  // Grid,
-} from '@mui/material';
-// import Image from 'next/image';
+import {Box, Button, Container, Typography} from '@mui/material';
 import Link from 'next/link';
-import React, { useState, useEffect } from 'react';
-
-// import { ThemeContext } from "@/context/ThemeContext";
+import React, {useEffect, useState} from 'react';
 
 function getTransitionStyles(index, curIndex, len) {
   return index === curIndex

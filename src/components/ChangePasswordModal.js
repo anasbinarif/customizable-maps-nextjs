@@ -1,16 +1,9 @@
-import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Button,
-  CircularProgress,
-} from '@mui/material';
-import React, { useState, useContext } from 'react';
+import {Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle,} from '@mui/material';
+import React, {useContext, useState} from 'react';
 
-import { StyledTextField } from './CustomTextFields';
+import {StyledTextField} from './CustomTextFields';
 
-import { ThemeContext } from '@/context/ThemeContext';
+import {ThemeContext} from '@/context/ThemeContext';
 
 const ChangePasswordModal = ({ open, onClose, onSave }) => {
   const [currentPassword, setCurrentPassword] = useState('');

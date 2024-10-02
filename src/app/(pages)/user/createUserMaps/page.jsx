@@ -1,6 +1,6 @@
 import {Box} from '@mui/material';
 
-import CreateGoogleMap from './components/CreateGoogleMap';
+import CreateGoogleMap from './components/create-google-map/CreateGoogleMap';
 
 export default function ListMaps() {
   return (

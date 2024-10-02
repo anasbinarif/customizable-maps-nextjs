@@ -1,6 +1,6 @@
 'use client';
-import { Box, Container, useTheme } from '@mui/material';
-import { Map, Marker } from 'pigeon-maps';
+import {Box, Container, useTheme} from '@mui/material';
+import {Map, Marker} from 'pigeon-maps';
 import React from 'react';
 
 import Form from './components/Form';

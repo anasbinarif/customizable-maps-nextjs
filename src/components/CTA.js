@@ -1,4 +1,4 @@
-import { Box, Button, Container, Typography } from '@mui/material';
+import {Box, Button, Container, Typography} from '@mui/material';
 
 export default function CTA() {
   return (

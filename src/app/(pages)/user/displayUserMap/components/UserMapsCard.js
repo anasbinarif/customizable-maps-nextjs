@@ -2,25 +2,17 @@ import AddRounded from '@mui/icons-material/AddRounded';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DownloadIcon from '@mui/icons-material/Download';
 import EditIcon from '@mui/icons-material/Edit';
-import {
-  Box,
-  Card,
-  CardContent,
-  CardMedia,
-  Grid,
-  IconButton,
-  Typography,
-} from '@mui/material';
+import {Box, Card, CardContent, CardMedia, Grid, IconButton, Typography,} from '@mui/material';
 import html2canvas from 'html2canvas';
-import { jsPDF } from 'jspdf';
+import {jsPDF} from 'jspdf';
 import Link from 'next/link';
-import React, { useState, useMemo } from 'react';
+import React, {useMemo, useState} from 'react';
 import ReactDOM from 'react-dom/client';
 
 import CustomPdf from '../../createUserMaps/components/exportedDoc';
 
 import ConfirmDeleteModal from '@/app/(pages)/admin/Locations/ConfirmDeleteModal';
-import { haversineDistance } from '@/lib/data';
+import {haversineDistance} from '@/lib/data';
 
 const filters = [
   { name: 'Restaurants', type: 'restaurant', selectedColor: '#FF6347' },
