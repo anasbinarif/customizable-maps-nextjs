@@ -1,10 +1,11 @@
-import {Close as ClearIcon, Upload as UploadIcon} from '@mui/icons-material';
+import { Close as ClearIcon, Upload as UploadIcon } from '@mui/icons-material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import {Box, Button, Grid, IconButton, Typography} from '@mui/material';
+import { Box, Button, Grid, IconButton, Typography } from '@mui/material';
 import Image from 'next/image';
-import React, {useContext, useEffect, useState} from 'react';
+import { useSession } from 'next-auth/react';
+import React, { useContext, useEffect, useState } from 'react';
 
-import {ThemeContext} from '@/context/ThemeContext';
+import { ThemeContext } from '@/context/ThemeContext';
 
 const ImageUploader = ({
   setUploadedFiles,
@@ -12,8 +13,14 @@ const ImageUploader = ({
   oldImgs,
   setOldImgs,
 }) => {
+  const { data: session } = useSession();
   const [images, setImages] = useState([]);
   const { darkMode } = useContext(ThemeContext);
+
+  const isFree = session?.user?.subscriptionType === 'BASIC';
+
+  // console.log(session);
+  // console.log(isFree);
 
   const handleImageUpload = (files) => {
     setUploadedFiles((prevFiles) => [...prevFiles, ...files]);
@@ -55,9 +62,31 @@ const ImageUploader = ({
         mt: '20px',
         position: 'relative',
       }}
-      onDrop={handleDrop}
-      onDragOver={handleDragOver}
+      onDrop={isFree ? handleDrop : () => {}}
+      onDragOver={isFree ? handleDragOver : () => {}}
     >
+      {isFree && (
+        <Box
+          sx={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            bottom: 0,
+            right: 0,
+            backgroundColor: '#5c5c5cea',
+            zIndex: 800,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+
+            '& .MuiTypography-root': { color: '#fff' },
+          }}
+        >
+          <Typography>
+            Please subscribe to one of our plans to upload images
+          </Typography>
+        </Box>
+      )}
       {images.length === 0 && oldImgs.length === 0 ? (
         <Box
           sx={{
@@ -93,6 +122,7 @@ const ImageUploader = ({
               hidden
               multiple
               accept="image/*"
+              disabled={isFree}
               onChange={(event) =>
                 handleImageUpload(Array.from(event.target.files))
               }
@@ -190,6 +220,7 @@ const ImageUploader = ({
                     multiple
                     accept="image/*"
                     onChange={(event) =>
+                      isFree &&
                       handleImageUpload(Array.from(event.target.files))
                     }
                   />
