@@ -6,8 +6,8 @@ export const haversineDistance = (loc1, loc2) => {
   const dLon = toRadians(loc2.lng - loc1.lng);
 
   const a =
-      Math.sin(dLat / 2) ** 2 +
-      Math.cos(toRadians(loc1.lat)) *
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(toRadians(loc1.lat)) *
       Math.cos(toRadians(loc2.lat)) *
       Math.sin(dLon / 2) ** 2;
 
@@ -26,6 +26,6 @@ export const getMarkerIcon = (color, scale) => {
     strokeColor: '#000',
     strokeWeight: 1,
     scale: scale,
-    // anchor: new window.google.maps.Point(12, 24),
+    anchor: new window.google.maps.Point(12, 24),
   };
 };

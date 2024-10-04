@@ -74,7 +74,7 @@ const LogoUploader = ({ setLogoFile, logoFile }) => {
         >
           <CloudUploadIcon sx={{ fontSize: 50, color: 'grey' }} />
           <Typography variant="body1" color="grey">
-            Drag & drop to upload
+            Drag & drop to upload your Company logo
           </Typography>
           <Typography variant="h6" color="grey" component="span">
             or

@@ -1,9 +1,13 @@
 'use client';
-import {faChevronLeft, faChevronRight, faStar,} from '@fortawesome/free-solid-svg-icons';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {Box, Button, Container, Typography} from '@mui/material';
+import {
+  faChevronLeft,
+  faChevronRight,
+  faStar,
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Box, Button, Container, Typography } from '@mui/material';
 // import MobileStepper from '@mui/material/MobileStepper';
-import React, {useLayoutEffect, useRef, useState,} from 'react';
+import React, { useLayoutEffect, useRef, useState } from 'react';
 
 // import { ThemeContext } from "@/context/ThemeContext";
 
@@ -184,10 +188,16 @@ export default function Testimonials() {
           flexWrap: 'wrap',
           gap: '2rem',
           position: 'relative',
+          maxWidth: { xl: '70rem', lg: '55rem' },
+          overflow: 'hidden',
         }}
       >
         <Box
-          sx={{ maxWidth: '70rem', overflow: 'hidden', position: 'relative' }}
+          sx={{
+            maxWidth: { xl: '70rem', lg: '55rem' },
+            overflow: 'hidden',
+            position: 'relative',
+          }}
         >
           <Box
             ref={sliderRef}
@@ -207,7 +217,7 @@ export default function Testimonials() {
                   sx={{
                     display: 'flex',
                     flexDirection: 'column',
-                    // justifyContent: "center",
+                    justifyContent: 'center',
                     transition: 'all 300ms ease-in-out',
                     padding: '1rem',
                     height: '23rem',
@@ -231,7 +241,6 @@ export default function Testimonials() {
                     background: 'none',
                     border: 'none',
                     alignSelf: 'flex-start',
-                    justifyContent: 'stretch',
                     '@media (max-width: 900px)': {
                       height: 'auto',
                     },

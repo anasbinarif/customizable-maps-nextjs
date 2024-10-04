@@ -1,7 +1,8 @@
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import TwitterIcon from '@mui/icons-material/Twitter';
-import {Box, Container, Grid, Link, Typography} from '@mui/material';
+import { Box, Container, Grid, Link, Typography } from '@mui/material';
+import Image from 'next/image';
 import React from 'react';
 
 export default function Footer() {
@@ -16,33 +17,46 @@ export default function Footer() {
       <Container maxWidth="xxl">
         <Grid container spacing={3} alignItems="center">
           {/* Logo and Company Info */}
-          <Grid item xs={12} sm={4} sx={{ display: 'flex', gap: '1.5rem' }}>
+          <Grid
+            item
+            xs={12}
+            sm={4}
+            sx={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}
+          >
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <Box
                 sx={{
-                  width: 36,
-                  height: 36,
+                  width: 40,
+                  height: 40,
                   backgroundColor: '#64d8cb',
                   borderRadius: '50%',
                   display: 'flex',
                   justifyContent: 'center',
                   alignItems: 'center',
                   marginRight: '0.5rem',
+                  overflow: 'hidden',
                 }}
               >
-                <Typography
+                <Image
+                  src="/img/mapmaven.jpeg"
+                  width={50}
+                  height={50}
+                  alt="Map Mavens logo"
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                />
+              </Box>
+              {/* <Typography
                   variant="h6"
                   sx={{ color: 'primary.main', fontWeight: 'bold' }}
                 >
                   L
                 </Typography>
-              </Box>
               <Typography
                 variant="h6"
                 sx={{ color: 'primary.main', fontWeight: 'bold' }}
               >
                 LOGO
-              </Typography>
+              </Typography> */}
             </Box>
             <Typography
               variant="body2"

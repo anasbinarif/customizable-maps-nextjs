@@ -1,4 +1,4 @@
-import {Box} from '@mui/material';
+import { Box } from '@mui/material';
 
 import CarouselSection from '@/components/CarouselSection';
 import CTA from '@/components/CTA';

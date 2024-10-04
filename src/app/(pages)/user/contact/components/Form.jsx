@@ -1,8 +1,8 @@
 'use client';
-import {Button, FormControl, Typography, useTheme} from '@mui/material';
-import React, {useState} from 'react';
+import { Button, FormControl, Typography, useTheme } from '@mui/material';
+import React, { useState } from 'react';
 
-import {StyledTextField} from '@/components/CustomTextFields';
+import { StyledTextField } from '@/components/CustomTextFields';
 
 export default function Form({ onSubmit }) {
   const theme = useTheme();
@@ -35,6 +35,7 @@ export default function Form({ onSubmit }) {
       sx={{
         display: 'flex',
         flexDirection: 'column',
+        alignItems: 'center',
         gap: theme.spacing(4),
         width: '100%',
         // maxWidth: "500px",
@@ -43,7 +44,7 @@ export default function Form({ onSubmit }) {
         boxSizing: 'border-box',
       }}
     >
-      <Typography variant="h2">Contact Us</Typography>
+      <Typography variant="h3">Contact Us</Typography>
       <StyledTextField
         placeholder="Name"
         name="name"

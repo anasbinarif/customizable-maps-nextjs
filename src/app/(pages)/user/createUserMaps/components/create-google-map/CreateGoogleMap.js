@@ -7,9 +7,10 @@ import {
   InfoWindow,
   Marker,
 } from '@react-google-maps/api';
-import html2canvas from 'html2canvas';
-import { jsPDF } from 'jspdf';
+// import html2canvas from 'html2canvas';
+// import { jsPDF } from 'jspdf';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import React, {
   useCallback,
@@ -18,7 +19,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import ReactDOM from 'react-dom/client';
+// import ReactDOM from 'react-dom/client';
 import {
   FaBus,
   FaCamera,
@@ -31,7 +32,7 @@ import {
   FaUtensils,
 } from 'react-icons/fa';
 
-import CustomPdf from '../exportedDoc';
+// import CustomPdf from '../exportedDoc';
 import ImageUploader from '../ImageUploader';
 import LocationList from '../LocationList';
 import LogoUploader from '../LogoUploader';
@@ -263,52 +264,52 @@ export default function CreateGoogleMap({ mapData = null }) {
     }
   };
 
-  const exportMap = async () => {
-    setLoading(true);
-    const pdfContent = document.createElement('div');
+  // const exportMap = async () => {
+  //   setLoading(true);
+  //   const pdfContent = document.createElement('div');
 
-    pdfContent.style.width = '1920px';
-    pdfContent.style.position = 'absolute';
-    document.body.appendChild(pdfContent);
+  //   pdfContent.style.width = '1920px';
+  //   pdfContent.style.position = 'absolute';
+  //   document.body.appendChild(pdfContent);
 
-    const root = ReactDOM.createRoot(pdfContent);
+  //   const root = ReactDOM.createRoot(pdfContent);
 
-    root.render(
-      <CustomPdf
-        customRef={null}
-        data={{
-          title: title,
-          oldImgs: oldImgs,
-          newImgFiles: uploadedFiles,
-          logoFile: logoFile,
-          locationsByTag: locationsByTag,
-          currentLocation: currentLocation,
-          helperHtml: helperHtml,
-        }}
-      />
-    );
+  //   root.render(
+  //     <CustomPdf
+  //       // customRef={null}
+  //       data={{
+  //         title: title,
+  //         oldImgs: oldImgs,
+  //         newImgFiles: uploadedFiles,
+  //         logoFile: logoFile,
+  //         locationsByTag: locationsByTag,
+  //         currentLocation: currentLocation,
+  //         helperHtml: helperHtml,
+  //       }}
+  //     />
+  //   );
 
-    await new Promise((resolve) => {
-      setTimeout(resolve, 3000);
-    });
+  //   await new Promise((resolve) => {
+  //     setTimeout(resolve, 3000);
+  //   });
 
-    const canvas = await html2canvas(pdfContent, {
-      useCORS: true,
-      scale: 2,
-    });
+  //   const canvas = await html2canvas(pdfContent, {
+  //     useCORS: true,
+  //     scale: 2,
+  //   });
 
-    const imgData = canvas.toDataURL('image/png');
-    const pdf = new jsPDF('p', 'mm', 'a4');
-    const imgWidth = 210;
-    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+  //   const imgData = canvas.toDataURL('image/png');
+  //   const pdf = new jsPDF('p', 'mm', 'a4');
+  //   const imgWidth = 210;
+  //   const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-    pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-    setLoading(false);
-    pdf.save(`${title}.pdf`);
+  //   pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+  //   setLoading(false);
+  //   pdf.save(`${title}.pdf`);
 
-    root.unmount();
-    document.body.removeChild(pdfContent);
-  };
+  //   root.unmount();
+  //   document.body.removeChild(pdfContent);
+  // };
 
   const filters = useMemo(() => {
     return [
@@ -676,11 +677,23 @@ export default function CreateGoogleMap({ mapData = null }) {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
+
+              '@media only screen and (max-width: 600px)': {
+                flexDirection: 'column',
+              },
             }}
           >
             <Box
               sx={{
                 margin: '10px 0.5rem',
+                width: '30%',
+
+                '@media only screen and (max-width: 1200px)': {
+                  width: '50%',
+                },
+                '@media only screen and (max-width: 600px)': {
+                  width: '100%',
+                },
               }}
             >
               <StyledTextField
@@ -692,9 +705,8 @@ export default function CreateGoogleMap({ mapData = null }) {
                 required
                 onChange={(e) => setTitle(e.target.value)}
                 sx={{
-                  '@media only screen and (max-width: 1200px)': {
-                    width: '100%',
-                  },
+                  width: '100%',
+                  '@media only screen and (max-width: 1200px)': {},
                 }}
               />
             </Box>
@@ -948,29 +960,35 @@ export default function CreateGoogleMap({ mapData = null }) {
                   justifyContent: 'flex-end',
                 }}
               >
-                <Box mt="10px" sx={{ mr: '1rem' }}>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={exportMap}
-                    sx={{
-                      width: '100%',
-                      backgroundColor: 'transparent',
-                      color: 'primary.main',
-                      border: '1px solid',
-                      borderColor: (theme) => theme.palette.primary.main,
-                      boxShadow: 'none',
+                {mapData && (
+                  <Box mt="10px" sx={{ mr: '1rem' }}>
+                    <Link
+                      href={mapData ? `/user/exportLayout/${mapData?.id}` : ''}
+                    >
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        // onClick={exportMap}
+                        sx={{
+                          width: '100%',
+                          backgroundColor: 'transparent',
+                          color: 'primary.main',
+                          border: '1px solid',
+                          borderColor: (theme) => theme.palette.primary.main,
+                          boxShadow: 'none',
 
-                      '&:hover': {
-                        backgroundColor: 'primary.main',
-                        color: 'white',
-                        boxShadow: 'none',
-                      },
-                    }}
-                  >
-                    Export
-                  </Button>
-                </Box>
+                          '&:hover': {
+                            backgroundColor: 'primary.main',
+                            color: 'white',
+                            boxShadow: 'none',
+                          },
+                        }}
+                      >
+                        Export
+                      </Button>
+                    </Link>
+                  </Box>
+                )}
                 <Box mt="10px">
                   <Button
                     variant="contained"
