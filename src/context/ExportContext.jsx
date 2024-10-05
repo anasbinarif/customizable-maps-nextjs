@@ -12,7 +12,7 @@ export const BoxOrderProvider = ({ children }) => {
   const [boxOrderRow1, setBoxOrderRow1] = useState(['map', 'locations']);
   const [boxOrderRow3, setBoxOrderRow3] = useState(['text', 'logo']);
 
-  //   console.log(boxOrderRow1);
+  //   console.log(boxOrderRows);
 
   const moveBox1 = (fromIndex, toIndex) => {
     const updatedOrder = [...boxOrderRow1];

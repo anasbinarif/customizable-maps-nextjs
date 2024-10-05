@@ -44,7 +44,20 @@ export default function Form({ onSubmit }) {
         boxSizing: 'border-box',
       }}
     >
-      <Typography variant="h3">Contact Us</Typography>
+      <Typography
+        variant="h3"
+        sx={{
+          fontSize: {
+            xl: '3rem',
+            lg: '3rem',
+            md: '3rem',
+            sm: '3rem',
+            xs: '2rem',
+          },
+        }}
+      >
+        Contact Us
+      </Typography>
       <StyledTextField
         placeholder="Name"
         name="name"

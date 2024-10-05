@@ -32,52 +32,51 @@ export default function Testimonials() {
   const testimonials = [
     {
       stars: 5,
-      name: 'Igor Dotsenko',
+      name: 'Bob Lafton',
       details:
-        'I ordered exterior washing a few times already. Both times washerman arrived in time and did the work very well and professionally.',
-      image: 'https://swiperjs.com/demos/images/nature-1.jpg',
+        'This app made creating custom maps for my outdoor hiking trips incredibly easy. I was able to mark all my favorite spots and even share them with friends. It’s become a must-have for all my travel planning!',
       date: '30/01/24',
       socialIcons: [{ icon: '/Trustpilot.png', alt: 'Green Star' }],
     },
     {
-      stars: 5,
-      name: 'Jane Smith',
+      stars: 4,
+      name: 'Sarah Peterson',
       details:
-        'They catered to the delicate paint job and i hope to come back in the future',
+        'I absolutely love how easy it is to customize maps for my blog! As a travel writer, having the ability to create professional-looking maps in no time has made my content so much better. Highly recommend for any bloggers out there.',
       image: 'https://swiperjs.com/demos/images/nature-2.jpg',
       date: '30/01/24',
       socialIcons: [{ icon: '/Google.png', alt: 'Google' }],
     },
     {
       stars: 5,
-      name: 'Katherina',
+      name: 'Michael Smith',
       details:
-        'Very professional service, prompt response and flexible. We’d definitely recommend. ',
+        'I needed a quick way to map out locations for an upcoming project and this app delivered. It’s fast, intuitive and doesn’t require a steep learning curve. Definitely a time saver!',
       image: 'https://swiperjs.com/demos/images/nature-3.jpg',
       date: '30/01/24',
       socialIcons: [{ icon: '/Trustpilot.png', alt: 'Green Star' }],
     },
     {
       stars: 4,
-      name: 'Steven',
+      name: 'David Lee',
       details:
-        'They are passionate about detailing, but most importantly do an amazing job.',
+        'Creating custom maps for my road trips has never been easier. The interface is smooth and I love the flexibility to add points of interest and tweak the layout. Definitely worth it if you enjoy planning your own adventures.',
       image: 'https://swiperjs.com/demos/images/nature-3.jpg',
       date: '30/01/24',
       socialIcons: [{ icon: '/Google.png', alt: 'Google' }],
     },
     {
       stars: 3,
-      name: 'Alex Johnson',
-      details: 'A great experience overall. Exceeded my expectations.',
+      name: 'Alex Thompson',
+      details: 'AThis app saved me so much time when planning my Europe trip. Being able to search for places and organize my itinerary on a map was super helpful. I’ll be using it again for my next trip for sure.',
       image: 'https://swiperjs.com/demos/images/nature-3.jpg',
       date: '30/01/24',
       socialIcons: [{ icon: '/Trustpilot.png', alt: 'Green Star' }],
     },
     {
       stars: 3,
-      name: 'Alex Johnson',
-      details: 'A great experience overall. Exceeded my expectations.',
+      name: 'Laura Collins',
+      details: 'I was skeptical at first, but this map tool really delivers. It\'s simple enough for beginners, but also offers advanced options for those who need more customization. Perfect for organizing my city tours.',
       image: 'https://swiperjs.com/demos/images/nature-3.jpg',
       date: '30/01/24',
       socialIcons: [{ icon: '/Google.png', alt: 'Google' }],
@@ -230,13 +229,13 @@ export default function Testimonials() {
                     ...(activeStep === 0 && index === testimonials.length - 1
                       ? transitionStyles(index, activeStep)['left']
                       : activeStep === testimonials.length - 1 && index === 0
-                        ? transitionStyles(index, activeStep)['right']
-                        : transitionStyles(index, activeStep)[
+                      ? transitionStyles(index, activeStep)['right']
+                      : transitionStyles(index, activeStep)[
                           activeStep > index
                             ? 'left'
                             : activeStep === index
-                              ? 'center'
-                              : 'right'
+                            ? 'center'
+                            : 'right'
                         ]),
                     background: 'none',
                     border: 'none',

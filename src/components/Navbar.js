@@ -279,13 +279,15 @@ export default function Navbar() {
                   top: '0.75rem',
                   bottom: '0.75rem',
                   left:
-                    curPage === 'displayUserMap' || curPage === ''
+                    curPage === 'displayUserMap' ||
+                    curPage === '' ||
+                    curPage === 'exportLayout'
                       ? 0
                       : curPage === 'createUserMaps'
-                        ? '37%'
-                        : curPage === 'contact'
-                          ? '62.5%'
-                          : '88%',
+                      ? '37%'
+                      : curPage === 'contact'
+                      ? '62.5%'
+                      : '88%',
                   transform:
                     curPage !== 'displayUserMap' ? 'translate(-50%, 0)' : '',
                   width: btnWidth,
@@ -293,17 +295,20 @@ export default function Navbar() {
                   borderRadius: '20px',
                   backgroundColor: 'primary.main',
                   transition: 'all 0.3s ease-out',
-                  opacity: curPage === '' ? '0' : '1',
+                  opacity:
+                    curPage === '' || curPage === 'exportLayout' ? '0' : '1',
 
                   '@media only screen and (max-width: 1440px)': {
                     left:
-                      curPage === 'displayUserMap' || curPage === ''
+                      curPage === 'displayUserMap' ||
+                      curPage === '' ||
+                      curPage === 'exportLayout'
                         ? 0
                         : curPage === 'createUserMaps'
-                          ? '37.5%'
-                          : curPage === 'contact'
-                            ? '62%'
-                            : '87%',
+                        ? '37.5%'
+                        : curPage === 'contact'
+                        ? '62%'
+                        : '87%',
                   },
                 }}
               ></Box>

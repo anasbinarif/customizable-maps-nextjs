@@ -11,37 +11,118 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { useBoxOrder } from '@/context/ExportContext';
 import { getMarkerIcon } from '@/lib/data';
 import GoogleMapsLoader from '@/lib/GoogleMapsLoader';
+import { useSession } from 'next-auth/react';
 
-const ItemTypes = {
-  BOX: 'box',
+const innerBoxStyles = {
+  border: '1px dotted',
+  borderColor: 'primary.main',
 };
 
-const DraggableBox = ({ index, moveBox, children, sx }) => {
+const ItemType = {
+  BOX: 'BOX',
+  CHILD: 'CHILD',
+};
+
+const defaultLogos = [
+  '/img/nike.png',
+  '/img/google.png',
+  '/img/apple.png',
+  '/img/ms.png',
+  '/img/netflix.png',
+];
+
+const DraggableBox = ({ id, index, moveBox, children, sx }) => {
   const [{ isDragging }, drag] = useDrag({
-    type: ItemTypes.BOX,
-    item: { index },
+    type: ItemType.BOX,
+    item: { id, index },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
   });
 
-  const [, drop] = useDrop({
-    accept: ItemTypes.BOX,
-    hover(item) {
-      if (item.index !== index) {
-        moveBox(item.index, index);
-        item.index = index;
+  const [{ isOver }, drop] = useDrop({
+    accept: ItemType.BOX,
+    hover: (draggedItem) => {
+      if (draggedItem.index !== index) {
+        moveBox(draggedItem.index, index);
+        draggedItem.index = index;
       }
     },
+    collect: (monitor) => ({
+      isOver: monitor.isOver(),
+    }),
   });
+
+  const ref = (el) => {
+    drag(el);
+    drop(el);
+  };
 
   return (
     <Box
-      ref={(node) => drag(drop(node))}
+      ref={ref}
       sx={{
-        opacity: isDragging ? 0.5 : 1,
-        transition: 'opacity 0.2s',
         ...sx,
+        border:
+          isDragging || isOver
+            ? isDragging
+              ? '2px solid blue'
+              : '2px solid green'
+            : 'none',
+        opacity: isDragging ? 0.5 : 1,
+        cursor: 'move',
+        width: '100%',
+        boxSizing: 'border-box',
+      }}
+    >
+      {children}
+    </Box>
+  );
+};
+
+const DraggableChild = ({ id, index, moveBox, children, sx }) => {
+  const [{ isDragging }, drag] = useDrag({
+    type: ItemType.CHILD,
+    item: { id, index },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  });
+
+  const [{ isOver }, drop] = useDrop({
+    accept: ItemType.CHILD,
+    hover: (draggedItem) => {
+      if (draggedItem.index !== index) {
+        moveBox(draggedItem.index, index);
+        draggedItem.index = index;
+      }
+    },
+    collect: (monitor) => ({
+      isOver: monitor.isOver(),
+    }),
+  });
+
+  const ref = (el) => {
+    drag(el);
+    drop(el);
+  };
+
+  return (
+    <Box
+      ref={ref}
+      sx={{
+        ...sx,
+        border:
+          isDragging || isOver
+            ? isDragging
+              ? '2px solid blue'
+              : '2px solid green'
+            : 'none',
+        opacity: isDragging ? 0.5 : 1,
+        cursor: 'move',
+        width: '100%',
+        height: '100%',
+        boxSizing: 'border-box',
       }}
     >
       {children}
@@ -50,6 +131,7 @@ const DraggableBox = ({ index, moveBox, children, sx }) => {
 };
 
 export default function CustomPdf({ data, boxOrderContext = null }) {
+  const { data: session } = useSession();
   const pdfRef = useRef(null);
   const [isGoogleMapsReady, setGoogleMapsReady] = useState(false);
 
@@ -118,7 +200,7 @@ export default function CustomPdf({ data, boxOrderContext = null }) {
     checkGoogleMapsAvailability();
   }, []);
 
-  // console.log(isGoogleMapsReady);
+  // console.log(boxOrderContext);
 
   const exportMap = async () => {
     const canvas = await html2canvas(pdfRef.current, {
@@ -176,27 +258,35 @@ export default function CustomPdf({ data, boxOrderContext = null }) {
               <DraggableBox
                 key={ind}
                 moveBox={moveRows}
+                index={ind}
                 sx={
                   boxid === 'mapinfo'
                     ? {
-                      display: 'flex',
-                      gap: '1rem',
-                      m: '3rem 0 5rem',
-                      height: '1000px',
-                    }
+                        ...innerBoxStyles,
+                        display: 'flex',
+                        gap: '1rem',
+                        m: '3rem 0 5rem',
+                        height: '1000px',
+                      }
                     : boxid === 'imgs'
-                      ? {
+                    ? {
+                        ...innerBoxStyles,
                         display: 'flex',
                         gap: '1rem',
                         flexWrap: 'wrap',
                         marginBottom: 'auto',
                       }
-                      : { mt: '5rem', display: 'flex', gap: '3rem' }
+                    : {
+                        ...innerBoxStyles,
+                        mt: '5rem',
+                        display: 'flex',
+                        gap: '3rem',
+                      }
                 }
               >
                 {boxid === 'mapinfo' ? (
                   boxOrderRow1.map((boxId, index) => (
-                    <DraggableBox
+                    <DraggableChild
                       key={boxId}
                       index={index}
                       moveBox={moveBox1}
@@ -216,7 +306,10 @@ export default function CustomPdf({ data, boxOrderContext = null }) {
                             }}
                             center={data?.currentLocation}
                             zoom={15}
-                            options={{ disableDefaultUI: true }}
+                            options={{
+                              disableDefaultUI: true,
+                              draggable: false,
+                            }}
                           >
                             <Marker position={data?.currentLocation} />
                             {allLocations.map((loc, index) => (
@@ -286,7 +379,7 @@ export default function CustomPdf({ data, boxOrderContext = null }) {
                                         alignItems: 'flex-end',
                                         gap: '0.5rem',
                                         flexWrap: 'wrap',
-                                        width: 'calc(33% - 0.75rem)',
+                                        width: 'calc(33% - 1.5rem)',
                                         mr: '1.5rem',
                                       }}
                                     >
@@ -318,65 +411,104 @@ export default function CustomPdf({ data, boxOrderContext = null }) {
                           })}
                         </Box>
                       )}
-                    </DraggableBox>
+                    </DraggableChild>
                   ))
                 ) : boxid === 'imgs' ? (
-                  <React.Fragment>
-                    {data?.oldImgs?.map((image, index) => (
-                      <Box
-                        key={index}
-                        sx={{
-                          position: 'relative',
-                          height: '250px',
-                          width: 'calc(20% - 1rem)',
-                          display: 'flex',
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                        }}
-                      >
-                        <Image
-                          src={image.url}
-                          alt={`Uploaded image ${index + 1}`}
-                          height={250}
-                          width={300}
-                          style={{
-                            borderRadius: '8px',
-                            width: '100%',
-                            objectFit: 'contain',
-                          }}
-                        />
-                      </Box>
-                    ))}
-                    {data?.newImgFiles?.map((imgFile, index) => (
-                      <Box
-                        key={index}
-                        sx={{
-                          position: 'relative',
-                          height: '250px',
-                          width: 'calc(20% - 2rem)',
-                          display: 'flex',
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                        }}
-                      >
-                        <Image
-                          src={URL.createObjectURL(imgFile)}
-                          alt={`Uploaded image ${index + 1}`}
-                          height={250}
-                          width={300}
-                          style={{
-                            borderRadius: '8px',
-                            height: '100%',
-                            width: '100%',
-                            objectFit: 'contain',
-                          }}
-                        />
-                      </Box>
-                    ))}
-                  </React.Fragment>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      gap: '2rem',
+                      width: '100%',
+                      flexWrap: 'wrap',
+                    }}
+                  >
+                    {session?.user?.subscriptionType === 'BASIC' ? (
+                      <>
+                        {defaultLogos?.map((image, index) => (
+                          <Box
+                            key={index}
+                            sx={{
+                              position: 'relative',
+                              height: '250px',
+                              width: 'calc(20% - 2rem)',
+                              display: 'flex',
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                            }}
+                          >
+                            <Image
+                              src={image}
+                              alt={`Uploaded image ${index + 1}`}
+                              height={250}
+                              width={300}
+                              style={{
+                                borderRadius: '8px',
+                                width: '100%',
+                                objectFit: 'contain',
+                              }}
+                            />
+                          </Box>
+                        ))}
+                      </>
+                    ) : (
+                      <>
+                        {data?.oldImgs?.map((image, index) => (
+                          <Box
+                            key={index}
+                            sx={{
+                              position: 'relative',
+                              height: '250px',
+                              width: 'calc(20% - 2rem)',
+                              display: 'flex',
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                            }}
+                          >
+                            <Image
+                              src={image.url}
+                              alt={`Uploaded image ${index + 1}`}
+                              height={250}
+                              width={300}
+                              style={{
+                                borderRadius: '8px',
+                                width: '100%',
+                                objectFit: 'contain',
+                              }}
+                            />
+                          </Box>
+                        ))}
+                        {data?.newImgFiles?.map((imgFile, index) => (
+                          <Box
+                            key={index}
+                            sx={{
+                              position: 'relative',
+                              height: '250px',
+                              width: 'calc(20% - 2rem)',
+                              display: 'flex',
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                            }}
+                          >
+                            <Image
+                              src={URL.createObjectURL(imgFile)}
+                              alt={`Uploaded image ${index + 1}`}
+                              height={250}
+                              width={300}
+                              style={{
+                                borderRadius: '8px',
+                                height: '100%',
+                                width: '100%',
+                                objectFit: 'contain',
+                              }}
+                            />
+                          </Box>
+                        ))}
+                      </>
+                    )}
+                  </Box>
                 ) : (
                   boxOrderRow3.map((boxId, index) => (
-                    <DraggableBox
+                    <DraggableChild
                       key={boxId}
                       index={index}
                       moveBox={moveBox3}
@@ -399,7 +531,9 @@ export default function CustomPdf({ data, boxOrderContext = null }) {
                         >
                           <Image
                             src={
-                              data?.logoFile?.name
+                              session?.user?.subscriptionType === 'BASIC'
+                                ? '/img/mapmaven.jpeg'
+                                : data?.logoFile?.name
                                 ? URL.createObjectURL(data?.logoFile)
                                 : data?.logoFile?.url
                             }
@@ -416,7 +550,7 @@ export default function CustomPdf({ data, boxOrderContext = null }) {
                           />
                         </Box>
                       ) : null}
-                    </DraggableBox>
+                    </DraggableChild>
                   ))
                 )}
               </DraggableBox>
