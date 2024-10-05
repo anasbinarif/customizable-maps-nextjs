@@ -1,16 +1,40 @@
 'use client';
 import {Box, Container, useTheme} from '@mui/material';
 import {Map, Marker} from 'pigeon-maps';
-import React from 'react';
+import React, { useState } from 'react';
 
 import Form from './components/Form';
 
 export default function CarouselSection() {
   const theme = useTheme();
   const position = [52.212992, 5.27937];
+  const [, setError] = useState(null);
+  const [, setSuccess] = useState(null);
 
-  const handleFormSubmit = () => {
-    // console.log('Form submitted with data:', data);
+  const handleFormSubmit = async (formData) => {
+
+    try {
+      const response = await fetch('/api/email-contact-information', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setSuccess(data.message);
+        setError(null); 
+      } else {
+        setError(data.error || 'Something went wrong!'); 
+        setSuccess(null);
+      }
+    } catch (error) {
+      setError('Internal server error');
+      setSuccess(null);
+    }
   };
 
   return (

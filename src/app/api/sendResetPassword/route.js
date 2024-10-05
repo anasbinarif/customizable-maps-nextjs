@@ -18,7 +18,6 @@ export async function POST(req) {
         { status: 404 }
       );
     }
-    // console.log(user);
 
     const token = crypto.randomBytes(20).toString('hex');
     const expires = Date.now() + 3600000;

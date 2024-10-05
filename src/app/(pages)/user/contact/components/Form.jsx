@@ -37,9 +37,6 @@ export default function Form({ onSubmit }) {
         flexDirection: 'column',
         gap: theme.spacing(4),
         width: '100%',
-        // maxWidth: "500px",
-        // margin: "0 auto",
-        // padding: theme.spacing(3),
         boxSizing: 'border-box',
       }}
     >
@@ -84,7 +81,6 @@ export default function Form({ onSubmit }) {
           borderRadius: '20px',
 
           '&:hover': {
-            // fontWeight: "bold",
             backgroundColor: 'primary.main',
             color: 'white',
             boxShadow: 'none',
