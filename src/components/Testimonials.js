@@ -133,13 +133,16 @@ export default function Testimonials() {
   useLayoutEffect(() => {
     if (sliderRef.current) {
       const children = sliderRef.current.childNodes;
+
       let maxHeight = 0;
 
       children.forEach((el) => {
         const list = Array.from(el.classList);
+
         if (list.includes('active')) {
           for (let i = 0; i < el.children.length; i++) {
             const child = el.children[i];
+
             maxHeight = Math.max(maxHeight, child.offsetHeight);
           }
         }
@@ -224,13 +227,13 @@ export default function Testimonials() {
                     ...(activeStep === 0 && index === testimonials.length - 1
                       ? transitionStyles(index, activeStep)['left']
                       : activeStep === testimonials.length - 1 && index === 0
-                      ? transitionStyles(index, activeStep)['right']
-                      : transitionStyles(index, activeStep)[
+                        ? transitionStyles(index, activeStep)['right']
+                        : transitionStyles(index, activeStep)[
                           activeStep > index
                             ? 'left'
                             : activeStep === index
-                            ? 'center'
-                            : 'right'
+                              ? 'center'
+                              : 'right'
                         ]),
                     background: 'none',
                     border: 'none',

@@ -4,6 +4,7 @@ import DOMPurify from 'dompurify';
 import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
 import Image from 'next/image';
+import { useSession } from 'next-auth/react';
 import React, { useMemo, useEffect, useState, useRef } from 'react';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -11,7 +12,6 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { useBoxOrder } from '@/context/ExportContext';
 import { getMarkerIcon } from '@/lib/data';
 import GoogleMapsLoader from '@/lib/GoogleMapsLoader';
-import { useSession } from 'next-auth/react';
 
 const innerBoxStyles = {
   border: '1px dotted',
@@ -262,21 +262,21 @@ export default function CustomPdf({ data, boxOrderContext = null }) {
                 sx={
                   boxid === 'mapinfo'
                     ? {
-                        ...innerBoxStyles,
-                        display: 'flex',
-                        gap: '1rem',
-                        m: '3rem 0 5rem',
-                        height: '1000px',
-                      }
+                      ...innerBoxStyles,
+                      display: 'flex',
+                      gap: '1rem',
+                      m: '3rem 0 5rem',
+                      height: '1000px',
+                    }
                     : boxid === 'imgs'
-                    ? {
+                      ? {
                         ...innerBoxStyles,
                         display: 'flex',
                         gap: '1rem',
                         flexWrap: 'wrap',
                         marginBottom: 'auto',
                       }
-                    : {
+                      : {
                         ...innerBoxStyles,
                         mt: '5rem',
                         display: 'flex',
@@ -534,8 +534,8 @@ export default function CustomPdf({ data, boxOrderContext = null }) {
                               session?.user?.subscriptionType === 'BASIC'
                                 ? '/img/mapmaven.jpeg'
                                 : data?.logoFile?.name
-                                ? URL.createObjectURL(data?.logoFile)
-                                : data?.logoFile?.url
+                                  ? URL.createObjectURL(data?.logoFile)
+                                  : data?.logoFile?.url
                             }
                             alt="Uploaded logo"
                             width={400}

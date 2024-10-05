@@ -284,10 +284,10 @@ export default function Navbar() {
                     curPage === 'exportLayout'
                       ? 0
                       : curPage === 'createUserMaps'
-                      ? '37%'
-                      : curPage === 'contact'
-                      ? '62.5%'
-                      : '88%',
+                        ? '37%'
+                        : curPage === 'contact'
+                          ? '62.5%'
+                          : '88%',
                   transform:
                     curPage !== 'displayUserMap' ? 'translate(-50%, 0)' : '',
                   width: btnWidth,
@@ -305,10 +305,10 @@ export default function Navbar() {
                       curPage === 'exportLayout'
                         ? 0
                         : curPage === 'createUserMaps'
-                        ? '37.5%'
-                        : curPage === 'contact'
-                        ? '62%'
-                        : '87%',
+                          ? '37.5%'
+                          : curPage === 'contact'
+                            ? '62%'
+                            : '87%',
                   },
                 }}
               ></Box>
