@@ -7,7 +7,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Box, Button, Container, Typography } from '@mui/material';
 // import MobileStepper from '@mui/material/MobileStepper';
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import React, { useLayoutEffect, useRef, useState, useEffect } from 'react';
 
 // import { ThemeContext } from "@/context/ThemeContext";
 
@@ -35,6 +35,7 @@ export default function Testimonials() {
       name: 'Bob Lafton',
       details:
         'This app made creating custom maps for my outdoor hiking trips incredibly easy. I was able to mark all my favorite spots and even share them with friends. It’s become a must-have for all my travel planning!',
+      image: 'https://swiperjs.com/demos/images/nature-2.jpg',
       date: '30/01/24',
       socialIcons: [{ icon: '/Trustpilot.png', alt: 'Green Star' }],
     },
@@ -68,7 +69,8 @@ export default function Testimonials() {
     {
       stars: 3,
       name: 'Alex Thompson',
-      details: 'AThis app saved me so much time when planning my Europe trip. Being able to search for places and organize my itinerary on a map was super helpful. I’ll be using it again for my next trip for sure.',
+      details:
+        'AThis app saved me so much time when planning my Europe trip. Being able to search for places and organize my itinerary on a map was super helpful. I’ll be using it again for my next trip for sure.',
       image: 'https://swiperjs.com/demos/images/nature-3.jpg',
       date: '30/01/24',
       socialIcons: [{ icon: '/Trustpilot.png', alt: 'Green Star' }],
@@ -76,7 +78,8 @@ export default function Testimonials() {
     {
       stars: 3,
       name: 'Laura Collins',
-      details: 'I was skeptical at first, but this map tool really delivers. It\'s simple enough for beginners, but also offers advanced options for those who need more customization. Perfect for organizing my city tours.',
+      details:
+        "I was skeptical at first, but this map tool really delivers. It's simple enough for beginners, but also offers advanced options for those who need more customization. Perfect for organizing my city tours.",
       image: 'https://swiperjs.com/demos/images/nature-3.jpg',
       date: '30/01/24',
       socialIcons: [{ icon: '/Google.png', alt: 'Google' }],
@@ -115,42 +118,34 @@ export default function Testimonials() {
     return styles;
   };
 
-  // useEffect(() => {
-  //   const timeoutId = setTimeout(() => {
-  //     setActiveStep((prevActiveStep) =>
-  //       prevActiveStep === testimonials.length - 1 ? 0 : prevActiveStep + 1
-  //     );
-  //   }, 3000);
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setActiveStep((prevActiveStep) =>
+        prevActiveStep === testimonials.length - 1 ? 0 : prevActiveStep + 1
+      );
+    }, 3000);
 
-  //   return () => {
-  //     clearTimeout(timeoutId);
-  //   };
-  // }, [activeStep, testimonials.length]);
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [activeStep, testimonials.length]);
 
   useLayoutEffect(() => {
     if (sliderRef.current) {
       const children = sliderRef.current.childNodes;
-
       let maxHeight = 0;
 
-      let indexActive = null;
-
-      children.forEach((el, index) => {
-        const isActive = el.classList.contains('active');
-
-        if (isActive) {
-          indexActive = index;
-        }
-
-        const { height } = el.getBoundingClientRect();
-        const tempHeight = height;
-
-        if (isActive || index === indexActive + 1) {
-          maxHeight = Math.max(maxHeight, tempHeight);
+      children.forEach((el) => {
+        const list = Array.from(el.classList);
+        if (list.includes('active')) {
+          for (let i = 0; i < el.children.length; i++) {
+            const child = el.children[i];
+            maxHeight = Math.max(maxHeight, child.offsetHeight);
+          }
         }
       });
 
-      setActiveHeight(`${maxHeight + 30}px`);
+      setActiveHeight(`${maxHeight + 70}px`);
     }
   }, [activeStep]);
 
@@ -408,55 +403,55 @@ export default function Testimonials() {
             })}
           </Box>
         </Box>
-        <Box
+      </Container>
+      <Box
+        sx={{
+          position: 'absolute',
+          top: '40%',
+          transform: 'translateY(-50%)',
+          width: '100%',
+          zIndex: '3',
+          display: 'flex',
+          justifyContent: 'space-between',
+        }}
+      >
+        <Button
+          onClick={handleBack}
           sx={{
-            position: 'absolute',
-            top: '40%',
-            transform: 'translateY(-50%)',
-            width: '100%',
-            zIndex: '3',
-            display: 'flex',
-            justifyContent: 'space-between',
+            left: '-8rem',
+            width: '2rem',
+            height: '6rem',
+            boxShadow: 'none',
+            '& svg': {
+              // filter: `brightness(0%) ${
+              //   theme.palette.mode === "dark" ? "invert(1)" : "invert(0)"
+              // }`,
+              height: '100%',
+              width: '100%',
+            },
           }}
         >
-          <Button
-            onClick={handleBack}
-            sx={{
-              left: '-8rem',
-              width: '2rem',
-              height: '6rem',
-              boxShadow: 'none',
-              '& svg': {
-                // filter: `brightness(0%) ${
-                //   theme.palette.mode === "dark" ? "invert(1)" : "invert(0)"
-                // }`,
-                height: '100%',
-                width: '100%',
-              },
-            }}
-          >
-            <FontAwesomeIcon icon={faChevronLeft} />
-          </Button>
-          <Button
-            onClick={handleNext}
-            sx={{
-              right: '-8rem',
-              width: '2rem',
-              height: '6rem',
-              boxShadow: 'none',
-              '& svg': {
-                // filter: `brightness(0%) ${
-                //   theme.palette.mode === "dark" ? "invert(1)" : "invert(0)"
-                // }`,
-                height: '100%',
-                width: '100%',
-              },
-            }}
-          >
-            <FontAwesomeIcon icon={faChevronRight} />
-          </Button>
-        </Box>
-      </Container>
+          <FontAwesomeIcon icon={faChevronLeft} />
+        </Button>
+        <Button
+          onClick={handleNext}
+          sx={{
+            right: '-8rem',
+            width: '2rem',
+            height: '6rem',
+            boxShadow: 'none',
+            '& svg': {
+              // filter: `brightness(0%) ${
+              //   theme.palette.mode === "dark" ? "invert(1)" : "invert(0)"
+              // }`,
+              height: '100%',
+              width: '100%',
+            },
+          }}
+        >
+          <FontAwesomeIcon icon={faChevronRight} />
+        </Button>
+      </Box>
     </Box>
   );
 }
