@@ -1,4 +1,4 @@
-import {Box, Button, Container, Typography} from '@mui/material';
+import { Box, Button, Container, Typography } from '@mui/material';
 
 export default function CTA() {
   return (
@@ -22,6 +22,13 @@ export default function CTA() {
         <Typography
           variant="h3"
           sx={{
+            fontSize: {
+              xl: '3rem',
+              lg: '3rem',
+              md: '3rem',
+              sm: '2.5rem',
+              xs: '1.8rem',
+            },
             textAlign: 'center',
             marginBottom: '2rem',
             '& span': {

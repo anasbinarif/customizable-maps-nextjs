@@ -1,13 +1,20 @@
-import {Box, Button, Dialog, DialogContent, Slide, Typography,} from '@mui/material';
-import {signIn} from 'next-auth/react';
-import React, {useContext, useEffect, useState} from 'react';
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogContent,
+  Slide,
+  Typography,
+} from '@mui/material';
+import { signIn } from 'next-auth/react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import CustomSnackbar from './CustomSnackbar';
-import {StyledTextField} from './CustomTextFields';
+import { StyledTextField } from './CustomTextFields';
 
 import LoadingSpinner from '@/components/LoadingSpinner';
 import useCustomSnackbar from '@/components/snackbar-hook/useCustomSnackbar';
-import {ThemeContext} from '@/context/ThemeContext';
+import { ThemeContext } from '@/context/ThemeContext';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -205,9 +212,26 @@ export default function LoginSignupModal({ open, handleClose, mode }) {
               : 'rgba(0, 0, 0, 0.5)', // Transparent background
             backdropFilter: 'blur(10px)', // Blurred background
             borderRadius: '20px',
-            padding: '2rem',
+            padding: {
+              xl: '2rem',
+              lg: '2rem',
+              md: '2rem',
+              sm: '2rem',
+              xs: '0.5rem',
+            },
             boxShadow: 'none',
+            margin: 0,
             // backgroundColor: "red",
+
+            '& .MuiDialogContent-root': {
+              padding: {
+                xl: '2rem',
+                lg: '2rem',
+                md: '2rem',
+                sm: '2rem',
+                xs: '0.5rem',
+              },
+            },
           },
         }}
       >

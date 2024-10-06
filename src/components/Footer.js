@@ -20,7 +20,8 @@ export default function Footer() {
           <Grid
             item
             xs={12}
-            sm={4}
+            sm={6}
+            md={4}
             sx={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}
           >
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -75,9 +76,19 @@ export default function Footer() {
           </Grid>
 
           {/* Social Media Icons */}
-          <Grid item xs={12} sm={4} sx={{ textAlign: 'center' }}>
+          <Grid item xs={12} sm={6} md={4} sx={{ textAlign: 'center' }}>
             <Box
-              sx={{ display: 'flex', justifyContent: 'center', gap: '1rem' }}
+              sx={{
+                display: 'flex',
+                justifyContent: {
+                  xl: 'center',
+                  lg: 'center',
+                  md: 'center',
+                  sm: 'flex-end',
+                  xs: 'center',
+                },
+                gap: '1rem',
+              }}
             >
               <Link href="#" color="inherit">
                 <TwitterIcon sx={{ color: 'primary.main' }} />
@@ -94,15 +105,27 @@ export default function Footer() {
           {/* Navigation Links */}
           <Grid
             item
+            md={4}
+            sm={12}
             xs={12}
-            sm={4}
             sx={{ textAlign: { xs: 'center', sm: 'right' } }}
           >
             <Box
               sx={{
                 display: 'flex',
-                justifyContent: { xs: 'center', sm: 'flex-end' },
+                justifyContent: { xs: 'center', sm: 'center', md: 'flex-end' },
                 gap: '1rem',
+
+                '& *': {
+                  textWrap: 'nowrap',
+                  fontSize: {
+                    xl: '1rem',
+                    lg: '1rem',
+                    md: '0.8rem',
+                    sm: '0.8rem',
+                    xs: '0.8rem',
+                  },
+                },
               }}
             >
               <Link

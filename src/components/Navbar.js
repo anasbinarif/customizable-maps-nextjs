@@ -78,6 +78,7 @@ export default function Navbar() {
   const [modalMode, setModalMode] = useState('login');
   const [anchorEl, setAnchorEl] = useState(null);
   const [anchorEl2, setAnchorEl2] = useState(null);
+  const [anchorEl3, setAnchorEl3] = useState(null);
   const [loading, setLoading] = useState(false);
   const [changePasswordOpen, setChangePasswordOpen] = useState(false);
   const router = usePathname();
@@ -134,12 +135,20 @@ export default function Navbar() {
     setAnchorEl2(event.currentTarget);
   };
 
+  const handleMenu3 = (event) => {
+    setAnchorEl3(event.currentTarget);
+  };
+
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
 
   const handleMenuClose2 = () => {
     setAnchorEl2(null);
+  };
+
+  const handleMenuClose3 = () => {
+    setAnchorEl3(null);
   };
 
   const handleLogout = async () => {
@@ -475,21 +484,6 @@ export default function Navbar() {
                   }}
                 >
                   <MenuItem>
-                    <Link href="/" passHref style={LinkSmall}>
-                      <Button sx={LinkSmallBtn}>Home</Button>
-                    </Link>
-                  </MenuItem>
-                  <MenuItem>
-                    <Link href="/user/subscriptions" passHref style={LinkSmall}>
-                      <Button sx={LinkSmallBtn}>Subscribe</Button>
-                    </Link>
-                  </MenuItem>
-                  <MenuItem>
-                    <Link href="/user/contact" passHref style={LinkSmall}>
-                      <Button sx={LinkSmallBtn}>Contact</Button>
-                    </Link>
-                  </MenuItem>
-                  <MenuItem>
                     <Link
                       href="/user/displayUserMap"
                       passHref
@@ -501,6 +495,16 @@ export default function Navbar() {
                   <MenuItem>
                     <Link href="/user/createUserMap" passHref style={LinkSmall}>
                       <Button sx={LinkSmallBtn}>Map Editor</Button>
+                    </Link>
+                  </MenuItem>
+                  <MenuItem>
+                    <Link href="/user/contact" passHref style={LinkSmall}>
+                      <Button sx={LinkSmallBtn}>Contact</Button>
+                    </Link>
+                  </MenuItem>
+                  <MenuItem>
+                    <Link href="/user/subscriptions" passHref style={LinkSmall}>
+                      <Button sx={LinkSmallBtn}>Get Started</Button>
                     </Link>
                   </MenuItem>
                 </Menu>
@@ -570,25 +574,95 @@ export default function Navbar() {
                 </>
               ) : (
                 <>
-                  <Button
-                    sx={{ color: 'secondary.main', textTransform: 'none' }}
-                    onClick={() => handleOpenModal('login')}
-                  >
-                    Log In
-                  </Button>
-                  <Button
-                    variant="contained"
-                    sx={{
-                      // backgroundColor: "#000",
-                      // color: "#fff",
-                      borderRadius: '10px',
-                      padding: '0.5rem 1.5rem',
-                      textTransform: 'none',
-                    }}
-                    onClick={() => handleOpenModal('signup')}
-                  >
-                    Sign Up
-                  </Button>
+                  {width < 1000 ? (
+                    <>
+                      <IconButton
+                        onClick={handleMenu3}
+                        color="inherit"
+                        sx={{ position: 'relative', zIndex: 1700 }}
+                      >
+                        <Avatar alt="user options" />
+                      </IconButton>
+                      <Menu
+                        id="menu-appbar"
+                        anchorEl={anchorEl3}
+                        anchorOrigin={{
+                          vertical: 'top',
+                          horizontal: 'right',
+                        }}
+                        keepMounted
+                        transformOrigin={{
+                          vertical: 'top',
+                          horizontal: 'right',
+                        }}
+                        open={Boolean(anchorEl3)}
+                        onClose={handleMenuClose3}
+                        sx={{
+                          position: 'absolute',
+                          '& .MuiPaper-root': {
+                            borderRadius: '16px',
+                          },
+                          '& .MuiList-root': {
+                            padding: 0,
+
+                            '& .MuiMenuItem-root': {
+                              lineHeight: 2,
+                              '& .MuiTypography-root': {},
+                            },
+                          },
+                        }}
+                      >
+                        <MenuItem>
+                          <Button
+                            sx={{
+                              color: 'secondary.main',
+                              textTransform: 'none',
+                            }}
+                            onClick={() => handleOpenModal('login')}
+                          >
+                            Log In
+                          </Button>
+                        </MenuItem>
+                        <MenuItem>
+                          <Button
+                            variant="contained"
+                            sx={{
+                              // backgroundColor: "#000",
+                              // color: "#fff",
+                              borderRadius: '10px',
+                              padding: '0.5rem 1.5rem',
+                              textTransform: 'none',
+                            }}
+                            onClick={() => handleOpenModal('signup')}
+                          >
+                            Sign Up
+                          </Button>
+                        </MenuItem>
+                      </Menu>
+                    </>
+                  ) : (
+                    <>
+                      <Button
+                        sx={{ color: 'secondary.main', textTransform: 'none' }}
+                        onClick={() => handleOpenModal('login')}
+                      >
+                        Log In
+                      </Button>
+                      <Button
+                        variant="contained"
+                        sx={{
+                          // backgroundColor: "#000",
+                          // color: "#fff",
+                          borderRadius: '10px',
+                          padding: '0.5rem 1.5rem',
+                          textTransform: 'none',
+                        }}
+                        onClick={() => handleOpenModal('signup')}
+                      >
+                        Sign Up
+                      </Button>
+                    </>
+                  )}
                 </>
               )}
             </Box>

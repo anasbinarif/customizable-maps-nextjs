@@ -53,12 +53,13 @@ const LogoUploader = ({ setLogoFile, logoFile }) => {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
+            padding: '1rem',
 
-            '& .MuiTypography-root': { color: '#fff' },
+            '& .MuiTypography-root': { color: '#fff', textAlign: 'center' },
           }}
         >
           <Typography>
-            Please subscribe to one of our plans to upload images
+            Please subscribe to one of our plans to upload Company logo
           </Typography>
         </Box>
       )}

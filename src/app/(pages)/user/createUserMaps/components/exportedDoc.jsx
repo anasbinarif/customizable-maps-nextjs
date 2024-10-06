@@ -233,6 +233,7 @@ export default function CustomPdf({ data, boxOrderContext = null }) {
               padding: '50px',
               border: '2px dashed #ccc',
               m: '2rem',
+              // transform: { xl: 'scale(1)', lg: 'scale(0.5)' },
             }}
           >
             {/* <Box> */}

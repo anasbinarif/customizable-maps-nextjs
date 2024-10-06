@@ -917,7 +917,13 @@ export default function CreateGoogleMap({ mapData = null }) {
                   height: '32px',
                   padding: '0 12px',
                   position: 'absolute',
-                  top: '0.5rem',
+                  top: {
+                    xl: '0.5rem',
+                    lg: '0.5rem',
+                    md: '0.5rem',
+                    sm: '4rem',
+                    xs: '4rem',
+                  },
                   left: '50%',
                   transform: 'translate(-50%, 0)',
                 }}
@@ -956,7 +962,13 @@ export default function CreateGoogleMap({ mapData = null }) {
               <TextArea helperHtml={helperHtml} setHelperHtml={setHelperHtml} />
               <Box
                 sx={{
-                  display: 'flex',
+                  display: {
+                    xl: 'flex',
+                    lg: 'flex',
+                    md: 'flex',
+                    sm: 'none',
+                    sx: 'none',
+                  },
                   justifyContent: 'flex-end',
                 }}
               >
@@ -1005,6 +1017,60 @@ export default function CreateGoogleMap({ mapData = null }) {
             </Grid>
             <Grid item xs={12} sm={12} md={4} lg={3}>
               <LogoUploader logoFile={logoFile} setLogoFile={setLogoFile} />
+              <Box
+                sx={{
+                  display: {
+                    xl: 'none',
+                    lg: 'none',
+                    md: 'none',
+                    sm: 'flex',
+                    sx: 'flex',
+                  },
+                  justifyContent: 'flex-end',
+                }}
+              >
+                {mapData && (
+                  <Box mt="10px" sx={{ mr: '1rem' }}>
+                    <Link
+                      href={mapData ? `/user/exportLayout/${mapData?.id}` : ''}
+                    >
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        // onClick={exportMap}
+                        sx={{
+                          width: '100%',
+                          backgroundColor: 'transparent',
+                          color: 'primary.main',
+                          border: '1px solid',
+                          borderColor: (theme) => theme.palette.primary.main,
+                          boxShadow: 'none',
+
+                          '&:hover': {
+                            backgroundColor: 'primary.main',
+                            color: 'white',
+                            boxShadow: 'none',
+                          },
+                        }}
+                      >
+                        Export
+                      </Button>
+                    </Link>
+                  </Box>
+                )}
+                <Box mt="10px">
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={saveMap}
+                    sx={{
+                      width: '100%',
+                    }}
+                  >
+                    {mapData ? 'Update Map' : 'Save Map'}
+                  </Button>
+                </Box>
+              </Box>
             </Grid>
           </Grid>
         </Grid>

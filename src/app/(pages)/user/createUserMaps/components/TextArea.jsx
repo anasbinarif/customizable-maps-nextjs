@@ -55,8 +55,9 @@ export default function TextArea({ helperHtml, setHelperHtml }) {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
+            padding: '1rem',
 
-            '& .MuiTypography-root': { color: '#fff' },
+            '& .MuiTypography-root': { color: '#fff', textAlign: 'center' },
           }}
         >
           <Typography>

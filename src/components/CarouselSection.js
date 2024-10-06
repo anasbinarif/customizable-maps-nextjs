@@ -25,14 +25,14 @@ function getTransitionStyles(index, curIndex, len) {
           lg: '100px',
           md: '100px',
           sm: '50px',
-          xs: '50px',
+          xs: '15px',
         },
         right: {
           xl: '100px',
           lg: '100px',
           md: '100px',
           sm: '50px',
-          xs: '50px',
+          xs: '15px',
         },
         // width: "450px",
         textAlign: 'left',
@@ -80,7 +80,7 @@ function getTransitionStyles(index, curIndex, len) {
           left: `calc(-40% + ${160 * (index - curIndex)}px)`,
         },
         '@media only screen and (max-width: 400px)': {
-          left: `calc(-45% + ${160 * (index - curIndex)}px)`,
+          left: `calc(-40% + ${160 * (index - curIndex)}px)`,
         },
       }
       : {
@@ -140,7 +140,7 @@ function getTransitionStyles(index, curIndex, len) {
           }px)`,
         },
         '@media only screen and (max-width: 400px)': {
-          left: `calc(-45% + ${
+          left: `calc(-40% + ${
             160 * (len - 2) - (curIndex - index - 2) * 160
           }px)`,
         },
@@ -234,7 +234,7 @@ export default function CarouselSection() {
               lg: '600px',
               md: '600px',
               sm: '700px',
-              xs: '700px',
+              xs: '800px',
             },
             overflow: 'hidden',
             // boxShadow: "0 0 2px 2px #dbdbdb",

@@ -25,87 +25,10 @@ import ConfirmDeleteModal from '@/app/(pages)/admin/Locations/ConfirmDeleteModal
 
 const UserMapsCard = ({ map, onDelete }) => {
   const [deleteMap, setDeleteMap] = useState(false);
-  // const context = useBoxOrder();
-
-  // const locationsByTag = useMemo(() => {
-  //   return map.locations.reduce((acc, location) => {
-  //     const tag = location.tag;
-
-  //     if (!acc[tag]) {
-  //       acc[tag] = {
-  //         color: filters.find((fil) => fil.name === tag).selectedColor,
-  //         locations: [],
-  //       };
-  //     }
-  //     acc[tag].locations.push({
-  //       ...location,
-  //       distance: haversineDistance(
-  //         {
-  //           lat: Number(map.pinLatitude),
-  //           lng: Number(map.pinLongitude),
-  //         },
-  //         { lat: location.latitude, lng: location.longitude }
-  //       ),
-  //     });
-
-  //     return acc;
-  //   }, {});
-  // }, [map]);
 
   const handleDeleteCancel = () => {
     setDeleteMap(false);
   };
-
-  // const exportMap = async () => {
-  //   const pdfContent = document.createElement('div');
-
-  //   pdfContent.style.width = '1920px';
-  //   pdfContent.style.position = 'absolute';
-  //   document.body.appendChild(pdfContent);
-
-  //   const root = ReactDOM.createRoot(pdfContent);
-
-  //   const pdfData = {
-  //     title: map?.title,
-  //     oldImgs: map?.images,
-  //     newImgFiles: [],
-  //     logoFile: map?.logo ? { url: map?.logo } : {},
-  //     locationsByTag: locationsByTag,
-  //     currentLocation: {
-  //       lat: Number(map.pinLatitude),
-  //       lng: Number(map.pinLongitude),
-  //     },
-  //     helperHtml: map?.helperText,
-  //   };
-
-  //   const BoxOrderConsumer = () => {
-  //     return <CustomPdf data={pdfData} boxOrderContext={context} />;
-  //   };
-
-  //   root.render(<BoxOrderConsumer />);
-
-  //   await new Promise((resolve) => {
-  //     setTimeout(resolve, 3000);
-  //   });
-
-  //   const canvas = await html2canvas(pdfContent, {
-  //     useCORS: true,
-  //     scale: 2,
-  //   });
-
-  //   const imgData = canvas.toDataURL('image/png');
-  //   const pdf = new jsPDF('p', 'mm', 'a4');
-  //   const imgWidth = 210;
-  //   const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-  //   pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-  //   pdf.save(`${map?.title}.pdf`);
-
-  //   root.unmount();
-  //   document.body.removeChild(pdfContent);
-  // };
-
-  // console.log(map);
 
   return (
     <>
@@ -158,7 +81,7 @@ const UserMapsCard = ({ map, onDelete }) => {
             zIndex: 8,
           }}
         >
-          <IconButton sx={{ color: 'white' }}>
+          <IconButton sx={{ color: 'white', '& svg': { fontSize: '23px' } }}>
             <EditIcon />
           </IconButton>
         </Link>
@@ -357,7 +280,12 @@ export const CreateMapCard = () => {
               color: 'black',
             }}
           >
-            <AddRounded sx={{ fontSize: 200, color: '#aaa' }} />
+            <AddRounded
+              sx={{
+                fontSize: { xl: 200, lg: 200, md: 200, sm: 170, xs: 150 },
+                color: '#aaa',
+              }}
+            />
           </Link>
           {/* <Typography variant="h6" component="div" textAlign="center">
             Create More Personalized Maps

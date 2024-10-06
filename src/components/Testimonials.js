@@ -143,12 +143,12 @@ export default function Testimonials() {
           for (let i = 0; i < el.children.length; i++) {
             const child = el.children[i];
 
-            maxHeight = Math.max(maxHeight, child.offsetHeight);
+            maxHeight = maxHeight + child.clientHeight;
           }
         }
       });
 
-      setActiveHeight(`${maxHeight + 70}px`);
+      setActiveHeight(`${maxHeight}px`);
     }
   }, [activeStep]);
 
@@ -180,6 +180,7 @@ export default function Testimonials() {
       }}
     >
       <Container
+        maxWidth={'xl'}
         sx={{
           display: 'flex',
           flexWrap: 'wrap',
@@ -214,15 +215,11 @@ export default function Testimonials() {
                   sx={{
                     display: 'flex',
                     flexDirection: 'column',
-                    justifyContent: 'center',
+                    // justifyContent: 'center',
                     transition: 'all 300ms ease-in-out',
                     padding: '1rem',
-                    height: '23rem',
+                    maxHeight: '35rem',
                     overflow: 'hidden',
-                    // backgroundColor:
-                    //   theme.palette.mode === "light"
-                    //     ? "rgba(255, 255, 255, 0.8)"
-                    //     : "rgba(0, 0, 0, 0.6)", // Light mode: minimal opacity; Dark mode: further reduced opacity
                     width: `${100 / testimonials.length / 2}%`,
                     ...(activeStep === 0 && index === testimonials.length - 1
                       ? transitionStyles(index, activeStep)['left']
@@ -235,42 +232,29 @@ export default function Testimonials() {
                               ? 'center'
                               : 'right'
                         ]),
-                    background: 'none',
-                    border: 'none',
                     alignSelf: 'flex-start',
                     '@media (max-width: 900px)': {
                       height: 'auto',
+                      width: `${100 / testimonials.length}%`,
                     },
                   }}
                 >
                   <Box
                     sx={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      transition: 'all 300ms ease-in-out',
                       padding: '2rem',
-                      borderRadius: '21px',
-                      // backdropFilter: "blur(14px)",
-                      boxShadow: '0 4px 4px 0 rgba(0, 0, 0, 0.25)',
-                      overflow: 'hidden',
-                      height: '100%',
+                      borderRadius: '20px',
+                      backgroundColor: (theme) =>
+                        theme.palette.mode === 'light'
+                          ? 'rgba(255, 255, 255, 0.8)'
+                          : 'rgba(0, 0, 0, 0.6)',
 
-                      backgroundColor: 'rgba(255,255,255,0.001)',
-                      border: `1px solid ${'rgba(255,255,255,0.32)'}`,
-
-                      backdropFilter: 'blur(14.4px)',
-                      '& h5': {
-                        fontSize: '1rem', // Set desktop font size for title
-                      },
-                      '& p': {
-                        fontSize: '1.3rem', // Set desktop font size for description
-                      },
-                      '@media (max-width: 900px)': {
-                        '& h5': {
-                          fontSize: '1.8rem', // Reduce font size on smaller screens
-                        },
-                        '& p': {
-                          fontSize: '1.4rem', // Reduce font size on smaller screens
+                      '& .MuiTypography-body1': {
+                        fontSize: {
+                          xl: '1.6rem',
+                          lg: '1.6rem',
+                          md: '1.6rem',
+                          sm: '1.4rem',
+                          xs: '1.2rem',
                         },
                       },
                     }}
@@ -278,10 +262,10 @@ export default function Testimonials() {
                     <Box
                       sx={{
                         display: 'flex',
-                        marginBottom: '1.5rem',
-                        fontSize: '2rem',
-
+                        // alignItems: 'center',
+                        paddingBottom: '2rem',
                         '& svg': {
+                          fontSize: '2rem',
                           marginRight: '0.3rem',
                           color: `primary.main`,
 
@@ -289,116 +273,22 @@ export default function Testimonials() {
                             color: 'gold',
                           },
                         },
-                        '@media (max-width: 900px)': {
-                          fontSize: '1.5rem',
-                        },
                       }}
                     >
-                      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        {Array.from({ length: 5 }, (_, i) => (
-                          <FontAwesomeIcon
-                            icon={faStar}
-                            key={i}
-                            className={`${
-                              i < testimonial?.stars ? 'colorstar' : ''
-                            }`}
-                          />
-                        ))}
-                      </Box>
-                      {/* <Box
-                        component="img"
-                        src="/SVG.png"
-                        alt="Decorative SVG"
-                        sx={{
-                          width: "37px",
-                          height: "26px",
-                        }}
-                      /> */}
-                    </Box>
-                    <Box
-                      sx={{
-                        marginBottom: '2.6rem',
-                        textAlign: 'left',
-                        fontSize: '1.8rem',
-                      }}
-                    >
-                      <p>{testimonial.details}</p>
-                    </Box>
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        // flexDirection: "column",
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        marginTop: 'auto',
-                        width: '100%',
-                        '@media (max-width: 900px)': {
-                          '& .MuiTypography-root': {
-                            fontSize: '1.5rem', // Reduce font size for client name and date
-                          },
-                        },
-                      }}
-                    >
-                      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <Box
-                          sx={{
-                            border: `2px solid`,
-                            borderColor: (theme) => theme.palette.primary.main,
-                            borderRadius: '50%',
-                            marginRight: '1rem',
-                            height: '3rem',
-                            width: '3rem',
-                            '@media (max-width: 900px)': {
-                              minHeight: '3.5rem',
-                              width: '3.5rem',
-                            },
-                          }}
+                      {Array.from({ length: 5 }, (_, i) => (
+                        <FontAwesomeIcon
+                          icon={faStar}
+                          key={i}
+                          className={`${
+                            i < testimonial?.stars ? 'colorstar' : ''
+                          }`}
                         />
-                        <Box sx={{ marginLeft: '1rem' }}>
-                          <Typography
-                            sx={{
-                              fontSize: '1.2rem !important',
-                              fontWeight: '400',
-                              // color: theme.palette.primary.accent,
-                              // lineHeight: "1.5",
-                              '@media (max-width: 900px)': {
-                                fontSize: '1.2rem !important', // Reduce font size for smaller screens
-                              },
-                            }}
-                          >
-                            {testimonial.name}
-                          </Typography>
-                          <Typography
-                            sx={{
-                              fontSize: '1rem !important',
-                              fontWeight: '400',
-                              // color:
-                              //   theme.palette.mode === "dark"
-                              //     ? "#C6C6C6"
-                              //     : "#6D6D6D",
-                              '@media (max-width: 900px)': {
-                                fontSize: '1rem !important',
-                              },
-                            }}
-                          >
-                            {testimonial.date}
-                          </Typography>
-                        </Box>
-                        <Box sx={{ display: 'flex', gap: '0.5rem' }}>
-                          {/* {testimonial.socialIcons.map((iconObj, idx) => (
-                            <Box
-                              component="img"
-                              key={idx}
-                              src={iconObj.icon}
-                              alt={iconObj.alt}
-                              sx={{
-                                width: "50px",
-                                height: "50px",
-                              }}
-                            />
-                          ))} */}
-                        </Box>
-                      </Box>
+                      ))}
+                    </Box>
+                    <Typography>{testimonial.details}</Typography>
+                    <Box sx={{ paddingTop: '2rem' }}>
+                      <Typography>{testimonial.name}</Typography>
+                      <Typography>{testimonial.date}</Typography>
                     </Box>
                   </Box>
                 </Box>
@@ -406,55 +296,55 @@ export default function Testimonials() {
             })}
           </Box>
         </Box>
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '40%',
+            transform: 'translateY(-50%)',
+            width: '100%',
+            zIndex: '3',
+            display: 'flex',
+            justifyContent: 'space-between',
+          }}
+        >
+          <Button
+            onClick={handleBack}
+            sx={{
+              left: '-8rem',
+              width: '2rem',
+              height: '6rem',
+              boxShadow: 'none',
+              '& svg': {
+                // filter: `brightness(0%) ${
+                //   theme.palette.mode === "dark" ? "invert(1)" : "invert(0)"
+                // }`,
+                height: '100%',
+                width: '100%',
+              },
+            }}
+          >
+            <FontAwesomeIcon icon={faChevronLeft} />
+          </Button>
+          <Button
+            onClick={handleNext}
+            sx={{
+              right: '-8rem',
+              width: '2rem',
+              height: '6rem',
+              boxShadow: 'none',
+              '& svg': {
+                // filter: `brightness(0%) ${
+                //   theme.palette.mode === "dark" ? "invert(1)" : "invert(0)"
+                // }`,
+                height: '100%',
+                width: '100%',
+              },
+            }}
+          >
+            <FontAwesomeIcon icon={faChevronRight} />
+          </Button>
+        </Box>
       </Container>
-      <Box
-        sx={{
-          position: 'absolute',
-          top: '40%',
-          transform: 'translateY(-50%)',
-          width: '100%',
-          zIndex: '3',
-          display: 'flex',
-          justifyContent: 'space-between',
-        }}
-      >
-        <Button
-          onClick={handleBack}
-          sx={{
-            left: '-8rem',
-            width: '2rem',
-            height: '6rem',
-            boxShadow: 'none',
-            '& svg': {
-              // filter: `brightness(0%) ${
-              //   theme.palette.mode === "dark" ? "invert(1)" : "invert(0)"
-              // }`,
-              height: '100%',
-              width: '100%',
-            },
-          }}
-        >
-          <FontAwesomeIcon icon={faChevronLeft} />
-        </Button>
-        <Button
-          onClick={handleNext}
-          sx={{
-            right: '-8rem',
-            width: '2rem',
-            height: '6rem',
-            boxShadow: 'none',
-            '& svg': {
-              // filter: `brightness(0%) ${
-              //   theme.palette.mode === "dark" ? "invert(1)" : "invert(0)"
-              // }`,
-              height: '100%',
-              width: '100%',
-            },
-          }}
-        >
-          <FontAwesomeIcon icon={faChevronRight} />
-        </Button>
-      </Box>
     </Box>
   );
 }
