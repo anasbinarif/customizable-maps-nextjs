@@ -1,13 +1,25 @@
 'use client';
 
-import {Box, Button, Grid, Typography} from '@mui/material';
-import {Autocomplete, GoogleMap, InfoWindow, Marker,} from '@react-google-maps/api';
-import html2canvas from 'html2canvas';
-import {jsPDF} from 'jspdf';
+import { Box, Button, Grid, Typography } from '@mui/material';
+import {
+  Autocomplete,
+  GoogleMap,
+  InfoWindow,
+  Marker,
+} from '@react-google-maps/api';
+// import html2canvas from 'html2canvas';
+// import { jsPDF } from 'jspdf';
 import Image from 'next/image';
-import {useSession} from 'next-auth/react';
-import React, {useCallback, useEffect, useMemo, useRef, useState,} from 'react';
-import ReactDOM from 'react-dom/client';
+import Link from 'next/link';
+import { useSession } from 'next-auth/react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
+// import ReactDOM from 'react-dom/client';
 import {
   FaBus,
   FaCamera,
@@ -20,7 +32,7 @@ import {
   FaUtensils,
 } from 'react-icons/fa';
 
-import CustomPdf from '../exportedDoc';
+// import CustomPdf from '../exportedDoc';
 import ImageUploader from '../ImageUploader';
 import LocationList from '../LocationList';
 import LogoUploader from '../LogoUploader';
@@ -29,14 +41,14 @@ import TextArea from '../TextArea';
 import MapFilters from '@/app/(pages)/user/createUserMaps/components/map-filters/MapFilters';
 import AlertSnackbar from '@/components/AlertSnackbar';
 import ConfirmModal from '@/components/ConfirmModal';
-import {StyledTextField} from '@/components/CustomTextFields';
+import { StyledTextField } from '@/components/CustomTextFields';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import LoginSignupModal from '@/components/LoginSignupModal';
 import useCustomSnackbar from '@/components/snackbar-hook/useCustomSnackbar';
-import {getMarkerIcon, haversineDistance} from '@/lib/data';
-import {generateTextColor} from '@/lib/generateTextColor';
+import { getMarkerIcon, haversineDistance } from '@/lib/data';
+import { generateTextColor } from '@/lib/generateTextColor';
 import GoogleMapsLoader from '@/lib/GoogleMapsLoader';
-import {uploadFileToS3} from '@/lib/uploadFileToS3';
+import { uploadFileToS3 } from '@/lib/uploadFileToS3';
 
 const iconStyle = {
   marginRight: '8px',
@@ -89,8 +101,7 @@ export default function CreateGoogleMap({ mapData = null }) {
     Entertainment: { color: '#FFB46F', locations: [] },
   });
 
-  useEffect(() => {
-  }, [locationsByTag]);
+  useEffect(() => {}, [locationsByTag]);
 
   const handleRadiusChange = (event, newRadius) => {
     setRadius(newRadius);
@@ -253,52 +264,52 @@ export default function CreateGoogleMap({ mapData = null }) {
     }
   };
 
-  const exportMap = async () => {
-    setLoading(true);
-    const pdfContent = document.createElement('div');
+  // const exportMap = async () => {
+  //   setLoading(true);
+  //   const pdfContent = document.createElement('div');
 
-    pdfContent.style.width = '1920px';
-    pdfContent.style.position = 'absolute';
-    document.body.appendChild(pdfContent);
+  //   pdfContent.style.width = '1920px';
+  //   pdfContent.style.position = 'absolute';
+  //   document.body.appendChild(pdfContent);
 
-    const root = ReactDOM.createRoot(pdfContent);
+  //   const root = ReactDOM.createRoot(pdfContent);
 
-    root.render(
-      <CustomPdf
-        customRef={null}
-        data={{
-          title: title,
-          oldImgs: oldImgs,
-          newImgFiles: uploadedFiles,
-          logoFile: logoFile,
-          locationsByTag: locationsByTag,
-          currentLocation: currentLocation,
-          helperHtml: helperHtml,
-        }}
-      />
-    );
+  //   root.render(
+  //     <CustomPdf
+  //       // customRef={null}
+  //       data={{
+  //         title: title,
+  //         oldImgs: oldImgs,
+  //         newImgFiles: uploadedFiles,
+  //         logoFile: logoFile,
+  //         locationsByTag: locationsByTag,
+  //         currentLocation: currentLocation,
+  //         helperHtml: helperHtml,
+  //       }}
+  //     />
+  //   );
 
-    await new Promise((resolve) => {
-      setTimeout(resolve, 3000);
-    });
+  //   await new Promise((resolve) => {
+  //     setTimeout(resolve, 3000);
+  //   });
 
-    const canvas = await html2canvas(pdfContent, {
-      useCORS: true,
-      scale: 2,
-    });
+  //   const canvas = await html2canvas(pdfContent, {
+  //     useCORS: true,
+  //     scale: 2,
+  //   });
 
-    const imgData = canvas.toDataURL('image/png');
-    const pdf = new jsPDF('p', 'mm', 'a4');
-    const imgWidth = 210;
-    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+  //   const imgData = canvas.toDataURL('image/png');
+  //   const pdf = new jsPDF('p', 'mm', 'a4');
+  //   const imgWidth = 210;
+  //   const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-    pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-    setLoading(false);
-    pdf.save(`${title}.pdf`);
+  //   pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+  //   setLoading(false);
+  //   pdf.save(`${title}.pdf`);
 
-    root.unmount();
-    document.body.removeChild(pdfContent);
-  };
+  //   root.unmount();
+  //   document.body.removeChild(pdfContent);
+  // };
 
   const filters = useMemo(() => {
     return [
@@ -365,7 +376,12 @@ export default function CreateGoogleMap({ mapData = null }) {
       0
     );
 
-    if (totalLocs >= 40 && !locationsByTag[location.tag].locations.some(loc => loc.name === location.name)) {
+    if (
+      totalLocs >= 40 &&
+      !locationsByTag[location.tag].locations.some(
+        (loc) => loc.name === location.name
+      )
+    ) {
       handleOpenAlert('error', 'Max locations saved.');
 
       return;
@@ -373,19 +389,23 @@ export default function CreateGoogleMap({ mapData = null }) {
 
     setLocationsByTag((prevTags) => {
       const currentTag = prevTags[location.tag];
-      const locationExists = currentTag.locations.some((loc) => loc.name === location.name);
+      const locationExists = currentTag.locations.some(
+        (loc) => loc.name === location.name
+      );
 
       let updatedLocations;
 
       if (locationExists) {
-        updatedLocations = currentTag.locations.filter((loc) => loc.name !== location.name);
+        updatedLocations = currentTag.locations.filter(
+          (loc) => loc.name !== location.name
+        );
       } else {
         updatedLocations = [...currentTag.locations, location];
       }
 
       return {
         ...prevTags,
-        [location.tag]: { ...currentTag, locations: updatedLocations }
+        [location.tag]: { ...currentTag, locations: updatedLocations },
       };
     });
   };
@@ -457,70 +477,71 @@ export default function CreateGoogleMap({ mapData = null }) {
     setSelectedFilters([]);
   };
 
-  const searchNearbyPlaces = useCallback((filters, loc) => {
-    const service = new window.google.maps.places.PlacesService(
-      document.createElement('div')
-    );
+  const searchNearbyPlaces = useCallback(
+    (filters, loc) => {
+      const service = new window.google.maps.places.PlacesService(
+        document.createElement('div')
+      );
 
-    let accumulatedMarkers = [];
+      let accumulatedMarkers = [];
 
-    const promises = filters.map((filter) => {
-      return new Promise((resolve) => {
-        service.nearbySearch(
-          {
-            location: loc,
-            radius: radius,
-            type: filter.type,
-          },
-          (results, status) => {
-            if (
-              status === window.google.maps.places.PlacesServiceStatus.OK &&
+      const promises = filters.map((filter) => {
+        return new Promise((resolve) => {
+          service.nearbySearch(
+            {
+              location: loc,
+              radius: radius,
+              type: filter.type,
+            },
+            (results, status) => {
+              if (
+                status === window.google.maps.places.PlacesServiceStatus.OK &&
                 results
-            ) {
-              const newMarkers = results.map((place) => {
-                return {
-                  lat: place.geometry.location.lat(),
-                  lng: place.geometry.location.lng(),
-                  name: place.name,
-                  rating: place.rating,
-                  userRatingsTotal: place.user_ratings_total,
-                  vicinity: place.vicinity,
-                  photo: place.photos ? place.photos[0].getUrl() : null,
-                  isOpen: place.opening_hours
-                    ? place.opening_hours.isOpen()
-                    : null,
-                  openingHours: place.opening_hours
-                    ? place.opening_hours.weekday_text
-                    : null,
-                  type: filter.name,
-                  color: filter.selectedColor,
-                };
-              });
+              ) {
+                const newMarkers = results.map((place) => {
+                  return {
+                    lat: place.geometry.location.lat(),
+                    lng: place.geometry.location.lng(),
+                    name: place.name,
+                    rating: place.rating,
+                    userRatingsTotal: place.user_ratings_total,
+                    vicinity: place.vicinity,
+                    photo: place.photos ? place.photos[0].getUrl() : null,
+                    isOpen: place.opening_hours
+                      ? place.opening_hours.isOpen()
+                      : null,
+                    openingHours: place.opening_hours
+                      ? place.opening_hours.weekday_text
+                      : null,
+                    type: filter.name,
+                    color: filter.selectedColor,
+                  };
+                });
 
-              accumulatedMarkers = accumulatedMarkers.concat(newMarkers);
+                accumulatedMarkers = accumulatedMarkers.concat(newMarkers);
+              }
+              resolve();
             }
-            resolve();
-          }
-        );
-      });
-    });
-
-    Promise.all(promises).then(() => {
-      const uxMarkers = accumulatedMarkers.map((marker) => {
-        const catLocations = locationsByTag[marker.type]?.locations;
-        const found = catLocations.find((loc) => loc.name === marker.name);
-
-        return {
-          ...marker,
-          color: found ? marker.color : `${marker.color}80`,
-          scale: found ? 2.5 : 2,
-        };
+          );
+        });
       });
 
-      setMarkers(uxMarkers);
-    });
-  },
-  [locationsByTag, radius]
+      Promise.all(promises).then(() => {
+        const uxMarkers = accumulatedMarkers.map((marker) => {
+          const catLocations = locationsByTag[marker.type]?.locations;
+          const found = catLocations.find((loc) => loc.name === marker.name);
+
+          return {
+            ...marker,
+            color: found ? marker.color : `${marker.color}80`,
+            scale: found ? 2.5 : 2,
+          };
+        });
+
+        setMarkers(uxMarkers);
+      });
+    },
+    [locationsByTag, radius]
   );
 
   const toggleFilter = (filter) => {
@@ -649,12 +670,38 @@ export default function CreateGoogleMap({ mapData = null }) {
 
   return (
     <GoogleMapsLoader>
-      <Grid container spacing={3} sx={{ marginTop: '1rem' }}>
-        <Grid item xs={12} sm={12} md={8} lg={9}>
-          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
+      <Grid
+        container
+        spacing={3}
+        sx={{ marginTop: '1rem', minWidth: '1880px' }}
+      >
+        <Grid
+          item
+          xs={9}
+          // sm={12} md={8} lg={9}
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+
+              // '@media only screen and (max-width: 600px)': {
+              //   flexDirection: 'column',
+              // },
+            }}
+          >
             <Box
               sx={{
                 margin: '10px 0.5rem',
+                width: '30%',
+
+                // '@media only screen and (max-width: 1200px)': {
+                //   width: '50%',
+                // },
+                // '@media only screen and (max-width: 600px)': {
+                //   width: '100%',
+                // },
               }}
             >
               <StyledTextField
@@ -666,9 +713,8 @@ export default function CreateGoogleMap({ mapData = null }) {
                 required
                 onChange={(e) => setTitle(e.target.value)}
                 sx={{
-                  '@media only screen and (max-width: 1200px)': {
-                    width: '100%',
-                  },
+                  width: '100%',
+                  // '@media only screen and (max-width: 1200px)': {},
                 }}
               />
             </Box>
@@ -709,12 +755,12 @@ export default function CreateGoogleMap({ mapData = null }) {
                       : 'primary.main',
                     width: 'calc(33% - 0.5rem)',
 
-                    '@media only screen and (max-width: 900px)': {
-                      width: 'calc(50% - 0.7rem)',
-                    },
-                    '@media only screen and (max-width: 600px)': {
-                      width: 'calc(100% - 0.7rem)',
-                    },
+                    // '@media only screen and (max-width: 900px)': {
+                    //   width: 'calc(50% - 0.7rem)',
+                    // },
+                    // '@media only screen and (max-width: 600px)': {
+                    //   width: 'calc(100% - 0.7rem)',
+                    // },
 
                     '&:hover': {
                       backgroundColor: isSelected
@@ -744,14 +790,16 @@ export default function CreateGoogleMap({ mapData = null }) {
           >
             <Marker position={currentLocation} />
             {markers
-              .filter(marker => {
+              .filter((marker) => {
                 if (isEditMode) {
                   return true;
                 }
 
-                return Object.values(locationsByTag).some(tag =>
+                return Object.values(locationsByTag).some((tag) =>
                   tag.locations.some(
-                    (loc) => loc.latitude === marker.lat && loc.longitude === marker.lng
+                    (loc) =>
+                      loc.latitude === marker.lat &&
+                      loc.longitude === marker.lng
                   )
                 );
               })
@@ -774,7 +822,9 @@ export default function CreateGoogleMap({ mapData = null }) {
                     })
                   }
                 >
-                  {activeMarker && activeMarker.lat === marker.lat && activeMarker.lng === marker.lng && (
+                  {activeMarker &&
+                    activeMarker.lat === marker.lat &&
+                    activeMarker.lng === marker.lng && (
                     <InfoWindow
                       position={{ lat: marker.lat, lng: marker.lng }}
                       onMouseOver={() => setInfoWindowHovered(true)}
@@ -828,8 +878,8 @@ export default function CreateGoogleMap({ mapData = null }) {
                             color="textSecondary"
                             sx={{ fontSize: '14px', marginTop: '4px' }}
                           >
-                            Rating: {marker.rating} ({marker.userRatingsTotal}{' '}
-                            reviews)
+                              Rating: {marker.rating} ({marker.userRatingsTotal}{' '}
+                              reviews)
                           </Typography>
                           <Typography
                             variant="body2"
@@ -875,7 +925,13 @@ export default function CreateGoogleMap({ mapData = null }) {
                   height: '32px',
                   padding: '0 12px',
                   position: 'absolute',
-                  top: '0.5rem',
+                  top: {
+                    xl: '0.5rem',
+                    // lg: '0.5rem',
+                    // md: '0.5rem',
+                    // sm: '4rem',
+                    // xs: '4rem',
+                  },
                   left: '50%',
                   transform: 'translate(-50%, 0)',
                 }}
@@ -891,7 +947,11 @@ export default function CreateGoogleMap({ mapData = null }) {
           />
         </Grid>
         {/* Location List section */}
-        <Grid item xs={12} sm={12} md={4} lg={3}>
+        <Grid
+          item
+          xs={3}
+          // sm={12} md={4} lg={3}
+        >
           <LocationList
             locationsByTag={locationsByTag}
             handleDelete={handleDelete}
@@ -900,47 +960,65 @@ export default function CreateGoogleMap({ mapData = null }) {
         <Grid
           item
           xs={12}
-          sm={12}
-          md={12}
-          lg={12}
-          sx={{
-            '@media only screen and (max-width: 900px)': {
-              flexDirection: 'row-reverse',
-            },
-          }}
+          // sm={12}
+          // md={12}
+          // lg={12}
+          sx={
+            {
+              // '@media only screen and (max-width: 900px)': {
+              //   flexDirection: 'row-reverse',
+              // },
+            }
+          }
         >
           <Grid container spacing={3}>
-            <Grid item xs={12} sm={12} md={8} lg={9}>
+            <Grid
+              item
+              xs={9}
+              // sm={12} md={8} lg={9}
+            >
               <TextArea helperHtml={helperHtml} setHelperHtml={setHelperHtml} />
               <Box
                 sx={{
-                  display: 'flex',
+                  display: {
+                    xl: 'flex',
+                    // lg: 'flex',
+                    // md: 'flex',
+                    // sm: 'none',
+                    // sx: 'none',
+                  },
                   justifyContent: 'flex-end',
                 }}
               >
-                <Box mt="10px" sx={{ mr: '1rem' }}>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={exportMap}
-                    sx={{
-                      width: '100%',
-                      backgroundColor: 'transparent',
-                      color: 'primary.main',
-                      border: '1px solid',
-                      borderColor: (theme) => theme.palette.primary.main,
-                      boxShadow: 'none',
+                {mapData && (
+                  <Box mt="10px" sx={{ mr: '1rem' }}>
+                    <Link
+                      href={mapData ? `/user/exportLayout/${mapData?.id}` : ''}
+                    >
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        // onClick={exportMap}
+                        sx={{
+                          width: '100%',
+                          backgroundColor: 'transparent',
+                          color: 'primary.main',
+                          border: '1px solid',
+                          borderColor: (theme) => theme.palette.primary.main,
+                          boxShadow: 'none',
 
-                      '&:hover': {
-                        backgroundColor: 'primary.main',
-                        color: 'white',
-                        boxShadow: 'none',
-                      },
-                    }}
-                  >
-                    Export
-                  </Button>
-                </Box>
+                          '&:hover': {
+                            backgroundColor: 'primary.main',
+                            color: 'white',
+                            boxShadow: 'none',
+                          },
+                        }}
+                      >
+                        Export
+                      </Button>
+                    </Link>
+                  </Box>
+                )}
                 <Box mt="10px">
                   <Button
                     variant="contained"
@@ -955,8 +1033,66 @@ export default function CreateGoogleMap({ mapData = null }) {
                 </Box>
               </Box>
             </Grid>
-            <Grid item xs={12} sm={12} md={4} lg={3}>
+            <Grid
+              item
+              xs={3}
+              // sm={12} md={4} lg={3}
+            >
               <LogoUploader logoFile={logoFile} setLogoFile={setLogoFile} />
+              <Box
+                sx={{
+                  display: {
+                    xl: 'none',
+                    lg: 'none',
+                    md: 'none',
+                    sm: 'flex',
+                    sx: 'flex',
+                  },
+                  justifyContent: 'flex-end',
+                }}
+              >
+                {mapData && (
+                  <Box mt="10px" sx={{ mr: '1rem' }}>
+                    <Link
+                      href={mapData ? `/user/exportLayout/${mapData?.id}` : ''}
+                    >
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        // onClick={exportMap}
+                        sx={{
+                          width: '100%',
+                          backgroundColor: 'transparent',
+                          color: 'primary.main',
+                          border: '1px solid',
+                          borderColor: (theme) => theme.palette.primary.main,
+                          boxShadow: 'none',
+
+                          '&:hover': {
+                            backgroundColor: 'primary.main',
+                            color: 'white',
+                            boxShadow: 'none',
+                          },
+                        }}
+                      >
+                        Export
+                      </Button>
+                    </Link>
+                  </Box>
+                )}
+                <Box mt="10px">
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={saveMap}
+                    sx={{
+                      width: '100%',
+                    }}
+                  >
+                    {mapData ? 'Update Map' : 'Save Map'}
+                  </Button>
+                </Box>
+              </Box>
             </Grid>
           </Grid>
         </Grid>

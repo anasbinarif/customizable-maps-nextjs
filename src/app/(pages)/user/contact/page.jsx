@@ -1,6 +1,6 @@
 'use client';
-import {Box, Container, useTheme} from '@mui/material';
-import {Map, Marker} from 'pigeon-maps';
+import { Box, Container, useTheme } from '@mui/material';
+import { Map, Marker } from 'pigeon-maps';
 import React from 'react';
 
 import Form from './components/Form';
@@ -8,10 +8,6 @@ import Form from './components/Form';
 export default function CarouselSection() {
   const theme = useTheme();
   const position = [52.212992, 5.27937];
-
-  const handleFormSubmit = () => {
-    // console.log('Form submitted with data:', data);
-  };
 
   return (
     <Box
@@ -33,6 +29,13 @@ export default function CarouselSection() {
         }}
         sx={{
           display: 'flex',
+          flexDirection: {
+            xl: 'row',
+            lg: 'row',
+            md: 'row',
+            sm: 'column',
+            xs: 'column',
+          },
           backgroundColor: 'primary.bgHero',
           borderRadius: '16px',
           overflow: 'hidden',
@@ -53,7 +56,13 @@ export default function CarouselSection() {
             sx={{
               position: 'relative',
               width: '100%',
-              height: '100%',
+              height: {
+                xl: '100%',
+                lg: '100%',
+                md: '100%',
+                sm: '0px',
+                xs: '0px',
+              },
               overflow: 'hidden',
               clipPath: 'polygon(0 0, 100% 0%, 93% 100%, 0% 100%)',
             }}
@@ -63,7 +72,7 @@ export default function CarouselSection() {
               zoom={15}
               height={600}
               width={600}
-              style={{ height: '100%' }}
+              style={{ height: '100%', width: '100%' }}
             >
               <Marker anchor={position} payload={1} />
             </Map>
@@ -84,7 +93,7 @@ export default function CarouselSection() {
               width: '100%',
             }}
           >
-            <Form onSubmit={handleFormSubmit} />
+            <Form />
           </Box>
         </Box>
       </Container>

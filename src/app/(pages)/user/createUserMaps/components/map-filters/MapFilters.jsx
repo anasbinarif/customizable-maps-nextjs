@@ -1,18 +1,36 @@
-import { Box, Slider, Switch, FormControlLabel, Typography } from '@mui/material';
+import {
+  Box,
+  Slider,
+  Switch,
+  FormControlLabel,
+  Typography,
+} from '@mui/material';
 
-const MapFilters = ({ sliderValue, onSliderChange, switchChecked, onSwitchChange }) => {
+const MapFilters = ({
+  sliderValue,
+  onSliderChange,
+  switchChecked,
+  onSwitchChange,
+}) => {
   return (
-    <Box mt="10px" sx={{ width: '30%' }}>
+    <Box
+      mt="10px"
+      sx={{
+        width: '30%',
+        '@media only screen and (max-width: 1200px)': { width: '50%' },
+        '@media only screen and (max-width: 600px)': { width: '100%' },
+      }}
+    >
       <Typography gutterBottom>Location Radius</Typography>
       <Slider
         aria-label="Location Radius"
         value={sliderValue}
         onChange={onSliderChange}
         valueLabelDisplay="auto"
-        step={50}
+        step={100}
         marks
-        min={500}
-        max={1200}
+        min={300}
+        max={5000}
       />
       <FormControlLabel
         control={

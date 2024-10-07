@@ -1,17 +1,22 @@
 'use client';
 
-import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import {
+  faCheckCircle,
+  faTimesCircle,
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Box, List, Typography } from '@mui/material';
-import React, { useState } from 'react';
+import React from 'react';
 
 import { useStyles } from '../carouser-section/CarouselSection.style';
 import SubscribeButtons from '../subscribe-buttons/SubscribeButtons';
-import SubscriptionDurationOptions from '../subscription-duration-options/SubscriptionDurationOptions';
+// import SubscriptionDurationOptions from '../subscription-duration-options/SubscriptionDurationOptions';
 
 const SubscriptionTab = ({ pkg, index, color }) => {
-  const [duration, setDuration] = useState(false);
+  // const [duration, setDuration] = useState(false);
   const classes = useStyles();
+
+  // console.log(pkg);
 
   return (
     <Box className={classes.box}>
@@ -27,7 +32,7 @@ const SubscriptionTab = ({ pkg, index, color }) => {
         </Typography>
 
         <Box sx={{ marginBottom: '8px' }}>
-          <Typography
+          {/* <Typography
             sx={{
               color: 'primary.text1',
               fontSize: '1.2rem',
@@ -36,10 +41,10 @@ const SubscriptionTab = ({ pkg, index, color }) => {
             }}
           >
             FROM
-          </Typography>
+          </Typography> */}
           <Typography
             sx={{
-              fontSize: '3rem',
+              fontSize: '2rem',
               textAlign: 'center',
               fontWeight: '900',
             }}
@@ -56,65 +61,74 @@ const SubscriptionTab = ({ pkg, index, color }) => {
             {pkg.duration}
           </Typography>
         </Box>
-        <SubscribeButtons pkgId={pkg.id} />
+        {pkg.name === 'Pro' && <SubscribeButtons pkgId={pkg.id} />}
 
-        <List
+        <Box
           sx={{
-            display: 'flex',
-            flexDirection: 'column',
-
-            '& li': {
-              display: 'flex',
-              justifyContent: 'center',
-              textAlign: 'center',
-              fontSize: '1.5rem',
-              padding: '1rem',
-
-              '&:not(:last-child)': {
-                borderBottom: '1px solid #eee',
-              },
-            },
-            margin: '0 2rem',
-            width: '100%',
-            height: '100%',
-            justifyContent: 'flex-start',
+            marginTop: 'auto',
+            marginBottom: '1rem',
           }}
         >
-          {pkg?.features &&
-            pkg.features.map((item) => {
-              const isDisabled = item.includes('(disabled)');
+          <List
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
 
-              return (
-                <Box
-                  key={item}
-                  sx={{
-                    width: '100%',
-                    display: 'flex',
-                    justifyContent: '',
-                    padding: '2px 0',
-                  }}
-                >
-                  <FontAwesomeIcon
-                    icon={isDisabled ? faTimesCircle : faCheckCircle}
-                    style={{
-                      color: isDisabled ? '#ff4d4f' : color,
-                      marginRight: '1rem',
-                      transform: 'translateY(2px)',
+              '& li': {
+                display: 'flex',
+                justifyContent: 'center',
+                textAlign: 'center',
+                fontSize: '1.5rem',
+                padding: '1rem',
+
+                '&:not(:last-child)': {
+                  borderBottom: '1px solid #eee',
+                },
+              },
+              margin: '0 2rem',
+              width: '100%',
+              // height: '100%',
+              justifyContent: 'center',
+            }}
+          >
+            {pkg?.features &&
+              pkg.features.map((item) => {
+                const isDisabled = item.includes('(disabled)');
+
+                return (
+                  <Box
+                    key={item}
+                    sx={{
+                      width: '100%',
+                      display: 'flex',
+                      // justifyContent: 'center',
+                      padding: '2px 0',
                     }}
-                  />
-                  <Typography sx={{ textAlign: 'left' }}>{item.replace(' (disabled)', '')}</Typography>
-                </Box>
-              );
-            })}
-        </List>
+                  >
+                    <FontAwesomeIcon
+                      icon={isDisabled ? faTimesCircle : faCheckCircle}
+                      style={{
+                        color: isDisabled ? '#ff4d4f' : color,
+                        marginRight: '1rem',
+                        transform: 'translateY(2px)',
+                      }}
+                    />
+                    <Typography sx={{ textAlign: 'left' }}>
+                      {item.replace(' (disabled)', '')}
+                    </Typography>
+                  </Box>
+                );
+              })}
+          </List>
+        </Box>
 
-        {pkg.durationOptions && (
+        {/* {pkg.durationOptions && (
           <SubscriptionDurationOptions
             duration={duration}
             durationOptions={pkg.durationOptions}
             setDuration={setDuration}
           />
-        )}
+        )} */}
       </div>
     </Box>
   );

@@ -3,17 +3,35 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import MapIcon from '@mui/icons-material/Map';
 import MenuIcon from '@mui/icons-material/Menu';
 import PinDropIcon from '@mui/icons-material/PinDrop';
-import {AppBar, Avatar, Box, Button, Container, IconButton, Menu, MenuItem, Toolbar, Typography,} from '@mui/material';
+import {
+  AppBar,
+  Avatar,
+  Box,
+  Button,
+  Container,
+  IconButton,
+  Menu,
+  MenuItem,
+  Toolbar,
+  Typography,
+} from '@mui/material';
+import Image from 'next/image';
 import Link from 'next/link';
-import {usePathname} from 'next/navigation';
-import {signOut, useSession} from 'next-auth/react';
-import React, {useContext, useEffect, useLayoutEffect, useRef, useState,} from 'react';
+import { usePathname } from 'next/navigation';
+import { signOut, useSession } from 'next-auth/react';
+import React, {
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react';
 
 import ChangePasswordModal from './ChangePasswordModal';
 import LoginSignupModal from './LoginSignupModal';
 
 import LoadingSpinner from '@/components/LoadingSpinner';
-import {ThemeContext} from '@/context/ThemeContext';
+import { ThemeContext } from '@/context/ThemeContext';
 
 const LinkStyles = {
   display: 'block',
@@ -60,6 +78,7 @@ export default function Navbar() {
   const [modalMode, setModalMode] = useState('login');
   const [anchorEl, setAnchorEl] = useState(null);
   const [anchorEl2, setAnchorEl2] = useState(null);
+  const [anchorEl3, setAnchorEl3] = useState(null);
   const [loading, setLoading] = useState(false);
   const [changePasswordOpen, setChangePasswordOpen] = useState(false);
   const router = usePathname();
@@ -116,12 +135,20 @@ export default function Navbar() {
     setAnchorEl2(event.currentTarget);
   };
 
+  const handleMenu3 = (event) => {
+    setAnchorEl3(event.currentTarget);
+  };
+
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
 
   const handleMenuClose2 = () => {
     setAnchorEl2(null);
+  };
+
+  const handleMenuClose3 = () => {
+    setAnchorEl3(null);
   };
 
   const handleLogout = async () => {
@@ -154,7 +181,7 @@ export default function Navbar() {
   return (
     <>
       <AppBar
-        position="sticky"
+        position="fixed"
         sx={{
           background: darkMode
             ? 'linear-gradient(90deg, #333 0%, #333 50%, #333 100%)'
@@ -165,6 +192,8 @@ export default function Navbar() {
           margin: '0rem auto',
           // boxShadow: "none",
           top: '1rem',
+          left: '1rem',
+          right: '1rem',
           boxShadow: 'rgba(0, 0, 0, 0.1) 0px 4px 12px',
           zIndex: 1100,
         }}
@@ -187,17 +216,45 @@ export default function Navbar() {
           >
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <Link href="/" style={LinkStyles}>
-                <Typography
-                  variant="h6"
-                  component="div"
-                  sx={{
-                    color: 'secondary.main',
-                    fontWeight: 'bold',
-                    textDecoration: 'none',
-                  }}
-                >
-                  Map Mavens
-                </Typography>
+                <Box sx={{ display: 'flex', alignitems: 'center' }}>
+                  <Box
+                    sx={{
+                      width: 40,
+                      height: 40,
+                      backgroundColor: '#64d8cb',
+                      borderRadius: '50%',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      marginRight: '0.5rem',
+                      overflow: 'hidden',
+                    }}
+                  >
+                    <Image
+                      src="/img/mapmaven.jpeg"
+                      width={50}
+                      height={50}
+                      alt="Map Mavens logo"
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                      }}
+                    />
+                  </Box>
+                  <Typography
+                    variant="h6"
+                    // component="div"
+                    sx={{
+                      color: 'secondary.main',
+                      fontWeight: 'bold',
+                      textDecoration: 'none',
+                      lineHeight: 2,
+                    }}
+                  >
+                    Map Mavens
+                  </Typography>
+                </Box>
               </Link>
             </Box>
             <Box
@@ -231,7 +288,9 @@ export default function Navbar() {
                   top: '0.75rem',
                   bottom: '0.75rem',
                   left:
-                    curPage === 'displayUserMap' || curPage === ''
+                    curPage === 'displayUserMap' ||
+                    curPage === '' ||
+                    curPage === 'exportLayout'
                       ? 0
                       : curPage === 'createUserMaps'
                         ? '37%'
@@ -245,11 +304,14 @@ export default function Navbar() {
                   borderRadius: '20px',
                   backgroundColor: 'primary.main',
                   transition: 'all 0.3s ease-out',
-                  opacity: curPage === '' ? '0' : '1',
+                  opacity:
+                    curPage === '' || curPage === 'exportLayout' ? '0' : '1',
 
                   '@media only screen and (max-width: 1440px)': {
                     left:
-                      curPage === 'displayUserMap' || curPage === ''
+                      curPage === 'displayUserMap' ||
+                      curPage === '' ||
+                      curPage === 'exportLayout'
                         ? 0
                         : curPage === 'createUserMaps'
                           ? '37.5%'
@@ -422,21 +484,6 @@ export default function Navbar() {
                   }}
                 >
                   <MenuItem>
-                    <Link href="/" passHref style={LinkSmall}>
-                      <Button sx={LinkSmallBtn}>Home</Button>
-                    </Link>
-                  </MenuItem>
-                  <MenuItem>
-                    <Link href="/user/subscriptions" passHref style={LinkSmall}>
-                      <Button sx={LinkSmallBtn}>Subscribe</Button>
-                    </Link>
-                  </MenuItem>
-                  <MenuItem>
-                    <Link href="/user/contact" passHref style={LinkSmall}>
-                      <Button sx={LinkSmallBtn}>Contact</Button>
-                    </Link>
-                  </MenuItem>
-                  <MenuItem>
                     <Link
                       href="/user/displayUserMap"
                       passHref
@@ -448,6 +495,16 @@ export default function Navbar() {
                   <MenuItem>
                     <Link href="/user/createUserMap" passHref style={LinkSmall}>
                       <Button sx={LinkSmallBtn}>Map Editor</Button>
+                    </Link>
+                  </MenuItem>
+                  <MenuItem>
+                    <Link href="/user/contact" passHref style={LinkSmall}>
+                      <Button sx={LinkSmallBtn}>Contact</Button>
+                    </Link>
+                  </MenuItem>
+                  <MenuItem>
+                    <Link href="/user/subscriptions" passHref style={LinkSmall}>
+                      <Button sx={LinkSmallBtn}>Get Started</Button>
                     </Link>
                   </MenuItem>
                 </Menu>
@@ -504,6 +561,11 @@ export default function Navbar() {
                         {session.user.email}
                       </Typography>
                     </MenuItem>
+                    <MenuItem disabled>
+                      <Typography variant="subtitle1">
+                        {session.user.subscriptionType} plan
+                      </Typography>
+                    </MenuItem>
                     <MenuItem onClick={handleChangePassword}>
                       Change Password
                     </MenuItem>
@@ -512,25 +574,95 @@ export default function Navbar() {
                 </>
               ) : (
                 <>
-                  <Button
-                    sx={{ color: 'secondary.main', textTransform: 'none' }}
-                    onClick={() => handleOpenModal('login')}
-                  >
-                    Log In
-                  </Button>
-                  <Button
-                    variant="contained"
-                    sx={{
-                      // backgroundColor: "#000",
-                      // color: "#fff",
-                      borderRadius: '10px',
-                      padding: '0.5rem 1.5rem',
-                      textTransform: 'none',
-                    }}
-                    onClick={() => handleOpenModal('signup')}
-                  >
-                    Sign Up
-                  </Button>
+                  {width < 1000 ? (
+                    <>
+                      <IconButton
+                        onClick={handleMenu3}
+                        color="inherit"
+                        sx={{ position: 'relative', zIndex: 1700 }}
+                      >
+                        <Avatar alt="user options" />
+                      </IconButton>
+                      <Menu
+                        id="menu-appbar"
+                        anchorEl={anchorEl3}
+                        anchorOrigin={{
+                          vertical: 'top',
+                          horizontal: 'right',
+                        }}
+                        keepMounted
+                        transformOrigin={{
+                          vertical: 'top',
+                          horizontal: 'right',
+                        }}
+                        open={Boolean(anchorEl3)}
+                        onClose={handleMenuClose3}
+                        sx={{
+                          position: 'absolute',
+                          '& .MuiPaper-root': {
+                            borderRadius: '16px',
+                          },
+                          '& .MuiList-root': {
+                            padding: 0,
+
+                            '& .MuiMenuItem-root': {
+                              lineHeight: 2,
+                              '& .MuiTypography-root': {},
+                            },
+                          },
+                        }}
+                      >
+                        <MenuItem>
+                          <Button
+                            sx={{
+                              color: 'secondary.main',
+                              textTransform: 'none',
+                            }}
+                            onClick={() => handleOpenModal('login')}
+                          >
+                            Log In
+                          </Button>
+                        </MenuItem>
+                        <MenuItem>
+                          <Button
+                            variant="contained"
+                            sx={{
+                              // backgroundColor: "#000",
+                              // color: "#fff",
+                              borderRadius: '10px',
+                              padding: '0.5rem 1.5rem',
+                              textTransform: 'none',
+                            }}
+                            onClick={() => handleOpenModal('signup')}
+                          >
+                            Sign Up
+                          </Button>
+                        </MenuItem>
+                      </Menu>
+                    </>
+                  ) : (
+                    <>
+                      <Button
+                        sx={{ color: 'secondary.main', textTransform: 'none' }}
+                        onClick={() => handleOpenModal('login')}
+                      >
+                        Log In
+                      </Button>
+                      <Button
+                        variant="contained"
+                        sx={{
+                          // backgroundColor: "#000",
+                          // color: "#fff",
+                          borderRadius: '10px',
+                          padding: '0.5rem 1.5rem',
+                          textTransform: 'none',
+                        }}
+                        onClick={() => handleOpenModal('signup')}
+                      >
+                        Sign Up
+                      </Button>
+                    </>
+                  )}
                 </>
               )}
             </Box>

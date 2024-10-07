@@ -1,12 +1,13 @@
 import CssBaseline from '@mui/material/CssBaseline';
-import {Inter} from 'next/font/google';
+import { Inter } from 'next/font/google';
 import './globals.css';
-import {getServerSession} from 'next-auth';
+import { getServerSession } from 'next-auth';
 
 import DarkModeToggle from '@/components/DarkModeToggle';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
-import {SnackbarProvider} from '@/components/snackbar-hook/SnackBarContext';
+import { SnackbarProvider } from '@/components/snackbar-hook/SnackBarContext';
+import { BoxOrderProvider } from '@/context/ExportContext';
 import ThemeContextProvider from '@/context/ThemeContext';
 import AuthProvider from '@/lib/SessionProvider';
 
@@ -22,29 +23,36 @@ export default async function RootLayout({ children }) {
 
   return (
     <html lang="en">
-      <body
-        className={inter.className}
-        style={{ backgroundImage: 'var(--primary-bg)' }}
-      >
-        <AuthProvider session={session}>
-          <ThemeContextProvider>
-            <SnackbarProvider>
-              <CssBaseline />
-              <Navbar />
-              <div
-                style={{
-                  padding: '1rem 0',
-                  position: 'relative',
-                }}
-              >
-                {children}
-                <DarkModeToggle />
-              </div>
-              <Footer />
-            </SnackbarProvider>
-          </ThemeContextProvider>
-        </AuthProvider>
-      </body>
+      <ThemeContextProvider>
+        <SnackbarProvider>
+          <BoxOrderProvider>
+            <body
+              className={inter.className}
+              style={{
+                backgroundImage: 'var(--primary-bg)',
+                // paddingTop: '3rem',
+                width: '100%',
+                overflowX: 'auto',
+              }}
+            >
+              <AuthProvider session={session}>
+                <CssBaseline />
+                <Navbar />
+                <div
+                  style={{
+                    padding: '4rem 0',
+                    position: 'relative',
+                  }}
+                >
+                  {children}
+                  <DarkModeToggle />
+                </div>
+                <Footer />
+              </AuthProvider>
+            </body>
+          </BoxOrderProvider>
+        </SnackbarProvider>
+      </ThemeContextProvider>
     </html>
   );
 }

@@ -1,13 +1,17 @@
-import {Close as ClearIcon} from '@mui/icons-material';
+import { Close as ClearIcon } from '@mui/icons-material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import {Box, Button, Grid, IconButton, Typography} from '@mui/material';
+import { Box, Button, Grid, IconButton, Typography } from '@mui/material';
 import Image from 'next/image';
-import React, {useContext} from 'react';
+import { useSession } from 'next-auth/react';
+import React, { useContext } from 'react';
 
-import {ThemeContext} from '@/context/ThemeContext';
+import { ThemeContext } from '@/context/ThemeContext';
 
 const LogoUploader = ({ setLogoFile, logoFile }) => {
+  const { data: session } = useSession();
   const { darkMode } = useContext(ThemeContext);
+
+  const isFree = session?.user?.subscriptionType === 'BASIC';
 
   // console.log(uploadedFiles);
 
@@ -33,8 +37,32 @@ const LogoUploader = ({ setLogoFile, logoFile }) => {
         backgroundColor: 'transparent',
         // mt: "20px",
         height: '100%',
+        position: 'relative',
       }}
     >
+      {isFree && (
+        <Box
+          sx={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            bottom: 0,
+            right: 0,
+            backgroundColor: '#5c5c5cea',
+            zIndex: 800,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            padding: '1rem',
+
+            '& .MuiTypography-root': { color: '#fff', textAlign: 'center' },
+          }}
+        >
+          <Typography>
+            Please subscribe to one of our plans to upload Company logo
+          </Typography>
+        </Box>
+      )}
       {!logoFile.name && !logoFile.url ? (
         <Box
           sx={{
@@ -47,7 +75,7 @@ const LogoUploader = ({ setLogoFile, logoFile }) => {
         >
           <CloudUploadIcon sx={{ fontSize: 50, color: 'grey' }} />
           <Typography variant="body1" color="grey">
-            Drag & drop to upload
+            Drag & drop to upload your Company logo
           </Typography>
           <Typography variant="h6" color="grey" component="span">
             or
@@ -55,6 +83,7 @@ const LogoUploader = ({ setLogoFile, logoFile }) => {
           <Button
             variant="contained"
             component="label"
+            disabled={isFree}
             sx={{
               mt: 2,
               backgroundColor: 'grey',
