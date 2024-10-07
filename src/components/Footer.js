@@ -12,6 +12,11 @@ export default function Footer() {
         borderTop: '1px solid #e0e0e0',
         padding: '2rem',
         backgroundImage: 'var(--footer-bg)',
+        width: '100%',
+        // position: 'absolute',
+        // right: 0,
+        // bottom: 0,
+        // left: 0,
       }}
     >
       <Container maxWidth="xxl">

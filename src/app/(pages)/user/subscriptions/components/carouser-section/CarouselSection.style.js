@@ -8,7 +8,7 @@ export const useStyles = makeStyles(() => ({
     flexBasis: '33%',
     position: 'relative',
     perspective: '150rem',
-    cursor: 'pointer',
+    // cursor: 'pointer',
 
     '@media only screen and (max-width: 1100px)': {
       flexBasis: '30%',

@@ -1,14 +1,14 @@
-import {Box, Button} from '@mui/material';
-import {loadStripe} from '@stripe/stripe-js';
-import {useSession} from 'next-auth/react';
-import React, {useState} from 'react';
+import { Box, Button } from '@mui/material';
+import { loadStripe } from '@stripe/stripe-js';
+import { useSession } from 'next-auth/react';
+import React, { useState } from 'react';
 
 import LoadingSpinner from '@/components/LoadingSpinner';
 import useCustomSnackbar from '@/components/snackbar-hook/useCustomSnackbar';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
 
-const SubscribeButtons = ({pkgId}) => {
+const SubscribeButtons = ({ pkgId }) => {
   const [loading, setLoading] = useState(false);
   const { data: session } = useSession();
   const { openSnackbar } = useCustomSnackbar();
@@ -59,14 +59,14 @@ const SubscribeButtons = ({pkgId}) => {
     <Box sx={{ display: 'flex', justifyContent: 'center' }}>
       <Button
         variant="contained"
-        disabled={pkgId !== 5}
+        disabled={pkgId !== 2}
         sx={{
           backgroundColor: 'primary.main',
           borderRadius: '20px',
         }}
         onClick={handleCheckout}
       >
-              Subscribe
+        Subscribe
       </Button>
     </Box>
   );

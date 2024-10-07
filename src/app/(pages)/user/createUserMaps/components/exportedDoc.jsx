@@ -80,6 +80,25 @@ const DraggableBox = ({ id, index, moveBox, children, sx }) => {
   );
 };
 
+const throttle = (func, limit) => {
+  let lastFunc, lastRan;
+
+  return function (...args) {
+    if (!lastRan) {
+      func.apply(this, args);
+      lastRan = Date.now();
+    } else {
+      clearTimeout(lastFunc);
+      lastFunc = setTimeout(() => {
+        if (Date.now() - lastRan >= limit) {
+          func.apply(this, args);
+          lastRan = Date.now();
+        }
+      }, limit - (Date.now() - lastRan));
+    }
+  };
+};
+
 const DraggableChild = ({ id, index, moveBox, children, sx }) => {
   const [{ isDragging }, drag] = useDrag({
     type: ItemType.CHILD,
@@ -89,17 +108,14 @@ const DraggableChild = ({ id, index, moveBox, children, sx }) => {
     }),
   });
 
-  const [{ isOver }, drop] = useDrop({
+  const [, drop] = useDrop({
     accept: ItemType.CHILD,
-    hover: (draggedItem) => {
+    hover: throttle((draggedItem) => {
       if (draggedItem.index !== index) {
         moveBox(draggedItem.index, index);
         draggedItem.index = index;
       }
-    },
-    collect: (monitor) => ({
-      isOver: monitor.isOver(),
-    }),
+    }, 100),
   });
 
   const ref = (el) => {
@@ -112,17 +128,13 @@ const DraggableChild = ({ id, index, moveBox, children, sx }) => {
       ref={ref}
       sx={{
         ...sx,
-        border:
-          isDragging || isOver
-            ? isDragging
-              ? '2px solid blue'
-              : '2px solid green'
-            : 'none',
+        border: isDragging ? '2px solid blue' : 'none',
         opacity: isDragging ? 0.5 : 1,
         cursor: 'move',
         width: '100%',
         height: '100%',
         boxSizing: 'border-box',
+        transition: 'border 0.2s ease, opacity 0.2s ease',
       }}
     >
       {children}
@@ -160,35 +172,19 @@ export default function CustomPdf({ data, boxOrderContext = null }) {
     [data]
   );
 
-  const safeHTML = DOMPurify.sanitize(data?.helperHtml, {
-    ALLOWED_TAGS: ['h1', 'h2', 'p', 'ul', 'li'],
-    ALLOWED_ATTR: [],
-  });
+  const safeHTML =
+    DOMPurify.sanitize(data?.helperHtml, {
+      ALLOWED_TAGS: ['h1', 'h2', 'p', 'ul', 'li'],
+      ALLOWED_ATTR: [],
+    }) ||
+    "<p>Discover what's around you and map all the places of interest nearby!</p><p>Explore local hotspots and hidden gems effortlessly with dynamic, interactive maps.</p>";
+
   // console.log(data);
   // console.log(data?.locationsByTag);
   // console.log(categories);
   // console.log(allLocations);
   // console.log(safeHTML);
 
-  // const dpi = 250;
-  // const a4HeightMm = 297;
-  // const pixelsPerMm = dpi / 27;
-  // const maxHeightPx = a4HeightMm * pixelsPerMm;
-
-  // const [boxOrderRows, setboxOrderRows] = useState([
-  //   'mapinfo',
-  //   'imgs',
-  //   'textlogo',
-  // ]);
-  // const [boxOrderRow1, setBoxOrderRow1] = useState(['map', 'locations']);
-
-  // const moveBox = (fromIndex, toIndex) => {
-  //   const updatedOrder = [...boxOrderRow1];
-  //   const [movedBox] = updatedOrder.splice(fromIndex, 1);
-
-  //   updatedOrder.splice(toIndex, 0, movedBox);
-  //   setBoxOrderRow1(updatedOrder);
-  // };
   const context = useBoxOrder();
   const {
     boxOrderRow1 = [],
@@ -316,8 +312,8 @@ export default function CustomPdf({ data, boxOrderContext = null }) {
                       index={index}
                       moveBox={moveBox1}
                       sx={{
-                        flexBasis: boxId === 'map' ? '60%' : '40%', // Maintain the original flexBasis
-                        overflow: boxId === 'map' ? 'hidden' : undefined, // Conditional overflow for the map
+                        width: boxId === 'map' ? '60%' : '40%',
+                        overflow: boxId === 'map' ? 'hidden' : undefined,
                         height: '100%',
                       }}
                     >
@@ -516,7 +512,7 @@ export default function CustomPdf({ data, boxOrderContext = null }) {
                     >
                       {boxId === 'text' ? (
                         <Box dangerouslySetInnerHTML={{ __html: safeHTML }} />
-                      ) : data?.logoFile?.name || data?.logoFile?.url ? (
+                      ) : data?.logoFile || data?.logoFile ? (
                         <Box
                           sx={{
                             position: 'relative',

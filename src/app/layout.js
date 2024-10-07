@@ -31,6 +31,8 @@ export default async function RootLayout({ children }) {
               style={{
                 backgroundImage: 'var(--primary-bg)',
                 // paddingTop: '3rem',
+                width: '100%',
+                overflowX: 'auto',
               }}
             >
               <AuthProvider session={session}>

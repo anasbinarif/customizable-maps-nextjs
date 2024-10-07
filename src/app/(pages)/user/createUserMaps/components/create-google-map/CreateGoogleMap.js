@@ -670,17 +670,25 @@ export default function CreateGoogleMap({ mapData = null }) {
 
   return (
     <GoogleMapsLoader>
-      <Grid container spacing={3} sx={{ marginTop: '1rem' }}>
-        <Grid item xs={12} sm={12} md={8} lg={9}>
+      <Grid
+        container
+        spacing={3}
+        sx={{ marginTop: '1rem', minWidth: '1880px' }}
+      >
+        <Grid
+          item
+          xs={9}
+          // sm={12} md={8} lg={9}
+        >
           <Box
             sx={{
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
 
-              '@media only screen and (max-width: 600px)': {
-                flexDirection: 'column',
-              },
+              // '@media only screen and (max-width: 600px)': {
+              //   flexDirection: 'column',
+              // },
             }}
           >
             <Box
@@ -688,12 +696,12 @@ export default function CreateGoogleMap({ mapData = null }) {
                 margin: '10px 0.5rem',
                 width: '30%',
 
-                '@media only screen and (max-width: 1200px)': {
-                  width: '50%',
-                },
-                '@media only screen and (max-width: 600px)': {
-                  width: '100%',
-                },
+                // '@media only screen and (max-width: 1200px)': {
+                //   width: '50%',
+                // },
+                // '@media only screen and (max-width: 600px)': {
+                //   width: '100%',
+                // },
               }}
             >
               <StyledTextField
@@ -706,7 +714,7 @@ export default function CreateGoogleMap({ mapData = null }) {
                 onChange={(e) => setTitle(e.target.value)}
                 sx={{
                   width: '100%',
-                  '@media only screen and (max-width: 1200px)': {},
+                  // '@media only screen and (max-width: 1200px)': {},
                 }}
               />
             </Box>
@@ -747,12 +755,12 @@ export default function CreateGoogleMap({ mapData = null }) {
                       : 'primary.main',
                     width: 'calc(33% - 0.5rem)',
 
-                    '@media only screen and (max-width: 900px)': {
-                      width: 'calc(50% - 0.7rem)',
-                    },
-                    '@media only screen and (max-width: 600px)': {
-                      width: 'calc(100% - 0.7rem)',
-                    },
+                    // '@media only screen and (max-width: 900px)': {
+                    //   width: 'calc(50% - 0.7rem)',
+                    // },
+                    // '@media only screen and (max-width: 600px)': {
+                    //   width: 'calc(100% - 0.7rem)',
+                    // },
 
                     '&:hover': {
                       backgroundColor: isSelected
@@ -919,10 +927,10 @@ export default function CreateGoogleMap({ mapData = null }) {
                   position: 'absolute',
                   top: {
                     xl: '0.5rem',
-                    lg: '0.5rem',
-                    md: '0.5rem',
-                    sm: '4rem',
-                    xs: '4rem',
+                    // lg: '0.5rem',
+                    // md: '0.5rem',
+                    // sm: '4rem',
+                    // xs: '4rem',
                   },
                   left: '50%',
                   transform: 'translate(-50%, 0)',
@@ -939,7 +947,11 @@ export default function CreateGoogleMap({ mapData = null }) {
           />
         </Grid>
         {/* Location List section */}
-        <Grid item xs={12} sm={12} md={4} lg={3}>
+        <Grid
+          item
+          xs={3}
+          // sm={12} md={4} lg={3}
+        >
           <LocationList
             locationsByTag={locationsByTag}
             handleDelete={handleDelete}
@@ -948,26 +960,32 @@ export default function CreateGoogleMap({ mapData = null }) {
         <Grid
           item
           xs={12}
-          sm={12}
-          md={12}
-          lg={12}
-          sx={{
-            '@media only screen and (max-width: 900px)': {
-              flexDirection: 'row-reverse',
-            },
-          }}
+          // sm={12}
+          // md={12}
+          // lg={12}
+          sx={
+            {
+              // '@media only screen and (max-width: 900px)': {
+              //   flexDirection: 'row-reverse',
+              // },
+            }
+          }
         >
           <Grid container spacing={3}>
-            <Grid item xs={12} sm={12} md={8} lg={9}>
+            <Grid
+              item
+              xs={9}
+              // sm={12} md={8} lg={9}
+            >
               <TextArea helperHtml={helperHtml} setHelperHtml={setHelperHtml} />
               <Box
                 sx={{
                   display: {
                     xl: 'flex',
-                    lg: 'flex',
-                    md: 'flex',
-                    sm: 'none',
-                    sx: 'none',
+                    // lg: 'flex',
+                    // md: 'flex',
+                    // sm: 'none',
+                    // sx: 'none',
                   },
                   justifyContent: 'flex-end',
                 }}
@@ -1015,7 +1033,11 @@ export default function CreateGoogleMap({ mapData = null }) {
                 </Box>
               </Box>
             </Grid>
-            <Grid item xs={12} sm={12} md={4} lg={3}>
+            <Grid
+              item
+              xs={3}
+              // sm={12} md={4} lg={3}
+            >
               <LogoUploader logoFile={logoFile} setLogoFile={setLogoFile} />
               <Box
                 sx={{
