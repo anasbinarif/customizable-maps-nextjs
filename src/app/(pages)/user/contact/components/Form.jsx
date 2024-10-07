@@ -29,6 +29,14 @@ export default function Form() {
     e.preventDefault();
     setSnackbarOpen(false);
 
+    if (!formData.name || !formData.email || !formData.message) {
+      setSnackbarMessage('Please fill out all the fields');
+      setSnackbarSeverity('error');
+      setSnackbarOpen(true);
+
+      return;
+    }
+
     try {
       const response = await fetch('/api/sendContact', {
         method: 'POST',
