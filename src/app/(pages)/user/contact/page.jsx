@@ -9,10 +9,6 @@ export default function CarouselSection() {
   const theme = useTheme();
   const position = [52.212992, 5.27937];
 
-  const handleFormSubmit = () => {
-    // console.log('Form submitted with data:', data);
-  };
-
   return (
     <Box
       sx={{
@@ -97,7 +93,7 @@ export default function CarouselSection() {
               width: '100%',
             }}
           >
-            <Form onSubmit={handleFormSubmit} />
+            <Form />
           </Box>
         </Box>
       </Container>
