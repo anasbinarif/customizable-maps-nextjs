@@ -153,27 +153,26 @@ export default function CarouselSection() {
   const cardData = [
     {
       imgSrc: '/img/home_map.jpg',
-      name: 'Neighborhood Guides',
+      name: 'Highlight Neighborhood Assets',
       pkgs: [
-        'Share your local neighborhood expertise',
-        'create local guides to highlight your parks, restaurants and other places',
+        'Easily pinpoint and showcase local amenities, schools, and attractions',
+        "Create custom maps that emphasize the property's best features and surroundings",
       ],
     },
     {
       imgSrc: '/img/home_map2.jpg',
-      name: 'Gather real estate data',
+      name: 'Engage Buyers Visually',
       pkgs: [
-        "Discover what's around you and map all the places of interest nearby!",
-        'Explore local hotspots and hidden gems effortlessly with dynamic, interactive maps.',
-        'Uncover your neighborhood’s best spots and visualize them on a user-friendly map.',
+        'Transform raw data into eye-catching, interactive maps',
+        'Present properties in the context of their community, increasing buyer interest',
       ],
     },
     {
       imgSrc: '/img/home_map3.jpg',
-      name: 'Tourism',
+      name: 'Stand Out in a Competitive Market',
       pkgs: [
-        'Explore top tourist attractions and hidden gems with interactive maps right at your fingertips!',
-        'Discover and visualize your travel itinerary with ease, finding the best sights and experiences around you.',
+        'Differentiate your listings with professional, customized area maps',
+        'Demonstrate in-depth local knowledge, building trust with clients',
       ],
     },
   ];
@@ -342,11 +341,12 @@ export default function CarouselSection() {
                             'showContent 1s ease-in-out 0.3s 1 forwards',
                           margin: '0.5rem 0',
                           display: 'flex',
-                          alignItems: 'center',
+                          // alignItems: 'center',
 
                           '& svg': {
                             color: 'primary.main2',
                             mr: '0.5rem',
+                            mt: '0.3rem',
                           },
                         }}
                       >

@@ -1,4 +1,12 @@
-import { Box, Button, Container, Typography } from '@mui/material';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import {
+  Box,
+  Button,
+  Container,
+  List,
+  ListItem,
+  Typography,
+} from '@mui/material';
 
 export default function CTA() {
   return (
@@ -7,6 +15,7 @@ export default function CTA() {
         display: 'flex',
         alignItems: 'center',
         // minHeight: "80vh",
+
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         padding: '2rem',
@@ -17,7 +26,16 @@ export default function CTA() {
       }}
     >
       <Container
-        sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+        maxWidth="xl"
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          backgroundColor: 'primary.bgHero',
+          borderRadius: '20px',
+          padding: '2rem',
+          boxShadow: 'var(--heroShadow)',
+        }}
       >
         <Typography
           variant="h3"
@@ -36,14 +54,41 @@ export default function CTA() {
             },
           }}
         >
-          Create, Customize and Print{' '}
-          <span>Your Map Now - with our flexible pricing plans</span>
+          Elevate Your Property Marketing Today
         </Typography>
-        {/* <Typography variant="body1">
-          We come to you at your location to service your vehicle
-          <br />
-          The specilaist in steam cleaning
-        </Typography> */}
+        <Box>
+          <Typography variant="body1">
+            Join the growing community of top-performing agents who use Map
+            Mavens to:
+          </Typography>
+          <List
+            sx={{
+              listStyle: 'disc',
+              '& .MuiListItem-root': {
+                display: 'flex',
+                gap: '0.5rem',
+                pl: 0,
+
+                '& svg': { color: 'primary.main' },
+              },
+            }}
+          >
+            <ListItem>
+              <CheckCircleIcon />
+              <Typography>Close deals faster</Typography>
+            </ListItem>
+            <ListItem>
+              <CheckCircleIcon />
+              <Typography>Attract more qualified leads</Typography>
+            </ListItem>
+            <ListItem>
+              <CheckCircleIcon />
+              <Typography>
+                Establish themselves as neighbourhood experts
+              </Typography>
+            </ListItem>
+          </List>
+        </Box>
         <Button
           variant="contained"
           color="primary"
@@ -54,7 +99,7 @@ export default function CTA() {
             fontSize: '1.5rem',
           }}
         >
-          Get Started
+          Start your Free Trial
         </Button>
       </Container>
     </Box>

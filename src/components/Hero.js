@@ -1,4 +1,4 @@
-import {Box, Button, Container, Grid, Typography} from '@mui/material';
+import { Box, Button, Container, Grid, Typography } from '@mui/material';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -70,7 +70,20 @@ export default function Hero() {
                   },
                 }}
               >
-                Create and Customize Your Maps
+                Map Mavens: Elevate Your Property Listing
+              </Typography>
+              <Typography
+                variant="h6"
+                component="p"
+                sx={{
+                  marginTop: '1rem',
+                  // marginBottom: '2rem',
+                  '@media only screen and (max-width: 600px)': {
+                    fontSize: '1.2rem',
+                  },
+                }}
+              >
+                Transform Listings into Compelling Stories
               </Typography>
               <Typography
                 variant="h6"
@@ -83,9 +96,9 @@ export default function Hero() {
                   },
                 }}
               >
-                Sign up to create or edit custom maps. Use the Google Maps API
-                to find points of interest, customize your map with titles and
-                descriptions, and export your final design to PDF for printing.
+                Map Mavens empowers real estate agents to create immersive,
+                location-centric marketing materials that captivate potential
+                buyers.
               </Typography>
               <Box sx={{ display: 'flex', gap: '1rem' }}>
                 <Link href="/user/createUserMaps">

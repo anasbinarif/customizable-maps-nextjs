@@ -215,7 +215,7 @@ export default function Testimonials() {
                   sx={{
                     display: 'flex',
                     flexDirection: 'column',
-                    // justifyContent: 'center',
+                    // justifyContent: 'stretch',
                     transition: 'all 300ms ease-in-out',
                     padding: '1rem',
                     maxHeight: '35rem',

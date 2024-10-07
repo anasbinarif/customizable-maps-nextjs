@@ -7,7 +7,7 @@
 
 body {
   margin: 0;
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 
 .ql-snow {
@@ -22,6 +22,19 @@ body {
 
 .ql-snow .ql-stroke {
   stroke: var(--txtClr) !important;
+}
+
+.ql-toolbar button.ql-active {
+  background-color: #0092a2 !important;
+  border-radius: 4px;
+}
+
+.ql-toolbar button.ql-active .ql-fill {
+  fill: #fff !important;
+}
+
+.ql-toolbar button.ql-active .ql-stroke {
+  stroke: #fff !important;
 }
 
 @keyframes showContent {
