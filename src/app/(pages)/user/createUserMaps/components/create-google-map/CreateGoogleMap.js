@@ -34,11 +34,13 @@ import {
 
 // import CustomPdf from '../exportedDoc';
 import ImageUploader from '../ImageUploader';
+import LayoutToggle from '../LayoutToggle';
 import LocationList from '../LocationList';
 import LogoUploader from '../LogoUploader';
 import TextArea from '../TextArea';
 
 import MapFilters from '@/app/(pages)/user/createUserMaps/components/map-filters/MapFilters';
+import LayoutDialog from '@/components/AlertDialog';
 import AlertSnackbar from '@/components/AlertSnackbar';
 import ConfirmModal from '@/components/ConfirmModal';
 import { StyledTextField } from '@/components/CustomTextFields';
@@ -89,6 +91,9 @@ export default function CreateGoogleMap({ mapData = null }) {
   const { openSnackbar } = useCustomSnackbar();
   const [radius, setRadius] = useState(800);
   const [isEditMode, setEditMode] = useState(true);
+  const [layout, setLayout] = useState('desktop');
+  const [openLayoutDialog, setOpenLayoutDialog] = useState(false);
+  const [deviceWidth, setDeviceWidth] = useState(1880);
   const [locationsByTag, setLocationsByTag] = useState({
     Restaurants: { color: '#FF9A8B', locations: [] },
     Hotels: { color: '#6AB2FF', locations: [] },
@@ -102,6 +107,34 @@ export default function CreateGoogleMap({ mapData = null }) {
   });
 
   useEffect(() => {}, [locationsByTag]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setDeviceWidth(window.innerWidth);
+    };
+
+    setDeviceWidth(window.innerWidth);
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (deviceWidth < 1880) {
+      setOpenLayoutDialog(true);
+    }
+  }, [deviceWidth]);
+
+  const handleOpenLayoutDialog = () => {
+    setOpenLayoutDialog(true);
+  };
+
+  const handleCloseLayoutDialog = () => {
+    setOpenLayoutDialog(false);
+  };
 
   const handleRadiusChange = (event, newRadius) => {
     setRadius(newRadius);
@@ -263,53 +296,6 @@ export default function CreateGoogleMap({ mapData = null }) {
       setLoading(false);
     }
   };
-
-  // const exportMap = async () => {
-  //   setLoading(true);
-  //   const pdfContent = document.createElement('div');
-
-  //   pdfContent.style.width = '1920px';
-  //   pdfContent.style.position = 'absolute';
-  //   document.body.appendChild(pdfContent);
-
-  //   const root = ReactDOM.createRoot(pdfContent);
-
-  //   root.render(
-  //     <CustomPdf
-  //       // customRef={null}
-  //       data={{
-  //         title: title,
-  //         oldImgs: oldImgs,
-  //         newImgFiles: uploadedFiles,
-  //         logoFile: logoFile,
-  //         locationsByTag: locationsByTag,
-  //         currentLocation: currentLocation,
-  //         helperHtml: helperHtml,
-  //       }}
-  //     />
-  //   );
-
-  //   await new Promise((resolve) => {
-  //     setTimeout(resolve, 3000);
-  //   });
-
-  //   const canvas = await html2canvas(pdfContent, {
-  //     useCORS: true,
-  //     scale: 2,
-  //   });
-
-  //   const imgData = canvas.toDataURL('image/png');
-  //   const pdf = new jsPDF('p', 'mm', 'a4');
-  //   const imgWidth = 210;
-  //   const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-  //   pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-  //   setLoading(false);
-  //   pdf.save(`${title}.pdf`);
-
-  //   root.unmount();
-  //   document.body.removeChild(pdfContent);
-  // };
 
   const filters = useMemo(() => {
     return [
@@ -673,12 +659,17 @@ export default function CreateGoogleMap({ mapData = null }) {
       <Grid
         container
         spacing={3}
-        sx={{ marginTop: '1rem', minWidth: '1880px' }}
+        sx={{
+          marginTop: '1rem',
+          minWidth: layout === 'desktop' ? '1880px' : 'auto',
+        }}
       >
         <Grid
           item
-          xs={9}
-          // sm={12} md={8} lg={9}
+          xs={layout === 'desktop' ? 9 : 12}
+          sm={layout === 'desktop' ? 9 : 12}
+          md={layout === 'desktop' ? 9 : 8}
+          lg={9}
         >
           <Box
             sx={{
@@ -686,9 +677,9 @@ export default function CreateGoogleMap({ mapData = null }) {
               alignItems: 'center',
               justifyContent: 'space-between',
 
-              // '@media only screen and (max-width: 600px)': {
-              //   flexDirection: 'column',
-              // },
+              '@media only screen and (max-width: 600px)': {
+                flexDirection: layout === 'desktop' ? 'row' : 'column',
+              },
             }}
           >
             <Box
@@ -696,12 +687,12 @@ export default function CreateGoogleMap({ mapData = null }) {
                 margin: '10px 0.5rem',
                 width: '30%',
 
-                // '@media only screen and (max-width: 1200px)': {
-                //   width: '50%',
-                // },
-                // '@media only screen and (max-width: 600px)': {
-                //   width: '100%',
-                // },
+                '@media only screen and (max-width: 1200px)': {
+                  width: layout === 'desktop' ? '30%' : '50%',
+                },
+                '@media only screen and (max-width: 600px)': {
+                  width: layout === 'desktop' ? '30%' : '100%',
+                },
               }}
             >
               <StyledTextField
@@ -717,6 +708,7 @@ export default function CreateGoogleMap({ mapData = null }) {
                   // '@media only screen and (max-width: 1200px)': {},
                 }}
               />
+              <LayoutToggle layout={layout} setLayout={setLayout} />
             </Box>
             <MapFilters
               sliderValue={radius}
@@ -755,12 +747,18 @@ export default function CreateGoogleMap({ mapData = null }) {
                       : 'primary.main',
                     width: 'calc(33% - 0.5rem)',
 
-                    // '@media only screen and (max-width: 900px)': {
-                    //   width: 'calc(50% - 0.7rem)',
-                    // },
-                    // '@media only screen and (max-width: 600px)': {
-                    //   width: 'calc(100% - 0.7rem)',
-                    // },
+                    '@media only screen and (max-width: 900px)': {
+                      width:
+                        layout === 'desktop'
+                          ? 'calc(33% - 0.5rem)'
+                          : 'calc(50% - 0.7rem)',
+                    },
+                    '@media only screen and (max-width: 600px)': {
+                      width:
+                        layout === 'desktop'
+                          ? 'calc(33% - 0.5rem)'
+                          : 'calc(100% - 0.7rem)',
+                    },
 
                     '&:hover': {
                       backgroundColor: isSelected
@@ -825,90 +823,90 @@ export default function CreateGoogleMap({ mapData = null }) {
                   {activeMarker &&
                     activeMarker.lat === marker.lat &&
                     activeMarker.lng === marker.lng && (
-                    <InfoWindow
-                      position={{ lat: marker.lat, lng: marker.lng }}
-                      onMouseOver={() => setInfoWindowHovered(true)}
-                      onMouseOut={() => {
-                        setInfoWindowHovered(false);
-                        handleMarkerMouseOut();
-                      }}
-                      options={{
-                        pixelOffset: new window.google.maps.Size(0, -30),
-                      }}
-                    >
-                      <Box
-                        sx={{
-                          maxWidth: '250px',
-                          padding: 0,
-                          overflow: 'hidden',
-                          margin: 0,
-                          maxHeight: '200px',
+                      <InfoWindow
+                        position={{ lat: marker.lat, lng: marker.lng }}
+                        onMouseOver={() => setInfoWindowHovered(true)}
+                        onMouseOut={() => {
+                          setInfoWindowHovered(false);
+                          handleMarkerMouseOut();
+                        }}
+                        options={{
+                          pixelOffset: new window.google.maps.Size(0, -30),
                         }}
                       >
-                        {marker.photo && (
-                          <Image
-                            src={marker.photo}
-                            alt={marker.name}
-                            width={250}
-                            height={70}
-                            style={{
-                              display: 'block',
-                              width: '100%',
-                              borderRadius: '8px 8px 0 0',
-                            }}
-                          />
-                        )}
-                        <Box sx={{ padding: '8px' }}>
-                          <Typography
-                            variant="h6"
-                            component="div"
-                            sx={{ fontSize: '16px', fontWeight: 'bold' }}
-                          >
-                            {marker.name}
-                          </Typography>
-                          <Typography
-                            variant="body2"
-                            color="textSecondary"
-                            sx={{ fontSize: '14px', marginTop: '4px' }}
-                          >
-                            {marker.vicinity}
-                          </Typography>
-                          <Typography
-                            variant="body2"
-                            color="textSecondary"
-                            sx={{ fontSize: '14px', marginTop: '4px' }}
-                          >
-                              Rating: {marker.rating} ({marker.userRatingsTotal}{' '}
-                              reviews)
-                          </Typography>
-                          <Typography
-                            variant="body2"
-                            sx={{
-                              fontSize: '14px',
-                              color: marker.isOpen ? 'green' : 'red',
-                              marginTop: '4px',
-                            }}
-                          >
-                            {marker.isOpen ? 'Open Now' : 'Closed'}
-                          </Typography>
-                          {marker.openingHours && (
+                        <Box
+                          sx={{
+                            maxWidth: '250px',
+                            padding: 0,
+                            overflow: 'hidden',
+                            margin: 0,
+                            maxHeight: '200px',
+                          }}
+                        >
+                          {marker.photo && (
+                            <Image
+                              src={marker.photo}
+                              alt={marker.name}
+                              width={250}
+                              height={70}
+                              style={{
+                                display: 'block',
+                                width: '100%',
+                                borderRadius: '8px 8px 0 0',
+                              }}
+                            />
+                          )}
+                          <Box sx={{ padding: '8px' }}>
+                            <Typography
+                              variant="h6"
+                              component="div"
+                              sx={{ fontSize: '16px', fontWeight: 'bold' }}
+                            >
+                              {marker.name}
+                            </Typography>
                             <Typography
                               variant="body2"
                               color="textSecondary"
                               sx={{ fontSize: '14px', marginTop: '4px' }}
                             >
-                              {marker.openingHours.map((hours, idx) => (
-                                <span key={idx}>
-                                  {hours}
-                                  <br />
-                                </span>
-                              ))}
+                              {marker.vicinity}
                             </Typography>
-                          )}
+                            <Typography
+                              variant="body2"
+                              color="textSecondary"
+                              sx={{ fontSize: '14px', marginTop: '4px' }}
+                            >
+                              Rating: {marker.rating} ({marker.userRatingsTotal}{' '}
+                              reviews)
+                            </Typography>
+                            <Typography
+                              variant="body2"
+                              sx={{
+                                fontSize: '14px',
+                                color: marker.isOpen ? 'green' : 'red',
+                                marginTop: '4px',
+                              }}
+                            >
+                              {marker.isOpen ? 'Open Now' : 'Closed'}
+                            </Typography>
+                            {marker.openingHours && (
+                              <Typography
+                                variant="body2"
+                                color="textSecondary"
+                                sx={{ fontSize: '14px', marginTop: '4px' }}
+                              >
+                                {marker.openingHours.map((hours, idx) => (
+                                  <span key={idx}>
+                                    {hours}
+                                    <br />
+                                  </span>
+                                ))}
+                              </Typography>
+                            )}
+                          </Box>
                         </Box>
-                      </Box>
-                    </InfoWindow>
-                  )}
+                      </InfoWindow>
+                    )}
                 </Marker>
               ))}
 
@@ -927,10 +925,10 @@ export default function CreateGoogleMap({ mapData = null }) {
                   position: 'absolute',
                   top: {
                     xl: '0.5rem',
-                    // lg: '0.5rem',
-                    // md: '0.5rem',
-                    // sm: '4rem',
-                    // xs: '4rem',
+                    lg: '0.5rem',
+                    md: '0.5rem',
+                    sm: layout === 'desktop' ? '0.5rem' : '4rem',
+                    xs: layout === 'desktop' ? '0.5rem' : '4rem',
                   },
                   left: '50%',
                   transform: 'translate(-50%, 0)',
@@ -949,8 +947,10 @@ export default function CreateGoogleMap({ mapData = null }) {
         {/* Location List section */}
         <Grid
           item
-          xs={3}
-          // sm={12} md={4} lg={3}
+          xs={layout === 'desktop' ? 3 : 12}
+          sm={layout === 'desktop' ? 3 : 12}
+          md={layout === 'desktop' ? 3 : 4}
+          lg={3}
         >
           <LocationList
             locationsByTag={locationsByTag}
@@ -960,32 +960,32 @@ export default function CreateGoogleMap({ mapData = null }) {
         <Grid
           item
           xs={12}
-          // sm={12}
-          // md={12}
-          // lg={12}
-          sx={
-            {
-              // '@media only screen and (max-width: 900px)': {
-              //   flexDirection: 'row-reverse',
-              // },
-            }
-          }
+          sm={12}
+          md={12}
+          lg={12}
+          sx={{
+            '@media only screen and (max-width: 900px)': {
+              flexDirection: layout === 'desktop' ? 'row' : 'row-reverse',
+            },
+          }}
         >
           <Grid container spacing={3}>
             <Grid
               item
-              xs={9}
-              // sm={12} md={8} lg={9}
+              xs={layout === 'desktop' ? 9 : 12}
+              sm={layout === 'desktop' ? 9 : 12}
+              md={layout === 'desktop' ? 9 : 8}
+              lg={9}
             >
               <TextArea helperHtml={helperHtml} setHelperHtml={setHelperHtml} />
               <Box
                 sx={{
                   display: {
                     xl: 'flex',
-                    // lg: 'flex',
-                    // md: 'flex',
-                    // sm: 'none',
-                    // sx: 'none',
+                    lg: 'flex',
+                    md: 'flex',
+                    sm: layout === 'desktop' ? 'flex' : 'none',
+                    sx: layout === 'desktop' ? 'flex' : 'none',
                   },
                   justifyContent: 'flex-end',
                 }}
@@ -1035,8 +1035,10 @@ export default function CreateGoogleMap({ mapData = null }) {
             </Grid>
             <Grid
               item
-              xs={3}
-              // sm={12} md={4} lg={3}
+              xs={layout === 'desktop' ? 3 : 12}
+              sm={layout === 'desktop' ? 3 : 12}
+              md={layout === 'desktop' ? 3 : 4}
+              lg={3}
             >
               <LogoUploader logoFile={logoFile} setLogoFile={setLogoFile} />
               <Box
@@ -1112,6 +1114,11 @@ export default function CreateGoogleMap({ mapData = null }) {
         open={openConfirm}
         handleClose={handleConfirmClose}
         handleConfirm={handleConfirmMap}
+      />
+      <LayoutDialog
+        open={openLayoutDialog}
+        onClose={handleCloseLayoutDialog}
+        message="Your device is a small device, our map editor is best used on a desktop. This gives you the best experience, and a good outlook on how it will translate once you export it. You can change the layout to be responsive if you prefer so."
       />
       {loading && <LoadingSpinner />}
     </GoogleMapsLoader>

@@ -142,6 +142,53 @@ const DraggableChild = ({ id, index, moveBox, children, sx }) => {
   );
 };
 
+// const exportMap = async () => {
+//   setLoading(true);
+//   const pdfContent = document.createElement('div');
+
+//   pdfContent.style.width = '1920px';
+//   pdfContent.style.position = 'absolute';
+//   document.body.appendChild(pdfContent);
+
+//   const root = ReactDOM.createRoot(pdfContent);
+
+//   root.render(
+//     <CustomPdf
+//       // customRef={null}
+//       data={{
+//         title: title,
+//         oldImgs: oldImgs,
+//         newImgFiles: uploadedFiles,
+//         logoFile: logoFile,
+//         locationsByTag: locationsByTag,
+//         currentLocation: currentLocation,
+//         helperHtml: helperHtml,
+//       }}
+//     />
+//   );
+
+//   await new Promise((resolve) => {
+//     setTimeout(resolve, 3000);
+//   });
+
+//   const canvas = await html2canvas(pdfContent, {
+//     useCORS: true,
+//     scale: 2,
+//   });
+
+//   const imgData = canvas.toDataURL('image/png');
+//   const pdf = new jsPDF('p', 'mm', 'a4');
+//   const imgWidth = 210;
+//   const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+//   pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+//   setLoading(false);
+//   pdf.save(`${title}.pdf`);
+
+//   root.unmount();
+//   document.body.removeChild(pdfContent);
+// };
+
 export default function CustomPdf({ data, boxOrderContext = null }) {
   const { data: session } = useSession();
   const [imgs, setImgs] = useState(() => {
@@ -283,21 +330,21 @@ export default function CustomPdf({ data, boxOrderContext = null }) {
                 sx={
                   boxid === 'mapinfo'
                     ? {
-                      ...innerBoxStyles,
-                      display: 'flex',
-                      gap: '1rem',
-                      m: '3rem 0 5rem',
-                      height: '1000px',
-                    }
+                        ...innerBoxStyles,
+                        display: 'flex',
+                        gap: '1rem',
+                        m: '3rem 0 5rem',
+                        height: '1000px',
+                      }
                     : boxid === 'imgs'
-                      ? {
+                    ? {
                         ...innerBoxStyles,
                         display: 'flex',
                         gap: '1rem',
                         flexWrap: 'wrap',
                         marginBottom: 'auto',
                       }
-                      : {
+                    : {
                         ...innerBoxStyles,
                         mt: '5rem',
                         display: 'flex',
@@ -525,8 +572,8 @@ export default function CustomPdf({ data, boxOrderContext = null }) {
                               session?.user?.subscriptionType === 'BASIC'
                                 ? '/img/mapmaven.jpeg'
                                 : data?.logoFile?.name
-                                  ? URL.createObjectURL(data?.logoFile)
-                                  : data?.logoFile?.url
+                                ? URL.createObjectURL(data?.logoFile)
+                                : data?.logoFile?.url
                             }
                             alt="Uploaded logo"
                             width={400}
