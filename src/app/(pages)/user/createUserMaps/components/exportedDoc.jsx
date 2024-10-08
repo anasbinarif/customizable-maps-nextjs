@@ -330,21 +330,21 @@ export default function CustomPdf({ data, boxOrderContext = null }) {
                 sx={
                   boxid === 'mapinfo'
                     ? {
-                        ...innerBoxStyles,
-                        display: 'flex',
-                        gap: '1rem',
-                        m: '3rem 0 5rem',
-                        height: '1000px',
-                      }
+                      ...innerBoxStyles,
+                      display: 'flex',
+                      gap: '1rem',
+                      m: '3rem 0 5rem',
+                      height: '1000px',
+                    }
                     : boxid === 'imgs'
-                    ? {
+                      ? {
                         ...innerBoxStyles,
                         display: 'flex',
                         gap: '1rem',
                         flexWrap: 'wrap',
                         marginBottom: 'auto',
                       }
-                    : {
+                      : {
                         ...innerBoxStyles,
                         mt: '5rem',
                         display: 'flex',
@@ -572,8 +572,8 @@ export default function CustomPdf({ data, boxOrderContext = null }) {
                               session?.user?.subscriptionType === 'BASIC'
                                 ? '/img/mapmaven.jpeg'
                                 : data?.logoFile?.name
-                                ? URL.createObjectURL(data?.logoFile)
-                                : data?.logoFile?.url
+                                  ? URL.createObjectURL(data?.logoFile)
+                                  : data?.logoFile?.url
                             }
                             alt="Uploaded logo"
                             width={400}

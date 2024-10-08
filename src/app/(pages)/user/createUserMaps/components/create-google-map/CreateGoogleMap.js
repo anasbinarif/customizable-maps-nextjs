@@ -128,9 +128,9 @@ export default function CreateGoogleMap({ mapData = null }) {
     }
   }, [deviceWidth]);
 
-  const handleOpenLayoutDialog = () => {
-    setOpenLayoutDialog(true);
-  };
+  // const handleOpenLayoutDialog = () => {
+  //   setOpenLayoutDialog(true);
+  // };
 
   const handleCloseLayoutDialog = () => {
     setOpenLayoutDialog(false);
@@ -823,90 +823,90 @@ export default function CreateGoogleMap({ mapData = null }) {
                   {activeMarker &&
                     activeMarker.lat === marker.lat &&
                     activeMarker.lng === marker.lng && (
-                      <InfoWindow
-                        position={{ lat: marker.lat, lng: marker.lng }}
-                        onMouseOver={() => setInfoWindowHovered(true)}
-                        onMouseOut={() => {
-                          setInfoWindowHovered(false);
-                          handleMarkerMouseOut();
-                        }}
-                        options={{
-                          pixelOffset: new window.google.maps.Size(0, -30),
+                    <InfoWindow
+                      position={{ lat: marker.lat, lng: marker.lng }}
+                      onMouseOver={() => setInfoWindowHovered(true)}
+                      onMouseOut={() => {
+                        setInfoWindowHovered(false);
+                        handleMarkerMouseOut();
+                      }}
+                      options={{
+                        pixelOffset: new window.google.maps.Size(0, -30),
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          maxWidth: '250px',
+                          padding: 0,
+                          overflow: 'hidden',
+                          margin: 0,
+                          maxHeight: '200px',
                         }}
                       >
-                        <Box
-                          sx={{
-                            maxWidth: '250px',
-                            padding: 0,
-                            overflow: 'hidden',
-                            margin: 0,
-                            maxHeight: '200px',
-                          }}
-                        >
-                          {marker.photo && (
-                            <Image
-                              src={marker.photo}
-                              alt={marker.name}
-                              width={250}
-                              height={70}
-                              style={{
-                                display: 'block',
-                                width: '100%',
-                                borderRadius: '8px 8px 0 0',
-                              }}
-                            />
-                          )}
-                          <Box sx={{ padding: '8px' }}>
-                            <Typography
-                              variant="h6"
-                              component="div"
-                              sx={{ fontSize: '16px', fontWeight: 'bold' }}
-                            >
-                              {marker.name}
-                            </Typography>
-                            <Typography
-                              variant="body2"
-                              color="textSecondary"
-                              sx={{ fontSize: '14px', marginTop: '4px' }}
-                            >
-                              {marker.vicinity}
-                            </Typography>
-                            <Typography
-                              variant="body2"
-                              color="textSecondary"
-                              sx={{ fontSize: '14px', marginTop: '4px' }}
-                            >
+                        {marker.photo && (
+                          <Image
+                            src={marker.photo}
+                            alt={marker.name}
+                            width={250}
+                            height={70}
+                            style={{
+                              display: 'block',
+                              width: '100%',
+                              borderRadius: '8px 8px 0 0',
+                            }}
+                          />
+                        )}
+                        <Box sx={{ padding: '8px' }}>
+                          <Typography
+                            variant="h6"
+                            component="div"
+                            sx={{ fontSize: '16px', fontWeight: 'bold' }}
+                          >
+                            {marker.name}
+                          </Typography>
+                          <Typography
+                            variant="body2"
+                            color="textSecondary"
+                            sx={{ fontSize: '14px', marginTop: '4px' }}
+                          >
+                            {marker.vicinity}
+                          </Typography>
+                          <Typography
+                            variant="body2"
+                            color="textSecondary"
+                            sx={{ fontSize: '14px', marginTop: '4px' }}
+                          >
                               Rating: {marker.rating} ({marker.userRatingsTotal}{' '}
                               reviews)
-                            </Typography>
+                          </Typography>
+                          <Typography
+                            variant="body2"
+                            sx={{
+                              fontSize: '14px',
+                              color: marker.isOpen ? 'green' : 'red',
+                              marginTop: '4px',
+                            }}
+                          >
+                            {marker.isOpen ? 'Open Now' : 'Closed'}
+                          </Typography>
+                          {marker.openingHours && (
                             <Typography
                               variant="body2"
-                              sx={{
-                                fontSize: '14px',
-                                color: marker.isOpen ? 'green' : 'red',
-                                marginTop: '4px',
-                              }}
+                              color="textSecondary"
+                              sx={{ fontSize: '14px', marginTop: '4px' }}
                             >
-                              {marker.isOpen ? 'Open Now' : 'Closed'}
+                              {marker.openingHours.map((hours, idx) => (
+                                <span key={idx}>
+                                  {hours}
+                                  <br />
+                                </span>
+                              ))}
                             </Typography>
-                            {marker.openingHours && (
-                              <Typography
-                                variant="body2"
-                                color="textSecondary"
-                                sx={{ fontSize: '14px', marginTop: '4px' }}
-                              >
-                                {marker.openingHours.map((hours, idx) => (
-                                  <span key={idx}>
-                                    {hours}
-                                    <br />
-                                  </span>
-                                ))}
-                              </Typography>
-                            )}
-                          </Box>
+                          )}
                         </Box>
-                      </InfoWindow>
-                    )}
+                      </Box>
+                    </InfoWindow>
+                  )}
                 </Marker>
               ))}
 
